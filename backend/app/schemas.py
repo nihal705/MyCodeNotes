@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime
 from app.models import Difficulty, PracticeDifficulty, PracticeLanguage
 
@@ -82,3 +82,26 @@ class AdminLogin(BaseModel):
 class AdminLoginResponse(BaseModel):
     access_token: str
     token_type: str
+
+# ====== Note Schemas ======
+class NoteBase(BaseModel):
+    title: str
+    slug: str
+    description: Optional[str] = None
+    icon: Optional[str] = None
+    content: Dict[str, Any]  # JSON structure
+    tags: Optional[List[str]] = []
+
+class NoteCreate(NoteBase):
+    pass
+
+class NoteUpdate(NoteBase):
+    pass
+
+class NoteResponse(NoteBase):
+    id: int
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True

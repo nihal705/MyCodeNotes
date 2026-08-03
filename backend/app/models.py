@@ -81,3 +81,17 @@ class ProfileSetting(Base):
     key = Column(String(50), unique=True, index=True, nullable=False)
     value = Column(Text)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+# Table 6: Notes
+class Note(Base):
+    __tablename__ = "notes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    slug = Column(String(255), unique=True, index=True, nullable=False)
+    description = Column(Text)
+    icon = Column(String(50))
+    content = Column(JSON, nullable=False)  # JSON structure with chapters and topics
+    tags = Column(JSON, default=[])
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())

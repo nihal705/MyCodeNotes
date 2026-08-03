@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
-from app.routes import problems, practice, concepts, leetcode, admin, profile
+from app.routes import problems, practice, concepts, leetcode, admin, profile, notes
 import os
 from dotenv import load_dotenv
 
@@ -37,6 +37,7 @@ app.include_router(concepts.router)
 app.include_router(leetcode.router)
 app.include_router(admin.router)
 app.include_router(profile.router)
+app.include_router(notes.router)
 
 @app.get("/")
 def root():
