@@ -9,7 +9,7 @@ import { notesApi } from '../../api/notes'
 const Navbar = () => {
   const location = useLocation()
   const [isOpen, setIsOpen] = useState(false)
-  const [activeMenu, setActiveMenu] = useState(null) // 'notes' or null
+  const [activeMenu, setActiveMenu] = useState(null)
   const [notes, setNotes] = useState([])
 
   // Fetch notes for dropdown
@@ -30,6 +30,7 @@ const Navbar = () => {
     { path: '/problems', label: 'LeetCode' },
     { path: '/practice', label: 'Practice' },
     { path: '/concepts', label: 'Concepts' },
+    { path: '/notes', label: 'Notes' },
   ]
 
   const isActive = (path) => location.pathname === path
@@ -45,7 +46,7 @@ const Navbar = () => {
   }
 
   const toggleNotesMenu = () => {
-    setActiveMenu(activeMenu === 'notes' ? null : 'notes')
+    // setActiveMenu(activeMenu === 'notes' ? null : 'notes')
   }
 
   const handleBack = () => {
@@ -96,7 +97,12 @@ const Navbar = () => {
                 </Link>
               ))}
               
-              <button
+              {/* 
+                ====================================================
+                🚧 NOTES DROPDOWN TRIGGER - COMMENTED OUT
+                ====================================================
+              */}
+              {/* <button
                 onClick={toggleNotesMenu}
                 className={`
                   hover:text-leetcode-yellow transition-colors duration-200 flex items-center gap-1 whitespace-nowrap
@@ -104,7 +110,7 @@ const Navbar = () => {
                 `}
               >
                 Notes
-              </button>
+              </button> */}
 
               {/* Portfolio Link - Desktop */}
               <a
@@ -118,6 +124,11 @@ const Navbar = () => {
               </a>
             </motion.nav>
           ) : (
+            /* 
+              ====================================================
+              SECOND NOTES DROPDOWN MENU - FULLY COMMENTED OUT
+              ====================================================
+            */
             <motion.nav
               key="sub-nav"
               initial="hidden"
@@ -147,8 +158,9 @@ const Navbar = () => {
 
               {/* Notes Links */}
               <div className="flex items-center gap-4 lg:gap-6">
+                
                 {/* All Notes */}
-                <Link
+                {/* <Link
                   to="/notes"
                   onClick={() => setActiveMenu(null)}
                   className={`
@@ -157,10 +169,10 @@ const Navbar = () => {
                   `}
                 >
                   All Notes
-                </Link>
+                </Link> */}
 
                 {/* Individual Notes */}
-                {notes.map((note) => (
+                {/* {notes.map((note) => (
                   <Link
                     key={note.id}
                     to={`/notes/${note.slug}`}
@@ -172,7 +184,8 @@ const Navbar = () => {
                   >
                     {note.icon || '📓'} {note.title}
                   </Link>
-                ))}
+                ))} */}
+                
               </div>
             </motion.nav>
           )}
@@ -230,12 +243,17 @@ const Navbar = () => {
                 </Link>
               ))}
               
-              <button
+              {/* 
+                ====================================================
+                MOBILE NOTES DROPDOWN TRIGGER - COMMENTED OUT
+                ====================================================
+              */}
+              {/* <button
                 onClick={toggleNotesMenu}
                 className="hover:text-leetcode-yellow transition-colors duration-200 text-gray-700 font-medium"
               >
                 Notes →
-              </button>
+              </button> */}
 
               {/* Portfolio Link - Mobile */}
               <a
