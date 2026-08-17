@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FiBook, FiSearch } from 'react-icons/fi'
 import NoteList from '../components/notes/NoteList'
 import LoadingSpinner from '../components/common/LoadingSpinner'
+import ComingSoon from '../components/common/ComingSoon'
 import { notesApi } from '../api/notes'
 
 const NotesPage = () => {
@@ -10,6 +10,7 @@ const NotesPage = () => {
   const [filteredNotes, setFilteredNotes] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [isRevealed, setIsRevealed] = useState(false)
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -24,6 +25,21 @@ const NotesPage = () => {
       }
     }
     fetchNotes()
+  }, [])
+
+  // SECRET DEVELOPER REVEAL: Press Ctrl + Shift + D
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+          e.preventDefault()
+          setIsRevealed(true)
+          console.log('Developer mode activated! Notes revealed.')
+        }
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   const handleSearch = (query) => {
@@ -45,66 +61,43 @@ const NotesPage = () => {
 
   if (loading) return <LoadingSpinner />
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
-    }
-  }
-
   return (
     <motion.div
-      className="space-y-6"
+      className="w-full flex flex-col min-h-[60vh] -mt-3"
       initial="hidden"
       animate="visible"
-      variants={containerVariants}
     >
-      {/* Header */}
-      <motion.div 
-        variants={itemVariants}
-        className="bg-gradient-to-r from-cream-50 to-beige-50 dark:from-dark-800 dark:to-dark-900 rounded-2xl p-6 border border-beige-200 dark:border-dark-700"
-      >
-        <div className="flex items-center gap-4">
-          <div className="bg-leetcode-yellow/20 p-4 rounded-xl">
-            <FiBook className="text-3xl text-leetcode-yellow" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Notes</h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              {filteredNotes.length} note{filteredNotes.length !== 1 ? 's' : ''} available
-            </p>
-          </div>
+      {!isRevealed ? (
+        <div className="relative w-full h-full flex-1 flex flex-col gap-6">
+          <ComingSoon title="Notes" />
         </div>
-      </motion.div>
+      ) : (
+        <div className="w-full px-6 sm:px-8 lg:px-12 pt-0 pb-12 flex flex-col items-center">
+          
+          {/* Centered Minimal Text */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center text-lg text-black-500 dark:text-black-400 mb-6 max-w-3xl font-medium"
+          >
+            Learn by reading notes, exploring code examples, and downloading PDF handbooks.
+          </motion.p>
 
-      {/* Search Bar */}
-      <motion.div variants={itemVariants}>
-        <div className="relative">
-          <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search notes by title, description, or tags..."
-            value={searchQuery}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-dark-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-leetcode-yellow bg-white dark:bg-dark-800 text-gray-900 dark:text-white transition-all duration-200"
-          />
+          {/* Note Grid - Full width */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex-1 w-full"
+          >
+            <NoteList 
+              notes={filteredNotes} 
+              onSearch={handleSearch}
+              searchQuery={searchQuery}
+            />
+          </motion.div>
+
         </div>
-      </motion.div>
-
-      {/* Note List */}
-      <motion.div variants={itemVariants}>
-        <NoteList notes={filteredNotes} />
-      </motion.div>
+      )}
     </motion.div>
   )
 }
