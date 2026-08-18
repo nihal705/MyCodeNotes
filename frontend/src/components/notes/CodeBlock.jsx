@@ -29,7 +29,7 @@ const CodeBlock = ({ language, code }) => {
   const displayLanguage = languageMap[language] || language || 'Code'
 
   return (
-    <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-dark-700 bg-gray-900">
+    <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-dark-700 bg-gray-900 print:break-inside-avoid print:bg-gray-900">
       {/* Header */}
       <div className="flex justify-between items-center px-4 py-2 bg-gray-800 border-b border-gray-700">
         <span className="text-xs text-gray-400 font-mono">{displayLanguage}</span>
