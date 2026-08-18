@@ -22,8 +22,12 @@ const AdminPage = () => {
       </div>
     )
   }
-
-  return isAuthenticated ? <AdminPanel /> : <AdminLogin />
+  
+  return (
+    <div className="container-custom mx-auto">
+      {isAuthenticated ? <AdminPanel /> : <AdminLogin />}
+    </div>
+  )
 }
 
 export default AdminPage

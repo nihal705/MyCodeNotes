@@ -9,7 +9,8 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import { notesApi } from "../api/notes";
 import toast from "react-hot-toast";
 import { FiCode, FiBox, FiDownload } from "react-icons/fi";
-import { downloadNoteAsPDF } from '../utils/pdfGenerator'
+import { downloadNoteAsPDF } from "../utils/pdfGenerator";
+import { SiPython } from "react-icons/si";
 
 const NoteDetailPage = () => {
   const { slug } = useParams();
@@ -18,7 +19,7 @@ const NoteDetailPage = () => {
   const [activeChapter, setActiveChapter] = useState(0);
   const [activeTopic, setActiveTopic] = useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -49,13 +50,15 @@ const NoteDetailPage = () => {
   };
 
   // SEARCH FILTER LOGIC INSIDE THE NOTE
-  const filteredChapters = note?.content?.chapters?.map(chapter => ({
-    ...chapter,
-    topics: chapter.topics.filter(topic => 
-      topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      topic.content?.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  })) || [];
+  const filteredChapters =
+    note?.content?.chapters?.map((chapter) => ({
+      ...chapter,
+      topics: chapter.topics.filter(
+        (topic) =>
+          topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.content?.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    })) || [];
 
   if (loading) return <LoadingSpinner />;
   if (!note) return <div className="text-center py-12">Note not found</div>;
@@ -74,29 +77,31 @@ const NoteDetailPage = () => {
       </Link>
 
       {/* Header with Search Bar inside */}
-      <div className="bg-gradient-to-r from-cream-50 to-beige-50 dark:from-dark-800 dark:to-dark-900 rounded-xl p-5 border border-gray-200 dark:border-dark-700">
+      <div className="bg-gradient-to-r from-cream-50 to-beige-50 dark:from-dark-800 dark:to-dark-900 rounded-xl p-6 border border-gray-200 dark:border-dark-700">
         <div className="flex items-center justify-between gap-3 flex-wrap">
-          
-          <div className="flex items-center gap-3 flex-1 min-w-0">
+          {/* Left Side: Icon + Title + Description + Tags */}
+          <div className="flex items-center gap-3 flex-1">
             <div className="text-4xl text-leetcode-yellow shrink-0">
               {note.slug === "web-development" ? (
                 <FiCode />
               ) : note.slug === "web-projects" ? (
                 <FiBox />
+              ) : note.slug === "python" ? (
+                <SiPython />
               ) : (
                 note.icon || "📓"
               )}
             </div>
-            <div className="min-w-0">
+            <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white truncate">
                 {note.title}
               </h1>
               {note.description && (
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">
                   {note.description}
                 </p>
               )}
-              
+
               {note.tags && note.tags.length > 0 && (
                 <div className="flex gap-1 mt-1.5 flex-wrap">
                   {note.tags.map((tag, i) => (
@@ -112,6 +117,7 @@ const NoteDetailPage = () => {
             </div>
           </div>
 
+          {/* Right Side: Search + Download Button */}
           <div className="flex items-center gap-3 flex-wrap">
             {/* SEARCH BAR INSIDE THE NOTE HEADER */}
             <div className="relative flex items-center bg-white dark:bg-dark-800 rounded-lg px-3 py-2 border border-gray-300 dark:border-dark-600 shadow-sm">
@@ -132,7 +138,6 @@ const NoteDetailPage = () => {
               <FiDownload size={16} /> Download PDF
             </button>
           </div>
-
         </div>
       </div>
 
