@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/notes", tags=["notes"])
 @router.get("/", response_model=List[schemas.NoteResponse])
 def get_notes(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = None,
     db: Session = Depends(get_db)
 ):
     logger.info("Fetching all notes")
