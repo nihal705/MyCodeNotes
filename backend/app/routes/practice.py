@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/practice", tags=["practice"])
 @router.get("/", response_model=List[schemas.PracticeProblemResponse])
 def get_practice_problems(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = None,
     language: Optional[str] = None,
     difficulty: Optional[str] = None,
     db: Session = Depends(get_db)
