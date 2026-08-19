@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/problems", tags=["problems"])
 @router.get("/", response_model=List[schemas.ProblemResponse])
 def get_problems(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = None,
     db: Session = Depends(get_db)
 ):
     logger.info("Fetching all problems")
