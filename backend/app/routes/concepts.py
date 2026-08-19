@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/concepts", tags=["concepts"])
 @router.get("/", response_model=List[schemas.ConceptResponse])
 def get_concepts(
     skip: int = 0,
-    limit: int = 100,
+    limit: int = None,
     db: Session = Depends(get_db)
 ):
     logger.info("Fetching all concepts")
