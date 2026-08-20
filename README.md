@@ -1,13 +1,11 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/nihal705/MyCodeNotes/main/frontend/public/logo.png" width="90"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0A0A1A,100:FFA116&height=180&section=header&animation=fadeIn"/>
+  <br/>
+  <img src="https://raw.githubusercontent.com/nihal705/MyCodeNotes/main/frontend/public/logo.png" width="90" style="margin-top: -140px;"/>
 </p>
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0A0A1A,100:FFA116&height=180&section=header&text=MyCodeNotes&fontSize=45&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38"/>
-</p>
-
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3000&pause=500&color=FFA116&center=true&vCenter=true&width=600&lines=Track+200%2B+Solved+Problems;Java+%26+Python+Solutions;Built+with+React+%2B+FastAPI" alt="Typing Animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3000&pause=500&color=FFA116&center=true&vCenter=true&width=600&lines=Learn+DSA%2C+Web+Dev+%26+More;Practice+Java+%26+Python+Problems;Notes+on+React%2C+Node.js+%26+SQL" alt="Typing Animation" />
 </p>
 
 <p align="center">
@@ -565,5 +563,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 If you found this project helpful, please give it a ⭐ on GitHub!
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FFA116,100:0A0A1A&height=150&section=footer&text=Designed%20%26%20Developed%20by%20G%20Nihal&fontSize=20&fontColor=FFFFFF&animation=twinkling"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FFA116,100:0A0A1A&height=160&section=footer&text=Designed%20and%20Developed%20by%20G%20Nihal&fontSize=20&fontColor=FFFFFF&animation=twinkling&fontAlignY=65"/>
 </p>
