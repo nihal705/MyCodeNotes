@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&duration=3000&pause=500&color=FFA116&center=true&vCenter=true&width=500&lines=MyCodeNotes;Your+Personal+Coding+Knowledge+Base;Learn+%26+Practice+DSA;Track+Your+LeetCode+Journey" alt="Typing Animation" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0A0A1A,100:FFA116&height=180&section=header&text=MyCodeNotes&fontSize=45&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38"/>
+</p>
+
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3000&pause=500&color=FFA116&center=true&vCenter=true&width=600&lines=Your+Personal+Coding+Knowledge+Base;Learn+%26+Practice+DSA;Track+Your+LeetCode+Journey" alt="Typing Animation" />
 </p>
 
 <p align="center">
@@ -310,16 +314,18 @@ cd MyCodeNotes
 cd backend
 python -m venv .venv
 
-# On Windows:
+### On Windows:
 .venv\Scripts\activate
-# On macOS/Linux:
+
+### On macOS/Linux:
 source .venv/bin/activate
 
 pip install -r requirements.txt
+
 cp .env.example .env
 
-# Update .env with your database credentials
-# DATABASE_URL=postgresql://user:password@localhost:5432/mycodenotes
+### Update .env with your database credentials
+#### DATABASE_URL=postgresql://user:password@localhost:5432/mycodenotes
 
 ### Frontend Setup
 
@@ -327,8 +333,8 @@ cd frontend
 npm install
 cp .env.example .env
 
-# Update .env with your backend URL
-# VITE_API_URL=http://localhost:8000
+### Update .env with your backend URL
+#### VITE_API_URL=http://localhost:8000
 
 ### Database Setup
 
@@ -358,52 +364,52 @@ Open http://localhost:5173 in your browser.
 
 ## 🔧 Environment Variables
 
-Backend (backend/.env)
-DATABASE_URL - PostgreSQL connection string - Required ✅
-ADMIN_PASSWORD - Admin panel login password - Required ✅
-ADMIN_EMAIL - Admin email address - Required ✅
-API_SECRET_KEY - JWT secret key - Required ✅
+### Backend (backend/.env)
+- DATABASE_URL - PostgreSQL connection string - Required ✅
+- ADMIN_PASSWORD - Admin panel login password - Required ✅
+- ADMIN_EMAIL - Admin email address - Required ✅
+- API_SECRET_KEY - JWT secret key - Required ✅
 
-Frontend (frontend/.env)
-VITE_API_URL - Backend API URL - Required ✅
+### Frontend (frontend/.env)
+- VITE_API_URL - Backend API URL - Required ✅
 
 ---
 
 ## 📡 API Endpoints
 
-Problems:
-GET /api/problems - Get all problems
-GET /api/problems/{id} - Get problem by ID
-GET /api/problems/leetcode/{leetcode_id} - Get problem by LeetCode ID
-POST /api/problems - Create new problem (Admin)
-PUT /api/problems/{id} - Update problem (Admin)
+### Problems:
+`GET /api/problems` - Get all problems
+`GET /api/problems/{id}` - Get problem by ID
+`GET /api/problems/leetcode/{leetcode_id}` - Get problem by LeetCode ID
+`POST /api/problems` - Create new problem (Admin)
+`PUT /api/problems/{id}` - Update problem (Admin)
 
-Practice Problems:
-GET /api/practice - Get all practice problems
-GET /api/practice/{id} - Get practice problem by ID
-POST /api/practice - Create new practice problem (Admin)
-PUT /api/practice/{id} - Update practice problem (Admin)
+### Practice Problems:
+`GET /api/practice` - Get all practice problems
+`GET /api/practice/{id}` - Get practice problem by ID
+`POST /api/practice` - Create new practice problem (Admin)
+`PUT /api/practice/{id}` - Update practice problem (Admin)
 
-Concepts:
-GET /api/concepts - Get all concepts
-GET /api/concepts/{id} - Get concept by ID
-POST /api/concepts - Create new concept (Admin)
-PUT /api/concepts/{id} - Update concept (Admin)
+### Concepts:
+`GET /api/concepts` - Get all concepts
+`GET /api/concepts/{id}` - Get concept by ID
+`POST /api/concepts` - Create new concept (Admin)
+`PUT /api/concepts/{id}` - Update concept (Admin)
 
-Notes:
-GET /api/notes - Get all notes
-GET /api/notes/{slug} - Get note by slug
-POST /api/notes - Create new note (Admin)
-PUT /api/notes/{slug} - Update note (Admin)
-DELETE /api/notes/{slug} - Delete note (Admin)
+### Notes:
+`GET /api/notes` - Get all notes
+`GET /api/notes/{slug}` - Get note by slug
+`POST /api/notes` - Create new note (Admin)
+`PUT /api/notes/{slug}` - Update note (Admin)
+`DELETE /api/notes/{slug}` - Delete note (Admin)
 
-Admin:
-POST /api/admin/login - Admin login
-GET /api/admin/verify - Verify admin token
+### Admin:
+`POST /api/admin/login` - Admin login
+`GET /api/admin/verify` - Verify admin token
 
-Profile:
-GET /api/profile - Get all profile settings
-PUT /api/profile/bulk - Update profile settings (Admin)
+### Profile:
+`GET /api/profile` - Get all profile settings
+`PUT /api/profile/bulk` - Update profile settings (Admin)
 
 ---
 
@@ -417,14 +423,14 @@ Deploy Backend to Render:
 5. Set environment variables
 6. Deploy
 
-Deploy Backend to Railway:
-npm install -g @railway/cli
-railway login
-railway init
-railway variables set DATABASE_URL="your_neon_url"
-railway variables set ADMIN_PASSWORD="your_password"
-railway variables set API_SECRET_KEY="your_secret"
-railway up
+### Deploy Backend to Railway:
+- npm install -g @railway/cli
+- railway login
+- railway init
+- railway variables set DATABASE_URL="your_neon_url"
+- railway variables set ADMIN_PASSWORD="your_password"
+- railway variables set API_SECRET_KEY="your_secret"
+- railway up
 
 Deploy Frontend to Vercel:
 1. Push code to GitHub
@@ -438,67 +444,80 @@ Deploy Frontend to Vercel:
 
 ## 🎨 Color Scheme
 
-Primary - LeetCode Yellow - #FFA116
-Background (Light) - Cream - #FDFBF7
-Background (Dark) - Dark Navy - #0A0A1A
-Card Background - White / Dark Slate - #FFFFFF / #14142D
-Text (Light) - Dark Gray - #1A1A2E
-Text (Dark) - Light Gray - #A0A0C0
-Border - Beige / Dark Gray - #E8DCC8 / #2A2A4A
+- Primary - LeetCode Yellow - #FFA116
+- Background (Light) - Cream - #FDFBF7
+- Background (Dark) - Dark Navy - #0A0A1A
+- Card Background - White / Dark Slate - #FFFFFF / #14142D
+- Text (Light) - Dark Gray - #1A1A2E
+- Text (Dark) - Light Gray - #A0A0C0
+- Border - Beige / Dark Gray - #E8DCC8 / #2A2A4A
 
 ---
-
 ## 📈 Database Schema
 
-Problems Table:
-id - SERIAL - Primary Key
-leetcode_id - INTEGER - LeetCode problem number
-title - VARCHAR(255) - Problem title
-difficulty - ENUM - EASY, MEDIUM, HARD
-statement - TEXT - Problem statement
-description - TEXT - Detailed description
-concept - TEXT - Main concept
-pattern - TEXT - Problem solving pattern
-algorithm - TEXT - Step-by-step algorithm
-notebook_concept - TEXT - Personal notes
-java_solution - TEXT - Java solution code
-python_solution - TEXT - Python solution code
+### Problems Table
 
-Practice Problems Table:
-id - SERIAL - Primary Key
-title - VARCHAR(255) - Problem title
-language - ENUM - JAVA, PYTHON
-difficulty - ENUM - BEGINNER, INTERMEDIATE, ADVANCED
-question - TEXT - Problem question
-hints - JSONB - Array of hints
-solution - TEXT - Solution code
-tags - JSONB - Array of tags
+| Column | Type | Description |
+|--------|------|-------------|
+| id | SERIAL | Primary Key |
+| leetcode_id | INTEGER | LeetCode problem number |
+| title | VARCHAR(255) | Problem title |
+| difficulty | ENUM | EASY, MEDIUM, HARD |
+| statement | TEXT | Problem statement |
+| description | TEXT | Detailed description |
+| concept | TEXT | Main concept |
+| pattern | TEXT | Problem solving pattern |
+| algorithm | TEXT | Step-by-step algorithm |
+| notebook_concept | TEXT | Personal notes |
+| java_solution | TEXT | Java solution code |
+| python_solution | TEXT | Python solution code |
 
-Concepts Table:
-id - SERIAL - Primary Key
-name - VARCHAR(255) - Concept name
-definition - TEXT - Concept definition
-example - TEXT - Code example
+### Practice Problems Table
 
-Notes Table:
-id - SERIAL - Primary Key
-title - VARCHAR(255) - Note title
-slug - VARCHAR(255) - URL slug
-description - TEXT - Note description
-icon - VARCHAR(50) - Emoji icon
-content - JSONB - Structured content
-tags - JSONB - Array of tags
+| Column | Type | Description |
+|--------|------|-------------|
+| id | SERIAL | Primary Key |
+| title | VARCHAR(255) | Problem title |
+| language | ENUM | JAVA, PYTHON |
+| difficulty | ENUM | BEGINNER, INTERMEDIATE, ADVANCED |
+| question | TEXT | Problem question |
+| hints | JSONB | Array of hints |
+| solution | TEXT | Solution code |
+| tags | JSONB | Array of tags |
+
+### Concepts Table
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | SERIAL | Primary Key |
+| name | VARCHAR(255) | Concept name |
+| definition | TEXT | Concept definition |
+| example | TEXT | Code example |
+
+### Notes Table
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | SERIAL | Primary Key |
+| title | VARCHAR(255) | Note title |
+| slug | VARCHAR(255) | URL slug |
+| description | TEXT | Note description |
+| icon | VARCHAR(50) | Emoji icon |
+| content | JSONB | Structured content |
+| tags | JSONB | Array of tags |
 
 ---
 
 ## 🔒 Security Features
 
-JWT Authentication - Stateless authentication with expiration
-Password Hashing - bcrypt with 10 salt rounds
-SQL Injection Prevention - Parameterized queries
-CORS Configuration - Restricted to allowed origins
-Environment Variables - Sensitive data never hardcoded
-Admin Only Routes - Protected with authentication middleware
+| Feature | Implementation |
+|---------|----------------|
+| JWT Authentication | Stateless authentication with expiration |
+| Password Hashing | bcrypt with 10 salt rounds |
+| SQL Injection Prevention | Parameterized queries |
+| CORS Configuration | Restricted to allowed origins |
+| Environment Variables | Sensitive data never hardcoded |
+| Admin Only Routes | Protected with authentication middleware |
 
 ---
 
@@ -541,12 +560,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 If you found this project helpful, please give it a ⭐ on GitHub!
 
----
-
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=footer" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:FFA116,100:0A0A1A&height=150&section=footer&text=Built%20with%20%E2%9D%A4%EF%B8%8F%20by%20G%20Nihal&fontSize=20&fontColor=FFFFFF&animation=twinkling"/>
 </p>
-
----
-
-**Built with ❤️ by G Nihal**
