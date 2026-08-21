@@ -10,7 +10,7 @@ const NotesPage = () => {
   const [filteredNotes, setFilteredNotes] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [isRevealed, setIsRevealed] = useState(false)
+  const [isRevealed, setIsRevealed] = useState(true)
 
   useEffect(() => {
     const fetchNotes = async () => {
