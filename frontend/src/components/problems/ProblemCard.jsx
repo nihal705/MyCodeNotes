@@ -8,6 +8,13 @@ const ProblemCard = ({ problem }) => {
     Hard: 'bg-red-100 text-red-700',
   }
 
+  const getLeetCodeUrl = (title) => {
+    return `https://leetcode.com/problems/${title
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^a-z0-9-]/g, '')}/`
+  }
+
   return (
     <Link to={`/problems/${problem.id}`}>
       <Card className="p-4 hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-leetcode-yellow">
@@ -15,7 +22,16 @@ const ProblemCard = ({ problem }) => {
           <div className="flex-1">
             <div className="flex items-center gap-3 flex-wrap">
               <span className="text-sm text-gray-500">#{problem.leetcode_id}</span>
-              <h3 className="font-semibold text-lg">{problem.title}</h3>
+              <a
+                href={getLeetCodeUrl(problem.title)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-lg hover:text-leetcode-yellow transition-colors hover:underline flex items-center gap-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {problem.title}
+                <span className="text-xs text-gray-400">↗</span>
+              </a>
               <span className={`text-xs px-2 py-1 rounded-full ${difficultyColor[problem.difficulty]}`}>
                 {problem.difficulty}
               </span>

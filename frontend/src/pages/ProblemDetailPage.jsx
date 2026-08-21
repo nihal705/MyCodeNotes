@@ -40,6 +40,13 @@ const ProblemDetailPage = () => {
     toast.success("Copied to clipboard!");
   };
 
+  const getLeetCodeUrl = (title) => {
+    return `https://leetcode.com/problems/${title
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^a-z0-9-]/g, '')}/`
+  }
+
   if (loading) return <LoadingSpinner />;
   if (!problem)
     return <div className="text-center py-12">Problem not found</div>;
@@ -63,13 +70,19 @@ const ProblemDetailPage = () => {
         <Card>
           <CardHeader className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <span className="text-sm text-gray-500">
                   #{problem.leetcode_id}
                 </span>
-                <h1 className="text-2xl md:text-3xl font-bold">
+                <a
+                  href={getLeetCodeUrl(problem.title)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-2xl md:text-3xl font-bold hover:text-leetcode-yellow transition-colors hover:underline flex items-center gap-2"
+                >
                   {problem.title}
-                </h1>
+                  <span className="text-sm text-gray-400">↗</span>
+                </a>
               </div>
               <span
                 className={`inline-block mt-2 text-xs px-3 py-1 rounded-full ${difficultyColor[problem.difficulty]}`}
