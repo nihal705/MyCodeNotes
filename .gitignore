@@ -25,5 +25,5 @@ Thumbs.db
 
 # Logs
 *.log
-
+.env.production
 node_modules
