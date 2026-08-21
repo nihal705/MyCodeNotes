@@ -1,11 +1,9 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0A0A1A,100:FFA116&height=180&section=header&animation=fadeIn"/>
-  <br/>
-  <img src="https://raw.githubusercontent.com/nihal705/MyCodeNotes/main/frontend/public/logo.png" width="90" style="margin-top: -140px;"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0A0A1A,100:FFA116&height=180&section=header&text=MyCodeNotes&fontSize=45&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38"/>
 </p>
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3000&pause=500&color=FFA116&center=true&vCenter=true&width=600&lines=Learn+DSA%2C+Web+Dev+%26+More;Practice+Java+%26+Python+Problems;Notes+on+React%2C+Node.js+%26+SQL" alt="Typing Animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3000&pause=500&color=FFA116&center=true&vCenter=true&width=600&lines=Learn+DSA%2C+Web+Dev+%26+More;Practice+LeetCode+Problems+with+Java+%26+Python;Notes+on+React%2C+Node.js+%26+SQL.." alt="Typing Animation" />
 </p>
 
 <p align="center">
@@ -48,7 +46,7 @@
 | **DSA Concepts** | Quick reference for important concepts with examples |
 | **Progress Tracking** | Visualize your coding journey with stats and analytics |
 | **Admin Panel** | Manage your content easily with secure login |
-| **Notes System** | Create and organize your personal learning notes |
+| **Notes System** | Organized personal learning notes with download option |
 
 ---
 
@@ -85,8 +83,9 @@
 - Rich content with chapters and topics
 - Code examples with syntax highlighting
 - Table of contents for easy navigation
-- Search across all notes
-- Coming soon features
+- Search within all notes
+- Download any notes in pdf format
+- Comming Soon message for upcoming notes
 
 ### 📊 Homepage Dashboard
 - Personal profile with avatar
@@ -306,6 +305,8 @@ MyCodeNotes/
 | PostgreSQL | 15.x or higher (or Neon account) |
 | Git | Latest |
 
+---
+
 ### Clone Repository
 
 git clone https://github.com/nihal705/MyCodeNotes.git
@@ -329,14 +330,20 @@ cp .env.example .env
 ### Update .env with your database credentials
 #### DATABASE_URL=postgresql://user:password@localhost:5432/mycodenotes
 
+---
+
 ### Frontend Setup
 
 cd frontend
 npm install
 cp .env.example .env
 
+---
+
 ### Update .env with your backend URL
 #### VITE_API_URL=http://localhost:8000
+
+---
 
 ### Database Setup
 
@@ -380,38 +387,38 @@ Open http://localhost:5173 in your browser.
 ## 📡 API Endpoints
 
 ### Problems:
-`GET /api/problems` - Get all problems
-`GET /api/problems/{id}` - Get problem by ID
-`GET /api/problems/leetcode/{leetcode_id}` - Get problem by LeetCode ID
-`POST /api/problems` - Create new problem (Admin)
-`PUT /api/problems/{id}` - Update problem (Admin)
+- `GET /api/problems` - Get all problems
+- `GET /api/problems/{id}` - Get problem by ID
+- `GET /api/problems/leetcode/{leetcode_id}` - Get problem by LeetCode ID
+- `POST /api/problems` - Create new problem (Admin)
+- `PUT /api/problems/{id}` - Update problem (Admin)
 
 ### Practice Problems:
-`GET /api/practice` - Get all practice problems
-`GET /api/practice/{id}` - Get practice problem by ID
-`POST /api/practice` - Create new practice problem (Admin)
-`PUT /api/practice/{id}` - Update practice problem (Admin)
+- `GET /api/practice` - Get all practice problems
+- `GET /api/practice/{id}` - Get practice problem by ID
+- `POST /api/practice` - Create new practice problem (Admin)
+- `PUT /api/practice/{id}` - Update practice problem (Admin)
 
 ### Concepts:
-`GET /api/concepts` - Get all concepts
-`GET /api/concepts/{id}` - Get concept by ID
-`POST /api/concepts` - Create new concept (Admin)
-`PUT /api/concepts/{id}` - Update concept (Admin)
+- `GET /api/concepts` - Get all concepts
+- `GET /api/concepts/{id}` - Get concept by ID
+- `POST /api/concepts` - Create new concept (Admin)
+- `PUT /api/concepts/{id}` - Update concept (Admin)
 
 ### Notes:
-`GET /api/notes` - Get all notes
-`GET /api/notes/{slug}` - Get note by slug
-`POST /api/notes` - Create new note (Admin)
-`PUT /api/notes/{slug}` - Update note (Admin)
-`DELETE /api/notes/{slug}` - Delete note (Admin)
+- `GET /api/notes` - Get all notes
+- `GET /api/notes/{slug}` - Get note by slug
+- `POST /api/notes` - Create new note (Admin)
+- `PUT /api/notes/{slug}` - Update note (Admin)
+- `DELETE /api/notes/{slug}` - Delete note (Admin)
 
 ### Admin:
-`POST /api/admin/login` - Admin login
-`GET /api/admin/verify` - Verify admin token
+- `POST /api/admin/login` - Admin login
+- `GET /api/admin/verify` - Verify admin token
 
 ### Profile:
-`GET /api/profile` - Get all profile settings
-`PUT /api/profile/bulk` - Update profile settings (Admin)
+- `GET /api/profile` - Get all profile settings
+- `PUT /api/profile/bulk` - Update profile settings (Admin)
 
 ---
 
