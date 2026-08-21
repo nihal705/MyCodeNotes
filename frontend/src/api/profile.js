@@ -21,7 +21,6 @@ export const profileApi = {
 
   // Update multiple profile settings (Admin only)
   updateBulk: async (settings) => {
-    // ✅ Send settings directly as the request body (NOT wrapped in { settings })
     const response = await apiClient.put('/api/profile/bulk', settings)
     return response.data
   },
