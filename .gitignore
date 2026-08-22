@@ -27,3 +27,6 @@ Thumbs.db
 *.log
 .env.production
 node_modules
+
+data
+sql
