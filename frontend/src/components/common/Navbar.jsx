@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { FiMenu, FiX, FiExternalLink } from 'react-icons/fi'
 import { SiLeetcode } from 'react-icons/si'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -46,7 +47,7 @@ const Navbar = () => {
   }
 
   const toggleNotesMenu = () => {
-    // setActiveMenu(activeMenu === 'notes' ? null : 'notes')
+    setActiveMenu(activeMenu === 'notes' ? null : 'notes')
   }
 
   const handleBack = () => {
@@ -65,6 +66,7 @@ const Navbar = () => {
   }
 
   return (
+    <>
     <header className="flex items-center justify-between px-4 sm:px-6 py-3 md:py-4 shadow-lg max-w-5xl rounded-full mx-auto w-full bg-white/80 backdrop-blur-md mt-4 border border-beige-200 relative">
       {/* Logo */}
       <Link to="/" className="flex items-center flex-shrink-0" onClick={closeMenu}>
@@ -97,6 +99,21 @@ const Navbar = () => {
                 </Link>
               ))}
               
+              {/* 
+                ====================================================
+                NOTES DROPDOWN TRIGGER - COMMENTED OUT
+                ====================================================
+              */}
+              {/* <button
+                onClick={toggleNotesMenu}
+                className={`
+                  hover:text-leetcode-yellow transition-colors duration-200 flex items-center gap-1 whitespace-nowrap
+                  ${isNotesActive || activeMenu === 'notes' ? 'text-leetcode-yellow font-semibold' : 'text-gray-700'}
+                `}
+              >
+                Notes
+              </button> */}
+
               {/* Portfolio Link - Desktop */}
               <a
                 href="https://your-portfolio-url.vercel.app"
@@ -109,6 +126,11 @@ const Navbar = () => {
               </a>
             </motion.nav>
           ) : (
+            /* 
+              ====================================================
+              SECOND NOTES DROPDOWN MENU - FULLY COMMENTED OUT
+              ====================================================
+            */
             <motion.nav
               key="sub-nav"
               initial="hidden"
@@ -191,8 +213,9 @@ const Navbar = () => {
           <FiMenu size={28} />
         </button>
       </div>
+    </header>
 
-      {/* Mobile Menu - Fixed */}
+    {createPortal(
       <div 
         className={`
           md:hidden fixed inset-0 z-50 bg-white/95 backdrop-blur-md
@@ -207,7 +230,7 @@ const Navbar = () => {
           <FiX size={32} />
         </button>
 
-        <div className="flex flex-col items-center justify-center h-full gap-6 text-xl font-medium px-6">
+        <div className="flex flex-col items-center justify-center h-full gap-6 text-xl font-medium">
           {activeMenu === null ? (
             <>
               {navLinks.map((link) => (
@@ -224,6 +247,13 @@ const Navbar = () => {
                 </Link>
               ))}
               
+              <button
+                onClick={toggleNotesMenu}
+                className="hover:text-leetcode-yellow transition-colors duration-200 text-gray-700 font-medium"
+              >
+                Notes →
+              </button>
+
               {/* Portfolio Link - Mobile */}
               <a
                 href="https://your-portfolio-url.vercel.app"
@@ -282,8 +312,10 @@ const Navbar = () => {
             </>
           )}
         </div>
-      </div>
-    </header>
+      </div>,
+      document.body
+    )}
+    </>
   )
 }
 
