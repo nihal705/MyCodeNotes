@@ -33,12 +33,7 @@ const NoteDetailPage = () => {
       try {
         const data = await notesApi.getBySlug(slug);
         setNote(data);
-        console.log("📝 Note data:", data);
-        console.log("📝 Content:", data?.content);
-        console.log("📝 Has projects:", data?.content?.projects);
-        console.log("📝 Has chapters:", data?.content?.chapters);
       } catch (error) {
-        console.error("Error fetching note:", error);
         toast.error("Note not found");
       } finally {
         setLoading(false);
@@ -137,13 +132,8 @@ const NoteDetailPage = () => {
   const hasChapters =
     note.content?.chapters && note.content.chapters.length > 0;
 
-  console.log("📊 isProjectsNote:", isProjectsNote);
-  console.log("📊 hasProjects:", hasProjects);
-  console.log("📊 hasChapters:", hasChapters);
-
   return (
     <div className="max-w-7xl mx-auto px-4 py-0 space-y-1 -mt-4 -mb-0">
-      {/* 🎯 PROGRESS BAR AT TOP */}
       <motion.div
         className="fixed top-0 left-0 h-1 z-50"
         style={{
