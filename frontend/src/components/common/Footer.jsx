@@ -27,15 +27,14 @@ const Footer = () => {
 
   return (
     <footer className="flex flex-col items-center justify-around w-full py-12 text-sm bg-slate-50 dark:bg-dark-900 text-gray-800/70 dark:text-gray-400 mt-auto border-t border-gray-200 dark:border-dark-700">
-      {/* Logo */}
-      <div className="flex items-center gap-2">
-        <Link to="/" className="flex items-center flex-shrink-0">
-          <Logo />
-        </Link>
-      </div>
+      {/* Logo with Name */}
+      <Link to="/" className="flex items-center gap-2">
+        <Logo />
+        <span className="text-base font-bold text-gray-800 dark:text-white">MyCodeNotes</span>
+      </Link>
 
       {/* Copyright */}
-      <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+      <p className="mt-4 text-center text-gray-600 dark:text-gray-400 px-4">
         Copyright © {new Date().getFullYear()} <a href="#" className="hover:text-leetcode-yellow transition-colors">MyCodeNotes</a>. All rights reserved.
       </p>
 
@@ -46,9 +45,9 @@ const Footer = () => {
       </div>
 
       {/* Links */}
-      <div className="flex items-center gap-4 mt-4">
+      <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
         <a
-          href="https://leetcode.com/yourusername"
+          href="https://leetcode.com/nihal705"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 font-medium text-gray-700 dark:text-gray-300 hover:text-leetcode-yellow dark:hover:text-leetcode-yellow transition-all duration-200"
