@@ -66,10 +66,9 @@ const Navbar = () => {
 
   return (
     <header className="flex items-center justify-between px-4 sm:px-6 py-3 md:py-4 shadow-lg max-w-5xl rounded-full mx-auto w-full bg-white/80 backdrop-blur-md mt-4 border border-beige-200 relative">
-      {/* Logo with Name */}
+      {/* Logo */}
       <Link to="/" className="flex items-center flex-shrink-0" onClick={closeMenu}>
         <Logo />
-        <span className="text-base font-bold text-gray-800 dark:text-white ml-1 hidden sm:block">MyCodeNotes</span>
       </Link>
 
       {/* Navigation - Desktop */}
@@ -193,7 +192,7 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu - Fixed UI */}
+      {/* Mobile Menu - Fixed */}
       <div 
         className={`
           md:hidden fixed inset-0 z-50 bg-white/95 backdrop-blur-md
@@ -208,45 +207,80 @@ const Navbar = () => {
           <FiX size={32} />
         </button>
 
-        {/* Mobile Menu Content - Centered */}
-        <div className="flex flex-col items-center justify-center h-full gap-5 text-xl font-medium px-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={closeMenu}
-              className={`
-                hover:text-leetcode-yellow transition-colors duration-200
-                ${isActive(link.path) ? 'text-leetcode-yellow font-bold' : 'text-gray-700'}
-              `}
-            >
-              {link.label}
-            </Link>
-          ))}
-          
-          {/* Portfolio Link - Mobile */}
-          <a
-            href="https://your-portfolio-url.vercel.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={closeMenu}
-            className="flex items-center gap-2 text-gray-700 hover:text-leetcode-yellow transition-colors duration-200 font-medium"
-          >
-            Portfolio
-            <FiExternalLink size={16} />
-          </a>
+        <div className="flex flex-col items-center justify-center h-full gap-6 text-xl font-medium px-6">
+          {activeMenu === null ? (
+            <>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={closeMenu}
+                  className={`
+                    hover:text-leetcode-yellow transition-colors duration-200
+                    ${isActive(link.path) ? 'text-leetcode-yellow font-bold' : 'text-gray-700'}
+                  `}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              
+              {/* Portfolio Link - Mobile */}
+              <a
+                href="https://your-portfolio-url.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+                className="flex items-center gap-2 text-gray-700 hover:text-leetcode-yellow transition-colors duration-200 font-medium"
+              >
+                Portfolio
+                <FiExternalLink size={16} />
+              </a>
+              
+              <a
+                href="https://leetmetric-stats.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+                className="flex items-center gap-2 bg-leetcode-yellow text-gray-900 px-6 py-3 rounded-full text-base font-semibold hover:bg-yellow-500 transition-all duration-200 shadow-md"
+              >
+                <SiLeetcode size={20} /> LeetCode Stats Tracker
+                <FiExternalLink size={14} />
+              </a>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={handleBack}
+                className="hover:text-leetcode-yellow transition-colors duration-200 text-gray-700 font-medium flex items-center gap-2"
+              >
+                ← Back
+              </button>
+              <Link
+                to="/notes"
+                onClick={closeMenu}
+                className={`
+                  hover:text-leetcode-yellow transition-colors duration-200
+                  ${location.pathname === '/notes' ? 'text-leetcode-yellow font-bold' : 'text-gray-700'}
+                `}
+              >
+                All Notes
+              </Link>
 
-          {/* LeetCode Stats Tracker - Mobile */}
-          <a
-            href="https://leetmetric-stats.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={closeMenu}
-            className="flex items-center gap-2 bg-leetcode-yellow text-gray-900 px-6 py-3 rounded-full text-base font-semibold hover:bg-yellow-500 transition-all duration-200 shadow-md mt-2"
-          >
-            <SiLeetcode size={20} /> LeetCode Stats Tracker
-            <FiExternalLink size={14} />
-          </a>
+              {notes.map((note) => (
+                <Link
+                  key={note.id}
+                  to={`/notes/${note.slug}`}
+                  onClick={closeMenu}
+                  className={`
+                    hover:text-leetcode-yellow transition-colors duration-200
+                    ${location.pathname === `/notes/${note.slug}` ? 'text-leetcode-yellow font-bold' : 'text-gray-700'}
+                  `}
+                >
+                  {note.icon || '📓'} {note.title}
+                </Link>
+              ))}
+            </>
+          )}
         </div>
       </div>
     </header>
