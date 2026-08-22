@@ -11,7 +11,7 @@ import { notesApi } from "../api/notes";
 import toast from "react-hot-toast";
 import { FiCode, FiBox, FiDownload } from "react-icons/fi";
 import { downloadNoteAsPDF } from "../utils/pdfGenerator";
-import { SiPython } from "react-icons/si";
+import { SiPython, SiDocker ,SiJavascript } from "react-icons/si";
 
 const NoteDetailPage = () => {
   const { slug } = useParams();
@@ -53,7 +53,8 @@ const NoteDetailPage = () => {
       if (!note || !note.content?.chapters) return;
 
       const totalChapters = note.content.chapters.length;
-      const totalTopics = note.content.chapters[activeChapter]?.topics?.length || 0;
+      const totalTopics =
+        note.content.chapters[activeChapter]?.topics?.length || 0;
 
       if (e.key === "ArrowRight") {
         e.preventDefault();
@@ -71,7 +72,8 @@ const NoteDetailPage = () => {
           setActiveTopic(activeTopic - 1);
         } else if (activeChapter > 0) {
           setActiveChapter(activeChapter - 1);
-          const prevChapterTopics = note.content.chapters[activeChapter - 1]?.topics?.length || 0;
+          const prevChapterTopics =
+            note.content.chapters[activeChapter - 1]?.topics?.length || 0;
           setActiveTopic(prevChapterTopics - 1);
         }
       }
@@ -85,7 +87,8 @@ const NoteDetailPage = () => {
       if (e.key === "End") {
         e.preventDefault();
         setActiveChapter(totalChapters - 1);
-        const lastChapterTopics = note.content.chapters[totalChapters - 1]?.topics?.length || 0;
+        const lastChapterTopics =
+          note.content.chapters[totalChapters - 1]?.topics?.length || 0;
         setActiveTopic(lastChapterTopics - 1);
       }
     };
@@ -117,22 +120,22 @@ const NoteDetailPage = () => {
       ),
     })) || [];
 
-  // 🎯 PROGRESS PERCENTAGE
   const totalChapters = note?.content?.chapters?.length || 0;
-  const progressPercentage = totalChapters > 0 ? ((activeChapter + 1) / totalChapters) * 100 : 0;
+  const progressPercentage =
+    totalChapters > 0 ? ((activeChapter + 1) / totalChapters) * 100 : 0;
 
   if (loading) return <LoadingSpinner />;
   if (!note) return <div className="text-center py-12">Note not found</div>;
 
-  // ✅ FIX: Check if this is a projects note (supports multiple slugs)
-  const isProjectsNote = 
-    note.content?.projects && 
-    Array.isArray(note.content.projects) && 
+  const isProjectsNote =
+    note.content?.projects &&
+    Array.isArray(note.content.projects) &&
     note.content.projects.length > 0;
 
-  // ✅ Also check if it has projects in any form
-  const hasProjects = note.content?.projects && note.content.projects.length > 0;
-  const hasChapters = note.content?.chapters && note.content.chapters.length > 0;
+  const hasProjects =
+    note.content?.projects && note.content.projects.length > 0;
+  const hasChapters =
+    note.content?.chapters && note.content.chapters.length > 0;
 
   console.log("📊 isProjectsNote:", isProjectsNote);
   console.log("📊 hasProjects:", hasProjects);
@@ -191,6 +194,8 @@ const NoteDetailPage = () => {
                 <FiBox />
               ) : note.slug === "python" ? (
                 <SiPython />
+              ) : note.slug === "docker-guide" ? (
+                <SiDocker />
               ) : (
                 note.icon || "📓"
               )}
@@ -244,22 +249,28 @@ const NoteDetailPage = () => {
       {/* Navigation Hint */}
       <div className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-4 px-1 py-1">
         <span className="flex items-center gap-1">
-          <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-[10px]">←</kbd>
-          <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-[10px]">→</kbd>
+          <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-[10px]">
+            ←
+          </kbd>
+          <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-[10px]">
+            →
+          </kbd>
           <span>Navigate topics</span>
         </span>
         <span className="text-gray-300 dark:text-gray-600">|</span>
         <span className="flex items-center gap-1">
-          <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-[10px]">Home</kbd>
+          <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-[10px]">
+            Home
+          </kbd>
           <span>/</span>
-          <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-[10px]">End</kbd>
+          <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-dark-700 rounded text-[10px]">
+            End
+          </kbd>
           <span>First/Last</span>
         </span>
       </div>
 
-      {/* 🎯 MAIN CONTENT - Check for projects OR chapters */}
       {isProjectsNote && hasProjects ? (
-        // ✅ Show Projects View
         <div>
           {selectedProject === null ? (
             <ProjectList
@@ -274,7 +285,6 @@ const NoteDetailPage = () => {
           )}
         </div>
       ) : hasChapters ? (
-        // ✅ Show Chapters View
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-1">
             <div className="sticky top-20">
@@ -295,9 +305,10 @@ const NoteDetailPage = () => {
           </div>
         </div>
       ) : (
-        // ✅ Show Fallback Message
         <div className="bg-white dark:bg-dark-800 rounded-xl p-12 text-center border border-beige-200 dark:border-dark-700">
-          <p className="text-gray-500 dark:text-gray-400">No content available for this note.</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            No content available for this note.
+          </p>
           <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
             This note doesn't have any chapters or projects yet.
           </p>

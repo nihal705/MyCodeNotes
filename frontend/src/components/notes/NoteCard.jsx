@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { FiCode, FiBox } from 'react-icons/fi'
-import { SiPython } from 'react-icons/si'
+import { SiPython, SiDocker } from 'react-icons/si'
 
 const NoteCard = ({ note }) => {
   if (!note || !note.slug) return null
@@ -16,6 +16,7 @@ const NoteCard = ({ note }) => {
   const icon = note.slug === 'web-development' ? <FiCode className="text-3xl" /> 
               : note.slug === 'web-projects' ? <FiBox className="text-3xl" /> 
               : note.slug === 'python' ? <SiPython className="text-3xl" /> 
+              : note.slug === 'docker-guide' ? <SiDocker className="text-3xl" /> 
               : note.icon || '📓'
 
   return (
