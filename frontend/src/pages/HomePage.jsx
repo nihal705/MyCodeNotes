@@ -72,11 +72,9 @@ const HomePage = () => {
     fetchProfile();
   }, []);
 
-  // ✅ Stable fetch function - doesn't change on re-renders
   const fetchProblems = useCallback(async (showLoading = true) => {
     // Prevent concurrent fetches
     if (isFetchingRef.current) {
-      console.log("⏳ Fetch already in progress, skipping...");
       return;
     }
 
@@ -84,7 +82,6 @@ const HomePage = () => {
     if (showLoading) setRefreshing(true);
 
     try {
-      console.log("📤 Fetching problems...");
       const [problems, practice] = await Promise.all([
         problemsApi.getAll({ limit: 100 }), // 🔥 Fetch ALL problems
         practiceApi.getAll({ limit: 5 }),
@@ -95,10 +92,6 @@ const HomePage = () => {
 
       // Take only the 4 most recent for display
       setRecentProblems(sortedProblems.slice(0, 4));
-
-      console.log(
-        `✅ Total problems: ${problems.length}, Showing: ${Math.min(4, problems.length)} most recent`,
-      );
     } catch (error) {
       console.error("❌ Error fetching data:", error);
     } finally {
@@ -108,7 +101,6 @@ const HomePage = () => {
     }
   }, []);
 
-  // ✅ Initial fetch - only runs once
   useEffect(() => {
     if (!isInitialFetchDone.current) {
       isInitialFetchDone.current = true;
