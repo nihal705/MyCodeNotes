@@ -81,7 +81,7 @@ const ProblemDetailPage = () => {
                   className="text-2xl md:text-3xl font-bold hover:text-leetcode-yellow transition-colors hover:underline flex items-center gap-2"
                 >
                   {problem.title}
-                  <span className="text-sm text-gray-400">↗</span>
+                  <span className="text-sm text-gray-400 mt-3">Solve ↗</span>
                 </a>
               </div>
               <span
