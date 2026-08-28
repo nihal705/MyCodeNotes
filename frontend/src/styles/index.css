@@ -90,3 +90,167 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-beige-400;
 }
+
+/* ============================================
+   MOBILE RESPONSIVE FIXES
+   ============================================ */
+
+/* Fix for all text visibility on mobile */
+@media (max-width: 768px) {
+  /* Force dark text on light background for better visibility */
+  .text-gray-500,
+  .text-gray-400,
+  .text-gray-600,
+  .text-gray-700 {
+    color: #4b5563 !important;
+    opacity: 1 !important;
+  }
+
+  /* Dark mode mobile - ensure text is visible */
+  .dark .text-gray-500,
+  .dark .text-gray-400,
+  .dark .text-gray-600,
+  .dark .text-gray-700 {
+    color: #d1d5db !important;
+    opacity: 1 !important;
+  }
+
+  /* Headers always visible */
+  h1, h2, h3, h4, h5, h6,
+  .text-gray-900,
+  .text-gray-800 {
+    color: #111827 !important;
+  }
+
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
+  .dark .text-gray-900,
+  .dark .text-gray-800 {
+    color: #f9fafb !important;
+  }
+
+  /* Fix card descriptions */
+  .card p,
+  .text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+    color: #4b5563 !important;
+  }
+
+  .dark .card p,
+  .dark .text-sm {
+    color: #d1d5db !important;
+  }
+
+  /* Fix tags and badges */
+  .text-xs,
+  .text-[10px],
+  .badge-easy,
+  .badge-medium,
+  .badge-hard,
+  .badge-beginner,
+  .badge-intermediate,
+  .badge-advanced {
+    color: #1f2937 !important;
+  }
+
+  .dark .text-xs,
+  .dark .text-[10px],
+  .dark .badge-easy,
+  .dark .badge-medium,
+  .dark .badge-hard,
+  .dark .badge-beginner,
+  .dark .badge-intermediate,
+  .dark .badge-advanced {
+    color: #e5e7eb !important;
+  }
+
+  /* Fix links */
+  a {
+    color: #2563eb !important;
+  }
+
+  .dark a {
+    color: #60a5fa !important;
+  }
+
+  /* Fix card padding on mobile */
+  .bg-white.rounded-xl,
+  .bg-white.rounded-2xl {
+    padding: 0.75rem !important;
+  }
+
+  /* Fix grid gaps */
+  .grid {
+    gap: 0.75rem !important;
+  }
+
+  /* Fix container padding */
+  .container-custom {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Make sure content is visible */
+  #root,
+  .min-h-screen {
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .flex-grow,
+  main {
+    flex: 1 !important;
+    display: block !important;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .text-sm {
+    font-size: 0.8rem !important;
+  }
+  
+  .text-xs {
+    font-size: 0.7rem !important;
+  }
+  
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  h3 {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* Dark mode fixes */
+.dark {
+  background-color: #111827 !important;
+}
+
+.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: #111827 !important;
+}
+
+.dark .border-beige-200 {
+  border-color: #374151 !important;
+}
+
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.dark .text-gray-700 {
+  color: #d1d5db !important;
+}
