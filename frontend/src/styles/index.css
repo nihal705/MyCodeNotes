@@ -92,10 +92,10 @@ html {
 }
 
 /* ============================================
-   MOBILE RESPONSIVE FIXES
+   MOBILE RESPONSIVE FIXES - MOBILE ONLY
+   DOES NOT AFFECT DESKTOP
    ============================================ */
 
-/* Fix for all text visibility on mobile */
 @media (max-width: 768px) {
   /* Force dark text on light background for better visibility */
   .text-gray-500,
@@ -106,7 +106,6 @@ html {
     opacity: 1 !important;
   }
 
-  /* Dark mode mobile - ensure text is visible */
   .dark .text-gray-500,
   .dark .text-gray-400,
   .dark .text-gray-600,
@@ -143,24 +142,12 @@ html {
 
   /* Fix tags and badges */
   .text-xs,
-  .text-[10px],
-  .badge-easy,
-  .badge-medium,
-  .badge-hard,
-  .badge-beginner,
-  .badge-intermediate,
-  .badge-advanced {
+  .text-[10px] {
     color: #1f2937 !important;
   }
 
   .dark .text-xs,
-  .dark .text-[10px],
-  .dark .badge-easy,
-  .dark .badge-medium,
-  .dark .badge-hard,
-  .dark .badge-beginner,
-  .dark .badge-intermediate,
-  .dark .badge-advanced {
+  .dark .text-[10px] {
     color: #e5e7eb !important;
   }
 
@@ -171,6 +158,98 @@ html {
 
   .dark a {
     color: #60a5fa !important;
+  }
+
+  /* ===== CODE BLOCK FIX - Make code text white ===== */
+  pre,
+  code,
+  .code-block,
+  pre *,
+  code *,
+  .code-block * {
+    color: #e5e7eb !important;
+  }
+
+  .dark pre,
+  .dark code,
+  .dark .code-block,
+  .dark pre *,
+  .dark code *,
+  .dark .code-block * {
+    color: #f3f4f6 !important;
+  }
+
+  /* ===== DIFFICULTY TAGS FIX - Make text visible ===== */
+  /* Beginner/Easy */
+  .badge-beginner,
+  .badge-easy {
+    color: #065f46 !important;
+    background-color: #d1fae5 !important;
+  }
+
+  .dark .badge-beginner,
+  .dark .badge-easy {
+    color: #a7f3d0 !important;
+    background-color: #064e3b !important;
+  }
+
+  /* Intermediate/Medium */
+  .badge-intermediate,
+  .badge-medium {
+    color: #92400e !important;
+    background-color: #fef3c7 !important;
+  }
+
+  .dark .badge-intermediate,
+  .dark .badge-medium {
+    color: #fcd34d !important;
+    background-color: #78350f !important;
+  }
+
+  /* Advanced/Hard */
+  .badge-advanced,
+  .badge-hard {
+    color: #991b1b !important;
+    background-color: #fee2e2 !important;
+  }
+
+  .dark .badge-advanced,
+  .dark .badge-hard {
+    color: #fca5a5 !important;
+    background-color: #7f1d1d !important;
+  }
+
+  /* Fix difficulty text colors */
+  .text-green-700,
+  .text-yellow-700,
+  .text-red-700 {
+    color: #1f2937 !important;
+  }
+
+  .dark .text-green-700,
+  .dark .text-yellow-700,
+  .dark .text-red-700 {
+    color: #e5e7eb !important;
+  }
+
+  /* Fix difficulty tags overflowing on mobile */
+  .flex-wrap {
+    flex-wrap: wrap !important;
+  }
+
+  .gap-1,
+  .gap-1\.5,
+  .gap-2 {
+    gap: 0.25rem !important;
+  }
+
+  .inline-flex,
+  .flex {
+    flex-wrap: wrap !important;
+  }
+
+  .truncate {
+    max-width: 100% !important;
   }
 
   /* Fix card padding on mobile */
@@ -205,7 +284,7 @@ html {
   }
 }
 
-/* Extra small screens */
+/* Extra small screens - Mobile Only */
 @media (max-width: 480px) {
   .text-sm {
     font-size: 0.8rem !important;
@@ -226,31 +305,24 @@ html {
   h3 {
     font-size: 1.1rem !important;
   }
-}
 
-/* Dark mode fixes */
-.dark {
-  background-color: #111827 !important;
-}
+  /* Fix difficulty tags overflowing */
+  .flex-wrap {
+    flex-wrap: wrap !important;
+  }
 
-.dark .bg-white {
-  background-color: #1f2937 !important;
-}
+  .gap-1,
+  .gap-1\.5,
+  .gap-2 {
+    gap: 0.25rem !important;
+  }
 
-.dark .bg-gray-50 {
-  background-color: #111827 !important;
-}
+  .inline-flex,
+  .flex {
+    flex-wrap: wrap !important;
+  }
 
-.dark .border-beige-200 {
-  border-color: #374151 !important;
-}
-
-.dark .text-gray-600,
-.dark .text-gray-500,
-.dark .text-gray-400 {
-  color: #9ca3af !important;
-}
-
-.dark .text-gray-700 {
-  color: #d1d5db !important;
+  .truncate {
+    max-width: 100% !important;
+  }
 }
