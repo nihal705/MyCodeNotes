@@ -11,12 +11,12 @@ const NoteList = ({ notes, onSearch, searchQuery }) => {
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-6 w-full px-0">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
       {notes.map((note) => (
         <Link 
           key={note.id} 
           to={`/notes/${note.slug}`} 
-          className="block w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-0.8rem)] xl:w-[calc(25%-0.9rem)] max-w-sm"
+          className="block w-full"
         >
           <NoteCard 
             note={note} 
