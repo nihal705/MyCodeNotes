@@ -159,7 +159,7 @@ html {
     color: #60a5fa !important;
   }
 
-  /* ===== CODE BLOCK FIX - Make code text white ===== */
+  /* ===== CODE BLOCK FIX ===== */
   pre,
   code,
   .code-block,
@@ -182,7 +182,6 @@ html {
     color: #f3f4f6 !important;
   }
 
-  /* Code block background fix */
   .bg-gray-900,
   .dark .bg-gray-900 {
     background-color: #1f2937 !important;
@@ -242,42 +241,73 @@ html {
     color: #e5e7eb !important;
   }
 
-  /* ===== PROJECT TITLE FIX - Prevent ... breaking ===== */
-  .project-title,
+  /* ===== PROJECT TITLES - Remove ... and wrap ===== */
   .project-card h3,
   .project-card .text-base,
-  .project-card .font-semibold {
+  .project-card .font-semibold,
+  .project-title,
+  .project-detail-title,
+  .project-detail-view h2,
+  .project-detail-view .text-xl,
+  .project-detail-view .font-bold,
+  [class*="project"] .truncate,
+  [class*="project"] h3,
+  [class*="project"] .text-base,
+  [class*="project"] .font-semibold {
     white-space: normal !important;
     overflow: visible !important;
     text-overflow: clip !important;
     word-break: break-word !important;
     max-width: 100% !important;
+    display: block !important;
+    line-height: 1.3 !important;
   }
 
-  /* ===== PROJECT TAGS FIX ===== */
+  /* Override truncate globally */
+  .truncate {
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  /* ===== PROJECT TAGS ===== */
+  .project-card .flex-wrap,
   .project-tags,
-  .project-card .flex-wrap {
+  .project-detail-view .flex-wrap {
     flex-wrap: wrap !important;
     gap: 0.25rem !important;
   }
 
   .project-card .text-[10px],
-  .project-card .bg-blue-100 {
+  .project-card .bg-blue-100,
+  .project-detail-view .text-[10px] {
+    font-size: 9px !important;
+    padding: 2px 6px !important;
+    border-radius: 9999px !important;
     color: #1f2937 !important;
     background-color: #dbeafe !important;
   }
 
   .dark .project-card .text-[10px],
-  .dark .project-card .bg-blue-100 {
+  .dark .project-card .bg-blue-100,
+  .dark .project-detail-view .text-[10px] {
     color: #e5e7eb !important;
     background-color: #1e3a5f !important;
   }
 
-  .project-detail-title {
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    word-break: break-word !important;
+  /* ===== PROJECT DETAIL DESCRIPTION ===== */
+  .project-detail-view .text-sm,
+  .project-detail-view .text-gray-500,
+  .project-detail-view .text-gray-400 {
+    color: #4b5563 !important;
+    line-height: 1.5 !important;
+  }
+
+  .dark .project-detail-view .text-sm,
+  .dark .project-detail-view .text-gray-500,
+  .dark .project-detail-view .text-gray-400 {
+    color: #d1d5db !important;
   }
 
   /* Fix difficulty tags overflowing */
@@ -354,16 +384,27 @@ html {
     font-size: 1.1rem !important;
   }
 
-  /* Project title smaller */
+  /* Project cards */
   .project-card h3,
-  .project-card .text-base {
+  .project-card .text-base,
+  .project-card .font-semibold {
     font-size: 0.875rem !important;
+    line-height: 1.3 !important;
   }
 
-  /* Project tags smaller */
   .project-card .text-[10px] {
     font-size: 8px !important;
     padding: 1px 4px !important;
+  }
+
+  /* Project detail */
+  .project-detail-view h2,
+  .project-detail-view .text-xl {
+    font-size: 1.1rem !important;
+  }
+
+  .project-detail-view .text-sm {
+    font-size: 0.8rem !important;
   }
 
   .flex-wrap {
