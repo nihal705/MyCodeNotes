@@ -92,8 +92,7 @@ html {
 }
 
 /* ============================================
-   MOBILE RESPONSIVE FIXES - MOBILE ONLY
-   DOES NOT AFFECT DESKTOP
+   MOBILE RESPONSIVE FIXES - COMPLETE
    ============================================ */
 
 @media (max-width: 768px) {
@@ -166,7 +165,9 @@ html {
   .code-block,
   pre *,
   code *,
-  .code-block * {
+  .code-block *,
+  .bg-gray-900 *,
+  .bg-gray-800 * {
     color: #e5e7eb !important;
   }
 
@@ -175,12 +176,24 @@ html {
   .dark .code-block,
   .dark pre *,
   .dark code *,
-  .dark .code-block * {
+  .dark .code-block *,
+  .dark .bg-gray-900 *,
+  .dark .bg-gray-800 * {
     color: #f3f4f6 !important;
   }
 
-  /* ===== DIFFICULTY TAGS FIX - Make text visible ===== */
-  /* Beginner/Easy */
+  /* Code block background fix */
+  .bg-gray-900,
+  .dark .bg-gray-900 {
+    background-color: #1f2937 !important;
+  }
+
+  .bg-gray-800,
+  .dark .bg-gray-800 {
+    background-color: #111827 !important;
+  }
+
+  /* ===== DIFFICULTY TAGS FIX ===== */
   .badge-beginner,
   .badge-easy {
     color: #065f46 !important;
@@ -193,7 +206,6 @@ html {
     background-color: #064e3b !important;
   }
 
-  /* Intermediate/Medium */
   .badge-intermediate,
   .badge-medium {
     color: #92400e !important;
@@ -206,7 +218,6 @@ html {
     background-color: #78350f !important;
   }
 
-  /* Advanced/Hard */
   .badge-advanced,
   .badge-hard {
     color: #991b1b !important;
@@ -219,7 +230,6 @@ html {
     background-color: #7f1d1d !important;
   }
 
-  /* Fix difficulty text colors */
   .text-green-700,
   .text-yellow-700,
   .text-red-700 {
@@ -232,7 +242,45 @@ html {
     color: #e5e7eb !important;
   }
 
-  /* Fix difficulty tags overflowing on mobile */
+  /* ===== PROJECT TITLE FIX - Prevent ... breaking ===== */
+  .project-title,
+  .project-card h3,
+  .project-card .text-base,
+  .project-card .font-semibold {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: break-word !important;
+    max-width: 100% !important;
+  }
+
+  /* ===== PROJECT TAGS FIX ===== */
+  .project-tags,
+  .project-card .flex-wrap {
+    flex-wrap: wrap !important;
+    gap: 0.25rem !important;
+  }
+
+  .project-card .text-[10px],
+  .project-card .bg-blue-100 {
+    color: #1f2937 !important;
+    background-color: #dbeafe !important;
+  }
+
+  .dark .project-card .text-[10px],
+  .dark .project-card .bg-blue-100 {
+    color: #e5e7eb !important;
+    background-color: #1e3a5f !important;
+  }
+
+  .project-detail-title {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: break-word !important;
+  }
+
+  /* Fix difficulty tags overflowing */
   .flex-wrap {
     flex-wrap: wrap !important;
   }
@@ -284,7 +332,7 @@ html {
   }
 }
 
-/* Extra small screens - Mobile Only */
+/* Extra small screens */
 @media (max-width: 480px) {
   .text-sm {
     font-size: 0.8rem !important;
@@ -306,7 +354,18 @@ html {
     font-size: 1.1rem !important;
   }
 
-  /* Fix difficulty tags overflowing */
+  /* Project title smaller */
+  .project-card h3,
+  .project-card .text-base {
+    font-size: 0.875rem !important;
+  }
+
+  /* Project tags smaller */
+  .project-card .text-[10px] {
+    font-size: 8px !important;
+    padding: 1px 4px !important;
+  }
+
   .flex-wrap {
     flex-wrap: wrap !important;
   }
