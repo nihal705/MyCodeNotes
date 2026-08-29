@@ -24,12 +24,12 @@ const ProjectList = ({ projects, onSelectProject }) => {
             className="bg-white dark:bg-dark-800 rounded-xl p-5 shadow-sm border border-beige-200 dark:border-dark-700 hover:shadow-md hover:border-leetcode-yellow cursor-pointer transition-all duration-200 flex flex-col h-[230px]"
           >
             <div className="flex flex-col h-full">
-              {/* Title & Tech Stack */}
+              {/* Title & Tech Stack - Removed truncate */}
               <div className="flex justify-between items-start gap-2 mb-2">
-                <h3 className="text-base font-semibold text-gray-900 dark:text-white truncate flex-1">
+                <h3 className="text-base font-semibold text-gray-900 dark:text-white flex-1 break-words leading-tight">
                   {project.name}
                 </h3>
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="flex items-center gap-1 shrink-0 flex-wrap justify-end">
                   {displayTech.map((tech, i) => (
                     <span 
                       key={i} 
