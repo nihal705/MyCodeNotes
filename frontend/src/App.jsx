@@ -1,7 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { useState, useEffect, useRef } from 'react'
 import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
+import LoadingWithRetry from './components/common/LoadingWithRetry'
+import { notesApi } from './api/notes'
 
 // Pages
 import HomePage from './pages/HomePage'
@@ -16,9 +19,97 @@ import ConceptDetailPage from './pages/ConceptDetailPage'
 import AdminPage from './pages/AdminPage'
 
 function App() {
+  const [loading, setLoading] = useState(true)
+  const [retryCount, setRetryCount] = useState(0)
+  const [isRetrying, setIsRetrying] = useState(false)
+  const timeoutRef = useRef(null)
+  
+  // Check if backend was already awake in this session
+  const isBackendInitialized = sessionStorage.getItem('backendInitialized') === 'true'
+
+  // Actual fetch function to check backend health
+  const checkBackendHealth = async () => {
+    try {
+      // If backend was already initialized, skip the check
+      if (isBackendInitialized) {
+        return true
+      }
+
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutRef.current = setTimeout(() => {
+          reject(new Error('Request timeout - backend might be sleeping'))
+        }, 3000)
+      })
+
+      const fetchPromise = notesApi.getAll()
+      await Promise.race([fetchPromise, timeoutPromise])
+      
+      clearTimeout(timeoutRef.current)
+      // Mark backend as initialized
+      sessionStorage.setItem('backendInitialized', 'true')
+      return true
+    } catch (error) {
+      console.error('Backend not responding:', error)
+      clearTimeout(timeoutRef.current)
+      return false
+    }
+  }
+
+  // Retry handler
+  const handleRetry = async () => {
+    setIsRetrying(true)
+    setRetryCount(prev => prev + 1)
+    const success = await checkBackendHealth()
+    if (success) {
+      setLoading(false)
+    }
+    setIsRetrying(false)
+  }
+
+  // Initial check on app load
+  useEffect(() => {
+    const initializeApp = async () => {
+      // If backend was already initialized, skip loading
+      if (isBackendInitialized) {
+        setLoading(false)
+        return
+      }
+
+      const success = await checkBackendHealth()
+      if (success) {
+        setLoading(false)
+      }
+    }
+    initializeApp()
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [isBackendInitialized])
+
+  // Show LoadingWithRetry ONLY if backend is not initialized and we're still loading
+  if (loading && !isBackendInitialized) {
+    return (
+      <Router>
+        <div className="min-h-screen flex flex-col bg-cream-50 dark:bg-dark-900">
+          <Navbar />
+          <LoadingWithRetry 
+            onRetry={handleRetry}
+            retryCount={retryCount}
+            isRetrying={isRetrying}
+          />
+          <Footer />
+        </div>
+      </Router>
+    )
+  }
+
+  // Once backend is awake, show the full app
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-cream-50">
+      <div className="min-h-screen flex flex-col bg-cream-50 dark:bg-dark-900">
         <Navbar />
         <main className="flex-grow w-full py-8">
           <Routes>
