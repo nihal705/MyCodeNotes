@@ -34,7 +34,6 @@ const NotesPage = () => {
         if (e.ctrlKey && e.shiftKey && e.key === 'D') {
           e.preventDefault()
           setIsRevealed(true)
-          console.log('Developer mode activated! Notes revealed.')
         }
       }
     }

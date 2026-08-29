@@ -23,7 +23,6 @@ const ProblemsPage = () => {
     const fetchProblems = async () => {
       try {
         const data = await problemsApi.getAll();
-        console.log("Fetched problems data:", data);
         
         let problemsData = [];
         if (Array.isArray(data)) {
@@ -38,13 +37,6 @@ const ProblemsPage = () => {
           if (arrayValue) {
             problemsData = arrayValue;
           }
-        }
-        
-        // Log the first problem to see its structure
-        if (problemsData.length > 0) {
-          console.log("First problem structure:", problemsData[0]);
-          console.log("Difficulty value:", problemsData[0].difficulty);
-          console.log("All difficulties:", problemsData.map(p => p.difficulty));
         }
         
         setProblems(problemsData);
@@ -86,8 +78,6 @@ const ProblemsPage = () => {
         stats.HARD++;
       }
     });
-    
-    console.log("Calculated difficulty stats:", stats);
     return stats;
   }, [problems]);
 
@@ -184,12 +174,6 @@ const ProblemsPage = () => {
   };
 
   if (loading) return <LoadingSpinner />;
-
-  console.log("Rendering with:", { 
-    problemsLength: problems?.length, 
-    filteredLength: filteredProblems?.length,
-    difficultyStats 
-  });
 
   return (
     <div className="container-custom mx-auto px-4 sm:px-6">

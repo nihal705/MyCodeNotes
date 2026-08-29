@@ -14,8 +14,6 @@ const AdminLogin = () => {
     e.preventDefault()
     setLoading(true)
     
-    console.log('🔐 Login form submitted')
-    
     const result = await login(password)
     setLoading(false)
     
