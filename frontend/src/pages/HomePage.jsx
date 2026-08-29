@@ -6,92 +6,58 @@ import {
   FiBook,
   FiCode,
   FiTrendingUp,
+  FiFileText,
   FiGithub,
   FiLinkedin,
-  FiAward,
-  FiCalendar,
-  FiClock,
   FiRefreshCw,
+  FiExternalLink,
+  FiZap,
+  FiLayers,
+  FiStar,
 } from "react-icons/fi";
-import { SiLeetcode } from "react-icons/si";
-import { profileApi } from "../api/profile";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import { problemsApi } from "../api/problems";
 import { practiceApi } from "../api/practice";
+import { conceptsApi } from "../api/concepts";
+import { notesApi } from "../api/notes";
 
 const HomePage = () => {
   const [recentProblems, setRecentProblems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [profile, setProfile] = useState({
-    name: "Loading...",
-    title: "",
-    bio: "",
-    github: "#",
-    linkedin: "#",
-    leetcode: "#",
-    totalSolved: 0,
-    easy: 0,
-    medium: 0,
-    hard: 0,
-    totalSubmissions: 0,
-    activeDays: 0,
-    maxStreak: 0,
-    languages: {},
+
+  const [contentStats, setContentStats] = useState({
+    problems: 0,
+    concepts: 0,
+    practice: 0,
+    notes: 0,
   });
 
-  // ✅ Use refs to prevent multiple calls
   const isInitialFetchDone = useRef(false);
   const isFetchingRef = useRef(false);
 
-  // Fetch profile data from database
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await profileApi.getAll();
-        setProfile({
-          name: data.name || "G Nihal",
-          title: data.title || "Full Stack Developer | DSA Enthusiast",
-          bio: data.bio || "Building solutions one problem at a time.",
-          github: data.github || "#",
-          linkedin: data.linkedin || "#",
-          leetcode: data.leetcode || "#",
-          totalSolved: parseInt(data.totalSolved) || 0,
-          easy: parseInt(data.easy) || 0,
-          medium: parseInt(data.medium) || 0,
-          hard: parseInt(data.hard) || 0,
-          totalSubmissions: parseInt(data.totalSubmissions) || 0,
-          activeDays: parseInt(data.activeDays) || 0,
-          maxStreak: parseInt(data.maxStreak) || 0,
-          languages: data.languages || {},
-        });
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
-    };
-    fetchProfile();
-  }, []);
-
   const fetchProblems = useCallback(async (showLoading = true) => {
-    // Prevent concurrent fetches
-    if (isFetchingRef.current) {
-      return;
-    }
-
+    if (isFetchingRef.current) return;
     isFetchingRef.current = true;
     if (showLoading) setRefreshing(true);
 
     try {
-      const [problems, practice] = await Promise.all([
-        problemsApi.getAll({ limit: 100 }), // 🔥 Fetch ALL problems
-        practiceApi.getAll({ limit: 5 }),
+      const [problems, practice, concepts, notes] = await Promise.all([
+        problemsApi.getAll({ }),
+        practiceApi.getAll({ }), 
+        conceptsApi.getAll(),
+        notesApi.getAll(),
       ]);
 
-      // Sort by ID descending (newest first)
       const sortedProblems = [...problems].sort((a, b) => b.id - a.id);
-
-      // Take only the 4 most recent for display
       setRecentProblems(sortedProblems.slice(0, 4));
+
+      setContentStats({
+        problems: problems.length,
+        concepts: concepts.length,
+        practice: practice.length,
+        notes: notes.length,
+      });
     } catch (error) {
       console.error("❌ Error fetching data:", error);
     } finally {
@@ -108,17 +74,11 @@ const HomePage = () => {
     }
   }, [fetchProblems]);
 
-  // ✅ Auto-refresh when user focuses on the page
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        fetchProblems(false);
-      }
+      if (document.visibilityState === "visible") fetchProblems(false);
     };
-
-    const handleFocus = () => {
-      fetchProblems(false);
-    };
+    const handleFocus = () => fetchProblems(false);
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("focus", handleFocus);
@@ -129,14 +89,12 @@ const HomePage = () => {
     };
   }, [fetchProblems]);
 
-  // ✅ Auto-refresh every 60 seconds (only if not already fetching)
   useEffect(() => {
     const interval = setInterval(() => {
       if (document.visibilityState === "visible" && !isFetchingRef.current) {
         fetchProblems(false);
       }
     }, 60000);
-
     return () => clearInterval(interval);
   }, [fetchProblems]);
 
@@ -146,29 +104,64 @@ const HomePage = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 },
+      transition: { staggerChildren: 0.12 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 25 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6 },
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 
-  const stats = {
-    totalSolved: profile.totalSolved,
-    easy: profile.easy,
-    medium: profile.medium,
-    hard: profile.hard,
-    totalSubmissions: profile.totalSubmissions,
-    activeDays: profile.activeDays,
-    maxStreak: profile.maxStreak,
-    languages: profile.languages,
-  };
+  const learningPaths = [
+    {
+      to: "/problems",
+      icon: FiBook,
+      title: "LeetCode Problems",
+      description: "Solved problems with detailed notes, patterns, and step-by-step algorithms",
+      cta: "View Problems",
+      color: "from-yellow-50 to-orange-50",
+      iconColor: "text-yellow-600",
+    },
+    {
+      to: "/practice",
+      icon: FiCode,
+      title: "Practice & Learn",
+      description: "Coding problems with hints and hidden solutions to test yourself",
+      cta: "Start Practice",
+      color: "from-blue-50 to-cyan-50",
+      iconColor: "text-blue-600",
+    },
+    {
+      to: "/concepts",
+      icon: FiTrendingUp,
+      title: "Programming Concepts",
+      description: "Quick reference for core concepts with definitions and examples",
+      cta: "Explore Concepts",
+      color: "from-purple-50 to-pink-50",
+      iconColor: "text-purple-600",
+    },
+    {
+      to: "/notes",
+      icon: FiFileText,
+      title: "Notes",
+      description: "Structured notes on DSA, web dev, and everything I've learned",
+      cta: "Read Notes",
+      color: "from-green-50 to-emerald-50",
+      iconColor: "text-green-600",
+    },
+  ];
+
+  const stats = [
+    { value: contentStats.problems, label: "Problems Documented", icon: FiStar, color: "text-yellow-600" },
+    { value: contentStats.concepts, label: "Concepts Covered", icon: FiLayers, color: "text-purple-600" },
+    { value: contentStats.practice, label: "Practice Problems", icon: FiZap, color: "text-blue-600" },
+    { value: contentStats.notes, label: "Notes Published", icon: FiFileText, color: "text-green-600" },
+  ];
 
   return (
     <div className="container-custom mx-auto">
@@ -178,233 +171,112 @@ const HomePage = () => {
         animate="visible"
         variants={containerVariants}
       >
-        {/* Hero Section - Profile from Database */}
+        {/* Light Hero Section */}
         <motion.section
           variants={itemVariants}
-          className="bg-gradient-to-br from-cream-50 via-white to-beige-50 rounded-3xl p-8 md:p-12 shadow-sm border border-beige-200"
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cream-50 via-white to-beige-50 p-10 md:p-16 shadow-sm border border-beige-200 text-center"
         >
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-leetcode-yellow to-yellow-400 flex items-center justify-center text-4xl font-bold text-white shadow-lg flex-shrink-0">
-              <div className="w-32 h-32 rounded-full overflow-hidden shadow-lg flex-shrink-0 border-2 border-leetcode-yellow bg-leetcode-yellow">
-                <img
-                  src="/images/profile.png"
-                  alt={profile.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-
-            <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl md:text-4xl font-display font-bold text-gray-900">
-                Hello, I'm {profile.name}
-              </h1>
-              <p className="text-gray-500 mt-3 max-w-2xl">{profile.bio}</p>
-
-              <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-4">
-                <a
-                  href={profile.github}
-                  target="_blank"
-                  rel="noopener"
-                  className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
-                >
-                  <FiGithub size={20} />
-                </a>
-                <a
-                  href={profile.linkedin}
-                  target="_blank"
-                  rel="noopener"
-                  className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
-                >
-                  <FiLinkedin size={20} />
-                </a>
-                <a
-                  href={profile.leetcode}
-                  target="_blank"
-                  rel="noopener"
-                  className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
-                >
-                  <SiLeetcode size={20} className="text-leetcode-yellow" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Quick Stats */}
-        <motion.section
-          variants={itemVariants}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4"
-        >
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-beige-200 text-center">
-            <div className="text-3xl font-bold text-leetcode-yellow">
-              {stats.totalSolved}
-            </div>
-            <div className="text-sm text-gray-600">Problems Solved</div>
-          </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-beige-200 text-center">
-            <div className="text-3xl font-bold text-leetcode-yellow">
-              {stats.maxStreak}
-            </div>
-            <div className="text-sm text-gray-600">Max Streak</div>
-          </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-beige-200 text-center">
-            <div className="text-3xl font-bold text-leetcode-yellow">
-              {stats.activeDays}
-            </div>
-            <div className="text-sm text-gray-600">Active Days</div>
-          </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-beige-200 text-center">
-            <div className="text-3xl font-bold text-leetcode-yellow">
-              {stats.totalSubmissions}
-            </div>
-            <div className="text-sm text-gray-600">Submissions</div>
-          </div>
-        </motion.section>
-
-        {/* LeetCode Progress */}
-        <motion.section
-          variants={itemVariants}
-          className="bg-white rounded-2xl p-6 shadow-sm border border-beige-200"
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <FiAward className="text-leetcode-yellow" size={24} />
-            <h2 className="text-xl font-bold text-gray-900">
-              LeetCode Progress
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-green-50 rounded-xl p-4 text-center border border-green-200">
-              <div className="text-2xl font-bold text-green-600">
-                {stats.easy}
-              </div>
-              <div className="text-sm text-green-700">Easy</div>
-              <div className="text-xs text-gray-500">
-                / {stats.easy + stats.medium + stats.hard} total
-              </div>
-            </div>
-            <div className="bg-yellow-50 rounded-xl p-4 text-center border border-yellow-200">
-              <div className="text-2xl font-bold text-yellow-600">
-                {stats.medium}
-              </div>
-              <div className="text-sm text-yellow-700">Medium</div>
-              <div className="text-xs text-gray-500">
-                / {stats.easy + stats.medium + stats.hard} total
-              </div>
-            </div>
-            <div className="bg-red-50 rounded-xl p-4 text-center border border-red-200">
-              <div className="text-2xl font-bold text-red-600">
-                {stats.hard}
-              </div>
-              <div className="text-sm text-red-700">Hard</div>
-              <div className="text-xs text-gray-500">
-                / {stats.easy + stats.medium + stats.hard} total
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 pt-4 border-t border-beige-200">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <span className="text-sm text-gray-600">Languages:</span>
-                {Object.entries(stats.languages).map(([lang, count]) => (
-                  <span
-                    key={lang}
-                    className="text-sm bg-gray-100 px-3 py-1 rounded-full"
-                  >
-                    {lang} ({count})
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <FiCalendar /> {stats.activeDays} active days
-                <span className="mx-2">|</span>
-                <FiClock /> {stats.maxStreak} max streak
-              </div>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Quick Links */}
-        <motion.section
-          variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-        >
-          <Link
-            to="/problems"
-            className="group bg-white rounded-2xl p-6 shadow-sm border border-beige-200 hover:shadow-lg transition-all duration-300 hover:border-leetcode-yellow"
-          >
-            <FiBook className="text-3xl text-leetcode-yellow mb-3" />
-            <h3 className="text-xl font-semibold mb-2">LeetCode Problems</h3>
-            <p className="text-gray-600 text-sm mb-3">
-              Access all my solved problems with detailed notes
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFA116]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#FFA116]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+          
+          <div className="relative z-10 text-center">
+            <h1 className="text-5xl md:text-6xl lg:text-6xl font-bold text-gray-900 leading-tight max-w-4xl mx-auto">
+              Learn DSA, Programming &amp;
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFA116] to-yellow-500"> Practice Smarter</span>
+            </h1>
+            <p className="text-gray-600 text-xl md:text-1xl mt-4 max-w-2xl mx-auto leading-relaxed">
+              Everything here is something I've personally solved, practiced, or studied — 
+              organized so it's actually useful to work through.
             </p>
-            <span className="inline-flex items-center text-leetcode-yellow font-medium group-hover:translate-x-2 transition-transform">
-              View Problems <FiArrowRight className="ml-2" />
-            </span>
-          </Link>
-
-          <Link
-            to="/practice"
-            className="group bg-white rounded-2xl p-6 shadow-sm border border-beige-200 hover:shadow-lg transition-all duration-300 hover:border-leetcode-yellow"
-          >
-            <FiCode className="text-3xl text-leetcode-yellow mb-3" />
-            <h3 className="text-xl font-semibold mb-2">Practice & Learn</h3>
-            <p className="text-gray-600 text-sm mb-3">
-              Practice coding and general programming problems with hints and
-              hidden solutions
-            </p>
-            <span className="inline-flex items-center text-leetcode-yellow font-medium group-hover:translate-x-2 transition-transform">
-              Start Practice <FiArrowRight className="ml-2" />
-            </span>
-          </Link>
-
-          <Link
-            to="/concepts"
-            className="group bg-white rounded-2xl p-6 shadow-sm border border-beige-200 hover:shadow-lg transition-all duration-300 hover:border-leetcode-yellow"
-          >
-            <FiTrendingUp className="text-3xl text-leetcode-yellow mb-3" />
-            <h3 className="text-xl font-semibold mb-2">Programming Concepts</h3>
-            <p className="text-gray-600 text-sm mb-3">
-              Quick reference for programming concepts with examples
-            </p>
-            <span className="inline-flex items-center text-leetcode-yellow font-medium group-hover:translate-x-2 transition-transform">
-              Explore Concepts <FiArrowRight className="ml-2" />
-            </span>
-          </Link>
+            <div className="flex flex-wrap justify-center gap-4 mt-6">
+              <Link
+                to="/problems"
+                className="inline-flex items-center gap-2 bg-[#FFA116] text-gray-900 px-8 py-3.5 rounded-full font-semibold hover:bg-yellow-500 transition-all duration-300 shadow-lg hover:shadow-[#FFA116]/25 text-lg"
+              >
+                Start Learning <FiArrowRight size={20} />
+              </Link>
+              <a
+                href="#stats"
+                className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-8 py-3.5 rounded-full font-medium hover:bg-gray-200 transition-all duration-300 text-lg"
+              >
+                Explore Content
+              </a>
+            </div>
+          </div>
         </motion.section>
 
-        {/* Recent Problems */}
+        {/* Stats Grid */}
+        <motion.section
+          id="stats"
+          variants={itemVariants}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+        >
+          {stats.map((stat, index) => (
+            <div
+              key={index}
+              className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#FFA116]/30 text-center hover:-translate-y-1"
+            >
+              <div className="relative">
+                <div className="w-12 h-12 mx-auto rounded-2xl bg-gray-50 group-hover:bg-[#FFA116]/10 flex items-center justify-center transition-all duration-300">
+                  <stat.icon size={24} className={stat.color} />
+                </div>
+              </div>
+              <div className="text-3xl md:text-4xl font-bold text-gray-900 mt-3">
+                {stat.value}
+              </div>
+              <div className="text-sm text-gray-500 font-medium">{stat.label}</div>
+            </div>
+          ))}
+        </motion.section>
+
+        {/* Learning Paths */}
+        <motion.section
+          variants={itemVariants}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {learningPaths.map((path) => (
+            <Link
+              key={path.to}
+              to={path.to}
+              className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#FFA116]/40 hover:-translate-y-1.5"
+            >
+              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${path.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <path.icon size={24} className={path.iconColor} />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{path.title}</h3>
+              <p className="text-gray-600 text-sm leading-relaxed mb-3">{path.description}</p>
+              <span className="inline-flex items-center text-[#FFA116] font-medium text-sm group-hover:gap-2 transition-all duration-300">
+                {path.cta} <FiArrowRight className="ml-1.5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+          ))}
+        </motion.section>
+
+        {/* Recently Added Section */}
         <motion.section variants={itemVariants}>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">
-              Recent Problems
+          <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2">
+              <FiZap className="text-[#FFA116]" /> Recently Added
             </h2>
             <div className="flex items-center gap-4">
               <button
                 onClick={() => fetchProblems(true)}
                 disabled={refreshing || isFetchingRef.current}
-                className={`text-sm flex items-center gap-1.5 text-gray-500 hover:text-leetcode-yellow transition-colors ${
-                  refreshing || isFetchingRef.current
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
+                className={`text-sm flex items-center gap-1.5 text-gray-500 hover:text-[#FFA116] transition-colors ${
+                  refreshing || isFetchingRef.current ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
                 <FiRefreshCw
                   size={14}
-                  className={
-                    refreshing || isFetchingRef.current ? "animate-spin" : ""
-                  }
+                  className={refreshing || isFetchingRef.current ? "animate-spin" : ""}
                 />
-                {refreshing || isFetchingRef.current
-                  ? "Refreshing..."
-                  : "Refresh"}
+                {refreshing || isFetchingRef.current ? "Refreshing..." : "Refresh"}
               </button>
               <Link
                 to="/problems"
-                className="text-leetcode-yellow hover:underline"
+                className="text-[#FFA116] font-medium hover:underline inline-flex items-center gap-1"
               >
-                View All →
+                View All <FiArrowRight size={14} />
               </Link>
             </div>
           </div>
@@ -414,50 +286,55 @@ const HomePage = () => {
                 <Link
                   key={problem.id}
                   to={`/problems/${problem.id}`}
-                  className="bg-white rounded-2xl p-4 shadow-sm border border-beige-200 hover:shadow-lg transition-all duration-300 hover:border-leetcode-yellow"
+                  className="group bg-white rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#FFA116]/40 hover:-translate-y-1"
                 >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <div className="text-sm text-gray-500">
-                        #{problem.leetcode_id}
+                  <div className="flex flex-wrap justify-between items-start gap-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-400 font-mono">
+                          #{problem.leetcode_id}
+                        </span>
+                        {problem.concept && (
+                          <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full text-gray-600 truncate">
+                            {problem.concept}
+                          </span>
+                        )}
                       </div>
-                      <h3 className="font-semibold text-lg">{problem.title}</h3>
-                      <div className="flex items-center gap-2 mt-1">
+                      <h3 className="text-lg md:text-xl font-semibold text-gray-900 mt-1 group-hover:text-[#FFA116] transition-colors">
+                        {problem.title}
+                      </h3>
+                      <div className="flex items-center gap-2 mt-1.5">
                         <span
-                          className={`text-xs px-2 py-1 rounded-full ${
+                          className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
                             problem.difficulty === "EASY"
                               ? "bg-green-100 text-green-700"
                               : problem.difficulty === "MEDIUM"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : "bg-red-100 text-red-700"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-red-100 text-red-700"
                           }`}
                         >
                           {problem.difficulty}
                         </span>
-                        {problem.concept && (
-                          <span className="text-xs text-gray-500">
-                            • {problem.concept}
-                          </span>
+                        {problem.java_solution && problem.python_solution && (
+                          <div className="flex gap-1">
+                            <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500 font-mono">
+                              Java
+                            </span>
+                            <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500 font-mono">
+                              Python
+                            </span>
+                          </div>
                         )}
                       </div>
                     </div>
-                    {problem.java_solution && problem.python_solution && (
-                      <div className="flex gap-1">
-                        <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                          Java
-                        </span>
-                        <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                          Python3
-                        </span>
-                      </div>
-                    )}
+                    <FiArrowRight className="text-gray-300 group-hover:text-[#FFA116] group-hover:translate-x-1 transition-all duration-300 flex-shrink-0 mt-1" />
                   </div>
                 </Link>
               ))
             ) : (
-              <div className="col-span-2 text-center py-8 text-gray-500">
-                No problems added yet. Go to Admin panel to add your first
-                problem!
+              <div className="col-span-2 text-center py-12 text-gray-400 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                <FiBook className="mx-auto text-3xl text-gray-300 mb-2" />
+                No problems added yet. Check back soon!
               </div>
             )}
           </div>
