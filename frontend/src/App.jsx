@@ -35,10 +35,11 @@ function App() {
         return true
       }
 
+      // Increase timeout to 10 seconds for Render's cold start
       const timeoutPromise = new Promise((_, reject) => {
         timeoutRef.current = setTimeout(() => {
           reject(new Error('Request timeout - backend might be sleeping'))
-        }, 3000)
+        }, 10000) // Increased from 3000 to 10000
       })
 
       const fetchPromise = notesApi.getAll()

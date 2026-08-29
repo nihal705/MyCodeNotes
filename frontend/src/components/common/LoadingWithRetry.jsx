@@ -1,24 +1,25 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiLoader, FiClock, FiCoffee } from 'react-icons/fi'
+import { FiLoader, FiClock, FiCoffee, FiAlertCircle } from 'react-icons/fi'
 
 const LoadingWithRetry = ({ onRetry, retryCount, isRetrying }) => {
   const [showMessage, setShowMessage] = useState(false)
 
   useEffect(() => {
-    // Show message after 5 seconds of loading
+    // Show message after 3 seconds of loading (reduced from 5)
     const timer = setTimeout(() => {
       setShowMessage(true)
-    }, 5000)
+    }, 3000)
 
     return () => clearTimeout(timer)
   }, [])
 
   const messages = [
-    "Waking up the server...",
+    " Waking up the server...",
     "☕ Coffee break? Server is stretching...",
     "🚀 Almost there!",
-    "One moment please..."
+    "🔄 One moment please...",
+    "⚠️ This is taking longer than expected..."
   ]
 
   const currentMessage = retryCount < messages.length ? messages[retryCount] : messages[messages.length - 1]
@@ -38,11 +39,6 @@ const LoadingWithRetry = ({ onRetry, retryCount, isRetrying }) => {
             <FiLoader className="text-leetcode-yellow text-2xl animate-pulse" />
           </div>
         </div>
-
-        {/* Main Message */}
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-6">
-          Loading your notes
-        </h2>
         
         {/* Status Message */}
         <AnimatePresence mode="wait">
