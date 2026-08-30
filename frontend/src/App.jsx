@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
 import LoadingWithRetry from './components/common/LoadingWithRetry'
+import OfflineBanner from './components/common/OfflineBanner'
 import { notesApi } from './api/notes'
 
 // Pages
@@ -17,6 +18,7 @@ import ProblemDetailPage from './pages/ProblemDetailPage'
 import PracticeDetailPage from './pages/PracticeDetailPage'
 import ConceptDetailPage from './pages/ConceptDetailPage'
 import AdminPage from './pages/AdminPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -39,7 +41,7 @@ function App() {
       const timeoutPromise = new Promise((_, reject) => {
         timeoutRef.current = setTimeout(() => {
           reject(new Error('Request timeout - backend might be sleeping'))
-        }, 10000) // Increased from 3000 to 10000
+        }, 10000)
       })
 
       const fetchPromise = notesApi.getAll()
@@ -96,6 +98,7 @@ function App() {
       <Router>
         <div className="min-h-screen flex flex-col bg-cream-50 dark:bg-dark-900">
           <Navbar />
+          <OfflineBanner />
           <LoadingWithRetry 
             onRetry={handleRetry}
             retryCount={retryCount}
@@ -112,6 +115,7 @@ function App() {
     <Router>
       <div className="min-h-screen flex flex-col bg-cream-50 dark:bg-dark-900">
         <Navbar />
+        <OfflineBanner />
         <main className="flex-grow w-full py-8">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -124,6 +128,8 @@ function App() {
             <Route path="/notes/:slug" element={<NoteDetailPage />} />
             <Route path="/concepts/:id" element={<ConceptDetailPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            {/* 404 Catch-all route - MUST BE LAST */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />
