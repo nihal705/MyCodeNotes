@@ -35,18 +35,18 @@
 
 ## 📖 Overview
 
-**MyCodeNotes** is your personal coding knowledge base that helps you track your LeetCode journey, practice coding problems, and maintain DSA concepts - all in one place. It's designed to be your personal learning journal with a beautiful, modern interface.
+**MyCodeNotes** is a structured learning hub for DSA, programming concepts, practice problems and quick notes — documented as I learn them, so you can learn them too. Everything here is something I've personally solved, practiced, or studied, organized so it's actually useful to work through.
 
-### 🎯 Key Capabilities
+⚠️ **Important**: This is a personal learning journal, not a template or starter project. The content is hand-curated and the app expects a populated database. The **code** is open source — but the **content** (problems, solutions, notes, concepts) is my personal work and **not included** in the open-source license.
+
+### 🎯 What You'll Find Here
 
 | Category | Description |
 |----------|-------------|
-| **LeetCode Problems** | Track solved problems with detailed notes, solutions, and concepts |
-| **Practice Problems** | Practice with hints and hidden solutions |
-| **DSA Concepts** | Quick reference for important concepts with examples |
-| **Progress Tracking** | Visualize your coding journey with stats and analytics |
-| **Admin Panel** | Manage your content easily with secure login |
-| **Notes System** | Organized personal learning notes with download option |
+| **LeetCode Problems** | Solved problems with detailed notes, patterns, and step-by-step algorithms |
+| **Practice Problems** | Coding problems with hints and hidden solutions to test yourself |
+| **DSA Concepts** | Quick reference for core concepts with definitions and examples |
+| **Notes** | Structured notes on DSA, web dev, and everything I've learned |
 
 ---
 
@@ -88,10 +88,9 @@
 - Comming Soon message for upcoming notes
 
 ### 📊 Homepage Dashboard
-- Personal profile with avatar
-- Quick stats (problems solved, streak, active days)
-- LeetCode progress visualization
-- Recent accepted solutions
+- Hero section
+- Quick stats
+- Recent added solutions
 - Quick navigation cards
 
 ### 🔐 Admin Panel
@@ -539,11 +538,14 @@ Deploy Frontend to Vercel:
 5. Push to the branch (git push origin feature/amazing-feature)
 6. Open a Pull Request
 
+---
+
 ## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+### Code (MIT License)
+The **source code** in this repository is open source under the MIT License — you can freely use, modify, and deploy it.
 
----
+--- 
 
 ## 🙏 Acknowledgments
 
