@@ -25,6 +25,7 @@ function App() {
   const [retryCount, setRetryCount] = useState(0)
   const [isRetrying, setIsRetrying] = useState(false)
   const timeoutRef = useRef(null)
+  const abortControllerRef = useRef(null)
   
   // Check if backend was already awake in this session
   const isBackendInitialized = sessionStorage.getItem('backendInitialized') === 'true'
@@ -37,14 +38,17 @@ function App() {
         return true
       }
 
-      // Increase timeout to 10 seconds for Render's cold start
+      // Create abort controller for fetch timeout
+      abortControllerRef.current = new AbortController()
+
+      // Increase timeout to 15 seconds for Render's cold start
       const timeoutPromise = new Promise((_, reject) => {
         timeoutRef.current = setTimeout(() => {
           reject(new Error('Request timeout - backend might be sleeping'))
-        }, 10000)
+        }, 15000)
       })
 
-      const fetchPromise = notesApi.getAll()
+      const fetchPromise = notesApi.getAll({ signal: abortControllerRef.current.signal })
       await Promise.race([fetchPromise, timeoutPromise])
       
       clearTimeout(timeoutRef.current)
@@ -54,6 +58,13 @@ function App() {
     } catch (error) {
       console.error('Backend not responding:', error)
       clearTimeout(timeoutRef.current)
+      
+      // If it's an abort error, it means we manually cancelled
+      if (error.name === 'AbortError') {
+        console.log('Request was aborted')
+        return false
+      }
+      
       return false
     }
   }
@@ -62,6 +73,12 @@ function App() {
   const handleRetry = async () => {
     setIsRetrying(true)
     setRetryCount(prev => prev + 1)
+    
+    // Abort any existing request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+    
     const success = await checkBackendHealth()
     if (success) {
       setLoading(false)
@@ -89,8 +106,27 @@ function App() {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
       }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
     }
   }, [isBackendInitialized])
+
+  // Auto-retry mechanism - retry every 5 seconds if still loading
+  useEffect(() => {
+    if (!loading || isBackendInitialized) return
+
+    const autoRetryInterval = setInterval(async () => {
+      console.log('🔄 Auto-retrying backend connection...')
+      const success = await checkBackendHealth()
+      if (success) {
+        setLoading(false)
+        clearInterval(autoRetryInterval)
+      }
+    }, 5000)
+
+    return () => clearInterval(autoRetryInterval)
+  }, [loading, isBackendInitialized])
 
   // Show LoadingWithRetry ONLY if backend is not initialized and we're still loading
   if (loading && !isBackendInitialized) {
