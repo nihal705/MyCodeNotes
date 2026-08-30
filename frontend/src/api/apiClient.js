@@ -10,6 +10,7 @@ const apiClient = axios.create({
     'Accept': 'application/json',
   },
   withCredentials: false,
+  timeout: 30000, // 30 seconds timeout for all requests
 })
 
 // Request interceptor to add auth token
@@ -28,6 +29,17 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle timeout errors gracefully
+    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      console.warn('Request timeout - backend might be sleeping')
+      // Return a specific error so we can handle it in the component
+      return Promise.reject({
+        ...error,
+        isTimeout: true,
+        message: 'Request timeout - backend might be sleeping'
+      })
+    }
+
     if (error.response?.status === 401 || error.response?.status === 403) {
       localStorage.removeItem('adminToken')
       if (!window.location.pathname.includes('/admin')) {
