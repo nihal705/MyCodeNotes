@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { SiLeetcode, SiGithub } from 'react-icons/si'
-import { FiUser, FiClock, FiExternalLink } from 'react-icons/fi'
+import { SiGithub } from 'react-icons/si'
+import { FiUser, FiClock, FiExternalLink, FiShield } from 'react-icons/fi'
 import { profileApi } from '../../api/profile'
 
 const Footer = () => {
@@ -48,7 +48,7 @@ const Footer = () => {
       {/* Quick Links */}
       <div className="flex flex-wrap items-center justify-center gap-3">
         <a
-          href="https://your-portfolio-url.vercel.app"
+          href="https://gnihal.com"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 font-medium text-gray-700 hover:text-leetcode-yellow transition-all duration-200"
@@ -71,21 +71,20 @@ const Footer = () => {
 
         <div className="h-4 w-px bg-gray-300"></div>
 
-        <div className="h-4 w-px bg-gray-300"></div>
-
+        {/* Terms & Privacy - NEW */}
         <Link
-          to="/admin"
-          className="flex items-center gap-1.5 font-medium text-gray-400 hover:text-gray-700 transition-all duration-200"
+          to="/terms-privacy"
+          className="flex items-center gap-1.5 font-medium text-gray-400 hover:text-leetcode-yellow transition-all duration-200"
         >
-          <FiUser size={16} />
-          Admin
+          <FiShield size={16} />
+          Terms & Privacy
         </Link>
       </div>
 
       {/* Copyright & Last Updated */}
       <div className="flex flex-col items-center mt-2 -mb-3">
         <p className="text-center text-gray-500 text-sm px-4">
-          Copyright © {new Date().getFullYear()} <Link to="https://your-portfolio-url.vercel.app" className="hover:text-leetcode-yellow transition-colors">G Nihal</Link>. All rights reserved.
+          Copyright © {new Date().getFullYear()} <Link to="https://gnihal.com" className="hover:text-leetcode-yellow transition-colors">G Nihal</Link>. All rights reserved.
         </p>
         <div className="mt-1.5 flex items-center gap-2 text-xs text-gray-400">
           <FiClock size={14} />
