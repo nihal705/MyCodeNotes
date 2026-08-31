@@ -18,6 +18,7 @@ import ProblemDetailPage from './pages/ProblemDetailPage'
 import PracticeDetailPage from './pages/PracticeDetailPage'
 import ConceptDetailPage from './pages/ConceptDetailPage'
 import AdminPage from './pages/AdminPage'
+import TermsPrivacyPage from './pages/TermsPrivacyPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
@@ -164,6 +165,7 @@ function App() {
             <Route path="/notes/:slug" element={<NoteDetailPage />} />
             <Route path="/concepts/:id" element={<ConceptDetailPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/terms-privacy" element={<TermsPrivacyPage />} />
             {/* 404 Catch-all route - MUST BE LAST */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
