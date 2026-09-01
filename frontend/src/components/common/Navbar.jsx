@@ -185,17 +185,6 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-3 md:space-x-4">
-          <a
-            href="https://leetmetric-stats.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-1.5 bg-leetcode-yellow text-gray-900 px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-500 transition-all duration-200 shadow-sm hover:shadow-md"
-          >
-            <SiLeetcode size={16} />
-            LeetCode Stats Tracker
-            <FiExternalLink size={12} className="opacity-70" />
-          </a>
-
           <button
             onClick={toggleMenu}
             className="md:hidden text-gray-600 hover:text-gray-900 p-1"
@@ -243,29 +232,6 @@ const Navbar = () => {
                 >
                   Notes →
                 </button> */}
-
-                {/* Portfolio Link - Mobile */}
-                <a
-                  href="https://your-portfolio-url.vercel.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={closeMenu}
-                  className="flex items-center gap-2 text-gray-700 hover:text-leetcode-yellow transition-colors duration-200 font-medium"
-                >
-                  Portfolio
-                  <FiExternalLink size={16} />
-                </a>
-
-                <a
-                  href="https://leetmetric-stats.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={closeMenu}
-                  className="flex items-center gap-2 bg-leetcode-yellow text-gray-900 px-6 py-3 rounded-full text-base font-semibold hover:bg-yellow-500 transition-all duration-200 shadow-md"
-                >
-                  <SiLeetcode size={20} /> LeetCode Stats Tracker
-                  <FiExternalLink size={14} />
-                </a>
               </>
             ) : (
               <>
