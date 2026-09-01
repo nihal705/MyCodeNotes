@@ -1,131 +1,176 @@
 import { motion } from 'framer-motion'
-import { FiShield, FiFileText, FiLock, FiUser, FiMail, FiGithub } from 'react-icons/fi'
+import { FiShield, FiLock, FiMail, FiGithub, FiUser, FiCheck, FiBookOpen, FiCode } from 'react-icons/fi'
 
 const TermsPrivacyPage = () => {
   return (
-    <div className="container-custom mx-auto px-4 py-8 max-w-4xl">
+    <div className="w-full px-4 md:px-8 max-w-6xl mx-auto py-2">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.4 }}
       >
+
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-leetcode-yellow/10 text-leetcode-yellow mb-4">
-            <FiShield size={32} />
+        <div className="flex items-center gap-4 mb-4">
+          <div className="p-3 bg-leetcode-yellow/10 rounded-full">
+            <FiShield className="text-leetcode-yellow text-2xl" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-            Terms & Privacy Policy
-          </h1>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Terms & Privacy</h1>
+          </div>
         </div>
 
-        {/* Content */}
-        <div className="space-y-8">
-          {/* Section 1: Introduction */}
-          <section className="bg-white dark:bg-dark-800 rounded-xl p-6 -mt-6 shadow-sm border border-beige-200 dark:border-dark-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
-              <FiFileText className="text-leetcode-yellow" />
-              Introduction
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Welcome to MyCodeNotes. This page explains our terms of use and privacy practices. 
-              By using this website, you agree to the terms outlined below. This is a personal 
-              learning journal and knowledge base, not a commercial service.
-            </p>
-          </section>
+        {/* 3-Column Quick Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div className="bg-green-50 dark:bg-green-900/10 rounded-xl p-4 border border-green-200 dark:border-green-800/20 text-center">
+            <FiCheck className="text-green-600 dark:text-green-400 text-xl mx-auto mb-1" />
+            <p className="text-sm font-medium text-green-700 dark:text-green-300">Minimal Data</p>
+            <p className="text-xs text-green-600 dark:text-green-400">Only what's needed</p>
+          </div>
+          <div className="bg-blue-50 dark:bg-blue-900/10 rounded-xl p-4 border border-blue-200 dark:border-blue-800/20 text-center">
+            <FiShield className="text-blue-600 dark:text-blue-400 text-xl mx-auto mb-1" />
+            <p className="text-sm font-medium text-blue-700 dark:text-blue-300">No Tracking</p>
+            <p className="text-xs text-blue-600 dark:text-blue-400">No cookies or analytics</p>
+          </div>
+          <div className="bg-purple-50 dark:bg-purple-900/10 rounded-xl p-4 border border-purple-200 dark:border-purple-800/20 text-center">
+            <FiCode className="text-purple-600 dark:text-purple-400 text-xl mx-auto mb-1" />
+            <p className="text-sm font-medium text-purple-700 dark:text-purple-300">Open Source</p>
+            <p className="text-xs text-purple-600 dark:text-purple-400">Code is public</p>
+          </div>
+        </div>
 
-          {/* Section 2: Terms of Use */}
-          <section className="bg-white dark:bg-dark-800 rounded-xl p-6 shadow-sm border border-beige-200 dark:border-dark-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
-              <FiLock className="text-leetcode-yellow" />
-              Terms of Use
-            </h2>
-            <div className="space-y-3 text-gray-600 dark:text-gray-400 leading-relaxed">
-              <p>• This website is a personal learning journal and knowledge base.</p>
-              <p>• All content (problems, solutions, notes, concepts) is my personal work.</p>
-              <p>• You may use this site for learning and reference purposes.</p>
-              <p>• You may not copy, redistribute, or claim the content as your own.</p>
-              <p>• The code is open source (MIT License) — the content is All Rights Reserved.</p>
-              <p>• This site is provided "as is" without any warranties.</p>
-              <p>• We reserve the right to update these terms at any time.</p>
-            </div>
-          </section>
+        {/* 2x2 Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-          {/* Section 3: Privacy Policy */}
-          <section className="bg-white dark:bg-dark-800 rounded-xl p-6 shadow-sm border border-beige-200 dark:border-dark-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
-              <FiShield className="text-leetcode-yellow" />
-              Privacy Policy
-            </h2>
-            <div className="space-y-3 text-gray-600 dark:text-gray-400 leading-relaxed">
-              <p><strong className="text-gray-800 dark:text-gray-200">Data Collection:</strong> We collect minimal data — only what's necessary for the website to function.</p>
-              <p><strong className="text-gray-800 dark:text-gray-200">Local Storage:</strong> We use localStorage to remember your preferences and session data.</p>
-              <p><strong className="text-gray-800 dark:text-gray-200">No Tracking:</strong> We do not use tracking cookies, analytics, or third-party trackers.</p>
-              <p><strong className="text-gray-800 dark:text-gray-200">No Data Sharing:</strong> Your data stays on your device. We don't sell or share any data.</p>
-              <p><strong className="text-gray-800 dark:text-gray-200">Admin Authentication:</strong> Admin login uses JWT tokens stored in localStorage.</p>
-              <p><strong className="text-gray-800 dark:text-gray-200">Contact:</strong> If you have questions, email us at nihalmohammad705@gmail.com</p>
-            </div>
-          </section>
-
-          {/* Section 4: Open Source */}
-          <section className="bg-white dark:bg-dark-800 rounded-xl p-6 shadow-sm border border-beige-200 dark:border-dark-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
-              <FiGithub className="text-leetcode-yellow" />
-              Open Source
-            </h2>
-            <div className="space-y-3 text-gray-600 dark:text-gray-400 leading-relaxed">
-              <p><strong className="text-gray-800 dark:text-gray-200">Code:</strong> The source code is open source under the MIT License.</p>
-              <p><strong className="text-gray-800 dark:text-gray-200">Content:</strong> The content (problems, solutions, notes) is All Rights Reserved.</p>
-              <p><strong className="text-gray-800 dark:text-gray-200">Repository:</strong> View the source code on GitHub: <a 
-                href="https://github.com/nihal705/MyCodeNotes" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className=" text-gray-700 hover:text-leetcode-yellow transition-all duration-200 hover:underline"
-              >
-                github.com/nihal705/MyCodeNotes
-              </a></p>
-              <p><strong className="text-gray-800 dark:text-gray-200">Learn & Build:</strong> Feel free to learn from the code and build your own version!</p>
-            </div>
-          </section>
-
-          {/* Section 5: Contact */}
-          <section className="bg-white dark:bg-dark-800 rounded-xl p-6 shadow-sm border border-beige-200 dark:border-dark-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
-              <FiMail className="text-leetcode-yellow" />
-              Contact
-            </h2>
-            <div className="space-y-3 text-gray-600 dark:text-gray-400 leading-relaxed">
-              <p>If you have any questions about these terms or privacy practices:</p>
-              <div className="flex flex-wrap gap-4 mt-2">
-                <a 
-                  href="mailto:nihalmohammad705@gmail.com"
-                  className="flex items-center gap-1.5 font-medium text-gray-700 hover:text-leetcode-yellow transition-all duration-200 hover:underline"
-                >
-                  <FiMail size={16} />
-                  nihalmohammad705@gmail.com
-                </a>
-                <a 
-                  href="https://github.com/nihal705"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 font-medium text-gray-700 hover:text-leetcode-yellow transition-all duration-200 hover:underline"
-                >
-                  <FiGithub size={16} />
-                  github.com/nihal705
-                </a>
-                <a
-                  href="https://linkedin.com/in/gnihal"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 font-medium text-gray-700 hover:text-leetcode-yellow transition-all duration-200 hover:underline"
-                >
-                  <FiUser size={16} />
-                  LinkedIn
-                </a>
+          {/* Privacy */}
+          <div className="bg-white dark:bg-dark-800 rounded-xl p-6 border border-beige-200 dark:border-dark-700">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-1.5 bg-leetcode-yellow/10 rounded-lg">
+                <FiShield className="text-leetcode-yellow" />
               </div>
+              <h2 className="font-semibold text-gray-900 dark:text-white">Privacy</h2>
             </div>
-          </section>
+            <ul className="space-y-2.5 text-sm text-gray-600 dark:text-gray-400">
+              <li className="flex items-start gap-2.5">
+                <FiCheck className="text-green-500 shrink-0 mt-0.5" size={16} />
+                <span>Only essential data is collected for functionality</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <FiCheck className="text-green-500 shrink-0 mt-0.5" size={16} />
+                <span>No tracking cookies, analytics, or third-party tools</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <FiCheck className="text-green-500 shrink-0 mt-0.5" size={16} />
+                <span>Local storage is used only for preferences and session data</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <FiCheck className="text-green-500 shrink-0 mt-0.5" size={16} />
+                <span>No data is shared, sold, or transmitted to any third party</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Terms */}
+          <div className="bg-white dark:bg-dark-800 rounded-xl p-6 border border-beige-200 dark:border-dark-700">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-1.5 bg-leetcode-yellow/10 rounded-lg">
+                <FiLock className="text-leetcode-yellow" />
+              </div>
+              <h2 className="font-semibold text-gray-900 dark:text-white">Terms</h2>
+            </div>
+            <ul className="space-y-2.5 text-sm text-gray-600 dark:text-gray-400">
+              <li className="flex items-start gap-2.5">
+                <span className="text-leetcode-yellow text-sm mt-0.5">◆</span>
+                <span>This is a personal learning journal and knowledge base</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-leetcode-yellow text-sm mt-0.5">◆</span>
+                <span>All content is original work — available for learning and reference</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-leetcode-yellow text-sm mt-0.5">◆</span>
+                <span>The source code is open and publicly available</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-leetcode-yellow text-sm mt-0.5">◆</span>
+                <span>This site is provided "as is" without any warranties</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Open Source */}
+          <div className="bg-white dark:bg-dark-800 rounded-xl p-6 border border-beige-200 dark:border-dark-700">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-1.5 bg-leetcode-yellow/10 rounded-lg">
+                <FiGithub className="text-leetcode-yellow" />
+              </div>
+              <h2 className="font-semibold text-gray-900 dark:text-white">Source Code</h2>
+            </div>
+            <ul className="space-y-2.5 text-sm text-gray-600 dark:text-gray-400">
+              <li className="flex items-start gap-2.5">
+                <span className="text-leetcode-yellow text-sm mt-0.5">◆</span>
+                <span>The codebase is publicly available on GitHub</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-leetcode-yellow text-sm mt-0.5">◆</span>
+                <span>Licensed under MIT — free to use, modify, and learn from</span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-leetcode-yellow text-sm mt-0.5">◆</span>
+                <a 
+                  href="https://github.com/nihal705/MyCodeNotes" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-leetcode-yellow hover:underline inline-flex items-center gap-1"
+                >
+                  <FiGithub size={14} />
+                  Explore the repository →
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div className="bg-white dark:bg-dark-800 rounded-xl p-6 border border-beige-200 dark:border-dark-700">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="p-1.5 bg-leetcode-yellow/10 rounded-lg">
+                <FiMail className="text-leetcode-yellow" />
+              </div>
+              <h2 className="font-semibold text-gray-900 dark:text-white">Contact</h2>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+              Questions or feedback? Reach out:
+            </p>
+            <div className="space-y-2.5 text-sm">
+              <a 
+                href="mailto:nihalmohammad705@gmail.com"
+                className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-leetcode-yellow transition-colors"
+              >
+                <FiMail size={16} className="text-leetcode-yellow" />
+                nihalmohammad705@gmail.com
+              </a>
+              <a 
+                href="https://github.com/nihal705"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-leetcode-yellow transition-colors"
+              >
+                <FiGithub size={16} className="text-leetcode-yellow" />
+                Github
+              </a>
+              <a
+                href="https://linkedin.com/in/gnihal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-leetcode-yellow transition-colors"
+              >
+                <FiUser size={16} className="text-leetcode-yellow" />
+                LinkedIn
+              </a>
+            </div>
+          </div>
         </div>
+
       </motion.div>
     </div>
   )
