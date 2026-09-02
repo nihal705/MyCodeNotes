@@ -212,28 +212,27 @@ const NoteDetailPage = () => {
         <div className="flex items-center justify-between gap-3 flex-wrap">
           {/* Left Side: Icon + Title + Description + Tags */}
           <div className="flex items-center gap-3 flex-1">
-            <div className="text-4xl text-leetcode-yellow shrink-0">
-              {note.slug === "web-development" ? (
-                <FiCode />
-              ) : note.slug === "web-projects" ? (
-                <FiBox />
-              ) : note.slug === "python" ? (
-                <SiPython />
-              ) : note.slug === "docker-guide" ? (
-                <SiDocker />
-              ) : note.slug === "git-github-guide" ? (
-                <SiGithub />
-              ) : note.slug === "react-basics" ||
-                note.slug === "react-projects" ? ( 
-                <SiReact />
-              ) : note.slug === "react-redux" ? (
-                <SiRedux />
-              ) : note.slug === "mysql-guide" ? (
-                  <SiMysql />
-              ) : (
-                note.icon || "📓"
-              )}
-            </div>
+            <div className="text-4xl shrink-0 flex items-center justify-center">
+  {note.slug === "web-development" ? (
+    <FiCode className="text-[#FFA116]" />
+  ) : note.slug === "web-projects" ? (
+    <FiBox className="text-[#FFA116]" />
+  ) : note.slug === "python" ? (
+    <SiPython className="text-[#3776AB]" />
+  ) : note.slug === "docker-guide" ? (
+    <SiDocker className="text-[#2496ED]" />
+  ) : note.slug === "git-github-guide" ? (
+    <SiGithub className="text-[#181717]" />
+  ) : note.slug === "react-basics" || note.slug === "react-projects" ? (
+    <SiReact className="text-[#61DAFB]" />
+  ) : note.slug === "react-redux" ? (
+    <SiRedux className="text-[#764ABC]" />
+  ) : note.slug === "mysql-guide" ? (
+    <SiMysql className="text-[#4479A1]" />
+  ) : (
+    <span className="text-4xl">{note.icon || "📓"}</span>
+  )}
+</div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white truncate">
                 {note.title}

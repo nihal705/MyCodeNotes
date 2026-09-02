@@ -13,15 +13,25 @@ const NoteCard = ({ note }) => {
   const displayType = isProjectsNote ? 'Projects' : 'Chapters'
   const displayCount = isProjectsNote ? projectCount : chapterCount
 
-  const icon = note.slug === 'web-development' ? <FiCode className="text-3xl" /> 
-              : note.slug === 'web-projects' ? <FiBox className="text-3xl" /> 
-              : note.slug === 'python' ? <SiPython className="text-3xl" /> 
-              : note.slug === 'docker-guide' ? <SiDocker className="text-3xl" /> 
-              : note.slug === 'git-github-guide' ? <SiGithub className="text-3xl" /> 
-              : note.slug === 'react-basics' || note.slug === 'react-projects' ? <SiReact className="text-3xl" /> 
-              : note.slug === 'react-redux' ? <SiRedux className="text-3xl" /> 
-              : note.slug === 'mysql-guide' ? <SiMysql className="text-3xl" />
-              : note.icon || '📓'
+  const icon = note.slug === 'web-development' ? (
+                <FiCode className="text-3xl text-[#FFA116]" />
+              ) : note.slug === 'web-projects' ? (
+                <FiBox className="text-3xl text-[#FFA116]" />
+              ) : note.slug === 'python' ? (
+                <SiPython className="text-3xl text-[#3776AB]" />
+              ) : note.slug === 'docker-guide' ? (
+                <SiDocker className="text-3xl text-[#2496ED]" />
+              ) : note.slug === 'git-github-guide' ? (
+                <SiGithub className="text-3xl text-[#181717]" />
+              ) : note.slug === 'react-basics' || note.slug === 'react-projects' ? (
+                <SiReact className="text-3xl text-[#61DAFB]" />
+              ) : note.slug === 'react-redux' ? (
+                <SiRedux className="text-3xl text-[#764ABC]" />
+              ) : note.slug === 'mysql-guide' ? (
+                <SiMysql className="text-3xl text-[#4479A1]" />
+              ) : (
+                note.icon || '📓'
+              );
 
   return (
     <motion.div
