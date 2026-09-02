@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { FiCode, FiBox } from 'react-icons/fi'
-import { SiPython, SiDocker, SiGithub, SiReact, SiRedux } from 'react-icons/si'
+import { SiPython, SiDocker, SiGithub, SiReact, SiRedux, SiMysql } from 'react-icons/si'
 
 const NoteCard = ({ note }) => {
   if (!note || !note.slug) return null
@@ -20,6 +20,7 @@ const NoteCard = ({ note }) => {
               : note.slug === 'git-github-guide' ? <SiGithub className="text-3xl" /> 
               : note.slug === 'react-basics' || note.slug === 'react-projects' ? <SiReact className="text-3xl" /> 
               : note.slug === 'react-redux' ? <SiRedux className="text-3xl" /> 
+              : note.slug === 'mysql-guide' ? <SiMysql className="text-3xl" />
               : note.icon || '📓'
 
   return (

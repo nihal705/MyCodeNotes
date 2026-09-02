@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import {
-  FiArrowLeft,
-  FiSearch,
-  FiMenu,
-  FiX,
-  FiCode,
-  FiBox,
-  FiDownload,
-} from "react-icons/fi";
+import { FiArrowLeft, FiSearch, FiMenu, FiX, FiCode, FiBox,FiDownload } from "react-icons/fi";
 import NoteDetail from "../components/notes/NoteDetail";
 import TableOfContents from "../components/notes/TableOfContents";
 import ProjectList from "../components/projects/ProjectList";
@@ -18,7 +10,7 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import { notesApi } from "../api/notes";
 import toast from "react-hot-toast";
 import { downloadNoteAsPDF } from "../utils/pdfGenerator";
-import { SiPython, SiDocker, SiGithub, SiReact, SiRedux } from "react-icons/si";
+import { SiPython, SiDocker, SiGithub, SiReact, SiRedux, SiMysql } from "react-icons/si";
 
 const NoteDetailPage = () => {
   const { slug } = useParams();
@@ -236,6 +228,8 @@ const NoteDetailPage = () => {
                 <SiReact />
               ) : note.slug === "react-redux" ? (
                 <SiRedux />
+              ) : note.slug === "mysql-guide" ? (
+                  <SiMysql />
               ) : (
                 note.icon || "📓"
               )}
