@@ -17,7 +17,6 @@ const Footer = () => {
           setLastUpdated('Not set')
         }
       } catch (error) {
-        console.error('Error fetching last updated:', error)
         setLastUpdated('Unknown')
       }
     }

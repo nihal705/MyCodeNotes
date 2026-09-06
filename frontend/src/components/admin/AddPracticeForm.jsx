@@ -92,7 +92,6 @@ const AddPracticeForm = () => {
       setHintInput('')
       setTagInput('')
     } catch (error) {
-      console.error('Error:', error)
       if (error.response?.status === 403) {
         toast.error('Authentication failed. Please login again.')
         localStorage.removeItem('adminToken')

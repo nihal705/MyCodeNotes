@@ -62,7 +62,6 @@ const AdminPanel = () => {
       
       await fetchProfileSettings()
     } catch (error) {
-      console.error('Error fetching data:', error)
       toast.error('Failed to fetch data')
     } finally {
       setLoading(false)
@@ -150,7 +149,6 @@ const handleNotesSearch = (query) => {
         toast.error('Failed to update profile settings')
       }
     } catch (error) {
-      console.error('Error updating profile:', error)
       toast.error('Failed to update profile settings')
     }
   }
@@ -194,7 +192,6 @@ const handleNotesSearch = (query) => {
       setEditingId(null)
       setEditData({})
     } catch (error) {
-      console.error('Error updating:', error)
       toast.error('Failed to update')
     }
   }
@@ -213,7 +210,6 @@ const handleNotesSearch = (query) => {
         return
       }
     } catch (error) {
-      console.error('Error deleting:', error)
       toast.error('Failed to delete')
     }
   }

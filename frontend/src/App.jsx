@@ -62,7 +62,6 @@ function App() {
       
       // If it's an abort error, it means we manually cancelled
       if (error.name === 'AbortError') {
-        console.log('Request was aborted')
         return false
       }
       
@@ -118,7 +117,6 @@ function App() {
     if (!loading || isBackendInitialized) return
 
     const autoRetryInterval = setInterval(async () => {
-      console.log('🔄 Auto-retrying backend connection...')
       const success = await checkBackendHealth()
       if (success) {
         setLoading(false)
