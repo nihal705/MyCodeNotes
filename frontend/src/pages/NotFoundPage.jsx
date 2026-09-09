@@ -37,13 +37,6 @@ const NotFoundPage = () => {
 
   const currentJoke = jokes[jokeIndex % jokes.length]
 
-  // Auto-scroll terminal to bottom - REMOVED
-  // useEffect(() => {
-  //   if (terminalEndRef.current) {
-  //     terminalEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  //   }
-  // }, [history])
-
   // Command responses for the terminal
   const commands = {
     help: () => ({
@@ -134,7 +127,6 @@ const NotFoundPage = () => {
   it anytime.
   
   🔗 Connect with me:
-  • GitHub: https://github.com/nihal705
   • LinkedIn: https://linkedin.com/in/gnihal
   • Portfolio: https://gnihal.com
   • Email: nihalmohammad705@gmail.com
@@ -147,10 +139,7 @@ const NotFoundPage = () => {
       output: `❤️  Sending love back to you! 💕
   
   You're awesome for exploring this page!
-  Here's a virtual high-five ✋
-  
-  Fun fact: This site is completely open-source!
-  Check it out on GitHub: https://github.com/nihal705/MyCodeNotes`,
+  Here's a virtual high-five ✋`,
       isCommand: true
     }),
     date: () => ({
