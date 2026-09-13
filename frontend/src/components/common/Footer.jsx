@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FiUser, FiClock, FiExternalLink, FiShield } from "react-icons/fi";
+import { FiClock, FiShield, FiInfo } from "react-icons/fi";
 import { profileApi } from "../../api/profile";
 
 const Footer = () => {
@@ -65,15 +65,13 @@ const Footer = () => {
 
       {/* Quick Links */}
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <a
-          href="https://gnihal.com"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to="/about"
           className="flex items-center gap-1.5 font-medium text-gray-700 hover:text-leetcode-yellow transition-all duration-200"
         >
-          <FiExternalLink size={16} className="text-leetcode-yellow" />
-          Portfolio
-        </a>
+          <FiInfo size={16} className="text-leetcode-yellow" />
+          About
+        </Link>
 
         <div className="h-4 w-px bg-gray-300"></div>
 
