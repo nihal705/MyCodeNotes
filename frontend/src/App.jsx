@@ -20,6 +20,7 @@ import ConceptDetailPage from './pages/ConceptDetailPage'
 import AdminPage from './pages/AdminPage'
 import TermsPrivacyPage from './pages/TermsPrivacyPage'
 import NotFoundPage from './pages/NotFoundPage'
+import AboutPage from './pages/AboutPage'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -148,7 +149,7 @@ function App() {
   // Once backend is awake, show the full app
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-cream-50 dark:bg-dark-900">
+      <div className="min-h-screen flex flex-col bg-cream-50 dark:bg-black">
         <Navbar />
         <OfflineBanner />
         <main className="flex-grow w-full py-8">
@@ -164,6 +165,7 @@ function App() {
             <Route path="/concepts/:id" element={<ConceptDetailPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/terms-privacy" element={<TermsPrivacyPage />} />
+            <Route path="/about" element={<AboutPage />} />
             {/* 404 Catch-all route - MUST BE LAST */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
