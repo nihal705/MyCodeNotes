@@ -43,6 +43,27 @@ const NoteDetail = ({
   const isLastTopic = activeChapter === chapters.length - 1 && 
     activeTopic === (chapters[chapters.length - 1]?.topics?.length || 0) - 1
 
+  // ============================================================
+  // IMAGE TOPIC DETECTION
+  // ============================================================
+  // If topic title ends with an image extension → treat as image topic
+  const isImageTopic = /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(topic.title)
+
+  // Try to find the markdown image path from the content
+  // Content example: "![Rock](stone-paper-scissor/images/rock.png)"
+  const extractImagePath = () => {
+    if (!topic.content) return null
+    const match = topic.content.match(/!\[([^\]]*)\]\(([^)]+)\)/)
+    if (match) {
+      const rawPath = match[2]
+      // Resolve  X/images/Y  →  /assets/X/Y
+      return rawPath.replace(/^([^/]+)\/images\/(.+)$/, '/assets/$1/$2')
+    }
+    return null
+  }
+
+  const imagePath = isImageTopic ? extractImagePath() : null
+
   return (
     <motion.div
       ref={contentRef}
@@ -51,9 +72,8 @@ const NoteDetail = ({
       transition={{ duration: 0.4 }}
       className="bg-white dark:bg-dark-800 rounded-2xl shadow-lg border border-beige-200 dark:border-dark-700 overflow-hidden max-w-4xl mx-auto"
     >
-      {/* Fixed height page card with internal scroll */}
       <div className="flex flex-col min-h-[80vh] max-h-[85vh]">
-        {/* Breadcrumb inside card */}
+        {/* Breadcrumb */}
         <div className="flex-shrink-0 px-6 pt-5 pb-3 border-b border-beige-100 dark:border-dark-700">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-500 dark:text-gray-400">
@@ -67,25 +87,71 @@ const NoteDetail = ({
           </div>
         </div>
 
-        {/* Scrollable content area */}
+        {/* Scrollable content */}
         <div 
           ref={scrollContainerRef}
           className="flex-1 overflow-y-auto px-6 py-5 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-dark-600"
         >
-          {/* Topic Title */}
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             {topic.title}
           </h2>
 
-          {/* Content */}
-          {topic.content && (
-            <div className="prose prose-gray dark:prose-invert max-w-none mb-6">
-              {topic.content.split('\n').map((paragraph, index) => (
-                <p key={index} className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
-                  {paragraph}
-                </p>
-              ))}
+          {/* ============ IMAGE TOPIC VIEW ============ */}
+          {imagePath ? (
+            <div className="flex flex-col items-center justify-center py-8">
+              <div className="bg-gradient-to-br from-cream-50 to-beige-50 dark:from-dark-900 dark:to-dark-800 rounded-2xl p-6 border border-beige-200 dark:border-dark-700 shadow-sm">
+                <img
+                  src={imagePath}
+                  alt={topic.title}
+                  className="max-w-[280px] max-h-[280px] h-auto rounded-xl object-contain"
+                  loading="lazy"
+                  onError={(e) => {
+                    console.error('❌ Image failed:', imagePath)
+                    e.target.style.display = 'none'
+                  }}
+                />
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-4 text-center max-w-md">
+                {topic.content?.split('\n')[0] || `Image: ${topic.title}`}
+              </p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                📁 {imagePath}
+              </p>
             </div>
+          ) : (
+            /* ============ NORMAL TEXT TOPIC VIEW ============ */
+            <>
+              {topic.content && (
+                <div className="prose prose-gray dark:prose-invert max-w-none mb-6">
+                  {topic.content.split('\n').map((line, index) => {
+                    // Inline image rendering (for mixed content)
+                    const imgMatch = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/)
+                    if (imgMatch) {
+                      const [, alt, rawPath] = imgMatch
+                      const resolvedPath = rawPath.replace(
+                        /^([^/]+)\/images\/(.+)$/,
+                        '/assets/$1/$2'
+                      )
+                      return (
+                        <div key={index} className="my-4 flex justify-center">
+                          <img
+                            src={resolvedPath}
+                            alt={alt}
+                            className="max-w-[220px] h-auto rounded-xl border border-beige-200 dark:border-dark-700 shadow-sm"
+                            loading="lazy"
+                          />
+                        </div>
+                      )
+                    }
+                    return (
+                      <p key={index} className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">
+                        {line}
+                      </p>
+                    )
+                  })}
+                </div>
+              )}
+            </>
           )}
 
           {/* Code Examples */}
@@ -103,7 +169,7 @@ const NoteDetail = ({
           )}
         </div>
 
-        {/* Navigation Buttons - Fixed at bottom */}
+        {/* Navigation */}
         <div className="flex-shrink-0 px-6 py-4 border-t border-beige-100 dark:border-dark-700 bg-gray-50/50 dark:bg-dark-800/50">
           <div className="flex items-center justify-between">
             <button
