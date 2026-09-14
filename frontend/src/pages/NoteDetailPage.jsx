@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { FiArrowLeft, FiSearch, FiMenu, FiX, FiCode, FiBox,FiDownload } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiSearch,
+  FiMenu,
+  FiX,
+  FiCode,
+  FiBox,
+  FiDownload,
+} from "react-icons/fi";
 import NoteDetail from "../components/notes/NoteDetail";
 import TableOfContents from "../components/notes/TableOfContents";
 import ProjectList from "../components/projects/ProjectList";
@@ -10,7 +18,15 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import { notesApi } from "../api/notes";
 import toast from "react-hot-toast";
 import { downloadNoteAsPDF } from "../utils/pdfGenerator";
-import { SiPython, SiDocker, SiGithub, SiReact, SiRedux, SiMysql } from "react-icons/si";
+import {
+  SiPython,
+  SiDocker,
+  SiGithub,
+  SiReact,
+  SiRedux,
+  SiMysql,
+  SiJavascript,
+} from "react-icons/si";
 
 const NoteDetailPage = () => {
   const { slug } = useParams();
@@ -213,26 +229,29 @@ const NoteDetailPage = () => {
           {/* Left Side: Icon + Title + Description + Tags */}
           <div className="flex items-center gap-3 flex-1">
             <div className="text-4xl shrink-0 flex items-center justify-center">
-  {note.slug === "web-development" ? (
-    <FiCode className="text-[#FFA116]" />
-  ) : note.slug === "web-projects" ? (
-    <FiBox className="text-[#FFA116]" />
-  ) : note.slug === "python" ? (
-    <SiPython className="text-[#3776AB]" />
-  ) : note.slug === "docker-guide" ? (
-    <SiDocker className="text-[#2496ED]" />
-  ) : note.slug === "git-github-guide" ? (
-    <SiGithub className="text-[#181717]" />
-  ) : note.slug === "react-basics" || note.slug === "react-projects" ? (
-    <SiReact className="text-[#61DAFB]" />
-  ) : note.slug === "react-redux" ? (
-    <SiRedux className="text-[#764ABC]" />
-  ) : note.slug === "mysql-guide" ? (
-    <SiMysql className="text-[#4479A1]" />
-  ) : (
-    <span className="text-4xl">{note.icon || "📓"}</span>
-  )}
-</div>
+              {note.slug === "web-development" ? (
+                <FiCode className="text-[#FFA116]" />
+              ) : note.slug === "web-projects" ? (
+                <FiBox className="text-[#FFA116]" />
+              ) : note.slug === "python" ? (
+                <SiPython className="text-[#3776AB]" />
+              ) : note.slug === "docker-guide" ? (
+                <SiDocker className="text-[#2496ED]" />
+              ) : note.slug === "git-github-guide" ? (
+                <SiGithub className="text-[#181717]" />
+              ) : note.slug === "react-basics" ||
+                note.slug === "react-projects" ? (
+                <SiReact className="text-[#61DAFB]" />
+              ) : note.slug === "react-redux" ? (
+                <SiRedux className="text-[#764ABC]" />
+              ) : note.slug === "mysql-guide" ? (
+                <SiMysql className="text-[#4479A1]" />
+              ) : note.slug === "javascript" ? (
+                <SiJavascript className="text-[#F7DF1E]" />
+              ) : (
+                <span className="text-4xl">{note.icon || "📓"}</span>
+              )}
+            </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white truncate">
                 {note.title}
