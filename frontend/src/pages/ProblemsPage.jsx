@@ -101,9 +101,12 @@ const ProblemsPage = () => {
       );
     }
 
-    // Apply difficulty filter
+    // Apply difficulty filter (case-insensitive on both sides)
     if (filters.difficulty) {
-      result = result.filter((p) => p.difficulty?.toUpperCase() === filters.difficulty);
+      const targetDifficulty = filters.difficulty.toUpperCase();
+      result = result.filter(
+        (p) => p.difficulty?.toUpperCase() === targetDifficulty
+      );
     }
 
     // Apply language filters
