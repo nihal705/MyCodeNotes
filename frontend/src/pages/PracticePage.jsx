@@ -175,7 +175,7 @@ const PracticePage = () => {
         </div>
 
         {/* Stats Summary */}
-        <div className="flex flex-wrap items-center gap-6 p-4 bg-gray-50 dark:bg-dark-800 rounded-xl border border-gray-200 dark:border-dark-700">
+        <div className="flex flex-wrap items-center gap-4 p-4 bg-gray-50 dark:bg-[#1F232C] rounded-xl border border-gray-200 dark:border-[#2E3440]">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Difficulty:</span>
             <div className="flex gap-3">
@@ -219,7 +219,7 @@ const PracticePage = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="text-sm bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg px-3 py-1.5 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#FFA116] focus:border-transparent"
+              className="text-sm bg-white dark:bg-[#262B36] border border-gray-300 dark:border-[#2E3440] rounded-lg px-3 py-1.5 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#FFA116] focus:border-transparent"
             >
               <option value="recent">Recently Added</option>
               <option value="oldest">Oldest First</option>
@@ -232,7 +232,7 @@ const PracticePage = () => {
 
         {/* Tag/Pattern chips - Collapsible */}
         {allTags && allTags.length > 0 && (
-          <div className="bg-white dark:bg-dark-900 rounded-xl border border-gray-200 dark:border-dark-700 overflow-hidden">
+          <div className="bg-white dark:bg-[#1F232C] rounded-xl border border-gray-200 dark:border-[#2E3440] overflow-hidden">
             <button
               onClick={() => setShowTags(!showTags)}
               className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-dark-800 transition-colors"
@@ -287,14 +287,14 @@ const PracticePage = () => {
               onChange={(e) =>
                 setFilters({ ...filters, search: e.target.value })
               }
-              className="px-3 py-2 border border-gray-300 dark:border-dark-600 rounded-md bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FFA116]"
+              className="px-3 py-2 border border-gray-300 dark:border-[#2E3440] rounded-md bg-white dark:bg-[#12151B] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FFA116]"
             />
             <select
               value={filters.language}
               onChange={(e) =>
                 setFilters({ ...filters, language: e.target.value })
               }
-              className="px-3 py-2 border border-gray-300 dark:border-dark-600 rounded-md bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FFA116]"
+              className="px-3 py-2 border border-gray-300 dark:border-[#2E3440] rounded-md bg-white dark:bg-[#12151B] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FFA116]"
             >
               <option value="">All Languages</option>
               <option value="Java">Java</option>
@@ -305,7 +305,7 @@ const PracticePage = () => {
               onChange={(e) =>
                 setFilters({ ...filters, difficulty: e.target.value })
               }
-              className="px-3 py-2 border border-gray-300 dark:border-dark-600 rounded-md bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FFA116]"
+              className="px-3 py-2 border border-gray-300 dark:border-[#2E3440] rounded-md bg-white dark:bg-[#12151B] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FFA116]"
             >
               <option value="">All Difficulties</option>
               <option value="Beginner">Beginner</option>

@@ -127,8 +127,7 @@ const NotFoundPage = () => {
   it anytime.
   
   🔗 Connect with me:
-  • LinkedIn: https://linkedin.com/in/gnihal
-  • Portfolio: https://gnihal.com
+  • LinkedIn: https://linkedin.com/in/gnihal705
   • Email: nihalmohammad705@gmail.com
   
   🌟 Special thanks to everyone who uses this site!
