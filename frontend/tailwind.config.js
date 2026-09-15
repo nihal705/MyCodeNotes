@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -24,7 +25,16 @@ export default {
           400: '#C4B3A3',
           500: '#B6A28F',
         },
-        // Existing colors
+
+        // DARK MODE PALETTE
+        dark: {
+          500: '#30363D',  
+          600: '#21262D', 
+          700: '#21262D',   
+          800: '#161B22',   
+          950: '#010409',   
+        },
+
         leetcode: {
           yellow: '#FFA116',
           dark: '#1A1A2E',
