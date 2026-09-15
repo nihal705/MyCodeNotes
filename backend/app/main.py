@@ -1,5 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 from app.database import engine, Base
 from app.routes import problems, practice, concepts, leetcode, admin, profile, notes
 import os
@@ -7,7 +11,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Create database tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -16,16 +19,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS configuration - Allow both local and production
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
-        "https://mycodenotes.vercel.app",          
+        "https://mycodenotes.vercel.app",
         "https://mycodenotes-git-main.vercel.app",
-        os.getenv("FRONTEND_URL", ""),             
+        os.getenv("FRONTEND_URL", ""),
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -33,7 +35,18 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-# Include routers
+# Rate limiting — 200 req/min per IP
+def real_ip(request: Request) -> str:
+    forwarded = request.headers.get("X-Forwarded-For")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return get_remote_address(request)
+
+limiter = Limiter(key_func=real_ip, default_limits=["200/minute"])
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
 app.include_router(problems.router)
 app.include_router(practice.router)
 app.include_router(concepts.router)
