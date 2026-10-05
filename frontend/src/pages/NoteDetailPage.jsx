@@ -18,15 +18,7 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import { notesApi } from "../api/notes";
 import toast from "react-hot-toast";
 import { downloadNoteAsPDF } from "../utils/pdfGenerator";
-import {
-  SiPython,
-  SiDocker,
-  SiGithub,
-  SiReact,
-  SiRedux,
-  SiMysql,
-  SiJavascript,
-} from "react-icons/si";
+import { SiPython, SiDocker, SiGithub, SiReact, SiRedux, SiMysql, SiJavascript, SiNodedotjs } from "react-icons/si";
 
 const NoteDetailPage = () => {
   const { slug } = useParams();
@@ -248,7 +240,9 @@ const NoteDetailPage = () => {
                 <SiMysql className="text-[#4479A1]" />
               ) : note.slug === "javascript" ? (
                 <SiJavascript className="text-[#F7DF1E]" />
-              ) : (
+              ) : note.slug === "nodejs-backend" ? (
+                <SiNodedotjs className="text-[#339933]" />
+              ): (
                 <span className="text-4xl">{note.icon || "📓"}</span>
               )}
             </div>
