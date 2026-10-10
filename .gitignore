@@ -59,6 +59,7 @@ backend/uploads/
 
 # LOCAL DATA & PERSONAL FILES (not for repo)
 data/
+backend/database/
 sql/
 _archive/
 READMEPERSONAL.md
