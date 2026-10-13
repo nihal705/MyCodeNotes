@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom'
-import { Card } from '../ui/Card'
+import { Link } from "react-router-dom";
+import { Card } from "../ui/Card";
+import SolvedCheckbox from "../common/SolvedCheckbox";
 
 const ProblemList = ({ problems }) => {
   if (!problems || problems.length === 0) {
@@ -7,52 +8,60 @@ const ProblemList = ({ problems }) => {
       <div className="text-center py-12">
         <p className="text-gray-500">No problems found</p>
       </div>
-    )
+    );
   }
 
   const difficultyColor = {
-    Easy: 'bg-green-100 text-green-700',
-    Medium: 'bg-yellow-100 text-yellow-700',
-    Hard: 'bg-red-100 text-red-700',
-  }
+    Easy: "bg-green-100 text-green-700",
+    Medium: "bg-yellow-100 text-yellow-700",
+    Hard: "bg-red-100 text-red-700",
+  };
 
   return (
     <div className="grid grid-cols-1 gap-4">
       {problems.map((problem) => (
-        <Link key={problem.id} to={`/problems/${problem.id}`}>
-          <Card className="p-4 hover:shadow-xl transition-all duration-300 hover:border-leetcode-yellow border-2 border-transparent">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-              <div className="flex-1">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-sm text-gray-500">#{problem.leetcode_id}</span>
-                  <h3 className="font-semibold text-lg">{problem.title}</h3>
-                  <span className={`text-xs px-2 py-1 rounded-full ${difficultyColor[problem.difficulty]}`}>
-                    {problem.difficulty}
-                  </span>
+        <div key={problem.id} className="relative flex items-stretch gap-2">
+          {/* Checkbox — outside the Link so clicks never navigate */}
+          <div className="flex items-center pl-4 py-4 shrink-0">
+            <SolvedCheckbox problemType="leetcode" problemId={problem.id} />
+          </div>
+
+          {/* Clickable card */}
+          <Link to={`/problems/${problem.id}`} className="flex-1 min-w-0">
+            <Card className="p-4 hover:shadow-xl transition-all duration-300 hover:border-leetcode-yellow border-2 border-transparent h-full">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <span className="text-sm text-gray-500">#{problem.leetcode_id}</span>
+                    <h3 className="font-semibold text-lg">{problem.title}</h3>
+                    <span className={`text-xs px-2 py-1 rounded-full ${difficultyColor[problem.difficulty]}`}>
+                      {problem.difficulty}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-3 mt-2">
+                    {problem.concept && (
+                      <span className="text-xs text-gray-500">{problem.concept}</span>
+                    )}
+                    {problem.pattern && (
+                      <span className="text-xs text-gray-500">{problem.pattern}</span>
+                    )}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-3 mt-2">
-                  {problem.concept && (
-                    <span className="text-xs text-gray-500">{problem.concept}</span>
+                <div className="flex gap-2 shrink-0">
+                  {problem.java_solution && (
+                    <span className="text-xs bg-gray-100 px-2 py-1 rounded">Java</span>
                   )}
-                  {problem.pattern && (
-                    <span className="text-xs text-gray-500">{problem.pattern}</span>
+                  {problem.python_solution && (
+                    <span className="text-xs bg-gray-100 px-2 py-1 rounded">Python3</span>
                   )}
                 </div>
               </div>
-              <div className="flex gap-2">
-                {problem.java_solution && (
-                  <span className="text-xs bg-gray-100 px-2 py-1 rounded">Java</span>
-                )}
-                {problem.python_solution && (
-                  <span className="text-xs bg-gray-100 px-2 py-1 rounded">Python3</span>
-                )}
-              </div>
-            </div>
-          </Card>
-        </Link>
+            </Card>
+          </Link>
+        </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default ProblemList
+export default ProblemList;
