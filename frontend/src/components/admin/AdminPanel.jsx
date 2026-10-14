@@ -9,6 +9,7 @@ import { profileApi } from '../../api/profile'
 import toast from 'react-hot-toast'
 import { FiSearch } from 'react-icons/fi' 
 import { notesApi } from '../../api/notes'
+import AdminAIDashboard from './AdminAIDashboard';
 import AddNoteForm from './AddNoteForm'
 
 const AdminPanel = () => {
@@ -229,6 +230,7 @@ const handleNotesSearch = (query) => {
     { id: 'concepts', label: 'Concepts' },
     { id: 'notes', label: 'My Notes' },
     { id: 'profile', label: 'Profile Settings' },
+    { id: 'nextraai', label: 'NextraAI' },
   ]
 
 // ============================================================
@@ -1114,6 +1116,7 @@ const SearchBar = ({ type, placeholder }) => (
               
               {activeTab === 'profile' && renderProfileSettings()}
               {activeTab === 'notes' && renderNotesList()}
+              {activeTab === 'nextraai' && <AdminAIDashboard />}
             </>
           )}
         </CardBody>
