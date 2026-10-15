@@ -156,16 +156,25 @@ html {
     color: #d1d5db !important;
   }
 
-  /* Fix tags and badges */
-  .text-xs,
-  .text-[10px] {
+  /* Fix tags and badges — but skip difficulty badges */
+  .text-xs:not(.badge-difficulty),
+  .text-\[10px\]:not(.badge-difficulty) {
     color: #1f2937 !important;
   }
 
-  .dark .text-xs,
-  .dark .text-[10px] {
+  .dark .text-xs:not(.badge-difficulty),
+  .dark .text-\[10px\]:not(.badge-difficulty) {
     color: #e5e7eb !important;
   }
+
+  /* Difficulty badges — only fix them on mobile, leave desktop alone */
+  .badge-difficulty.bg-green-100  { color: #15803d !important; }
+  .badge-difficulty.bg-yellow-100 { color: #a16207 !important; }
+  .badge-difficulty.bg-red-100    { color: #b91c1c !important; }
+
+  .dark .badge-difficulty.dark\:bg-green-900\/30  { color: #86efac !important; }
+  .dark .badge-difficulty.dark\:bg-yellow-900\/30 { color: #fde047 !important; }
+  .dark .badge-difficulty.dark\:bg-red-900\/30    { color: #fca5a5 !important; }
 
   /* Fix links */
   a {
@@ -296,9 +305,9 @@ html {
     gap: 0.25rem !important;
   }
 
-  .project-card .text-[10px],
+  .project-card .text-\[10px\],
   .project-card .bg-blue-100,
-  .project-detail-view .text-[10px] {
+  .project-detail-view .text-\[10px\] {
     font-size: 9px !important;
     padding: 2px 6px !important;
     border-radius: 9999px !important;
@@ -306,9 +315,9 @@ html {
     background-color: #dbeafe !important;
   }
 
-  .dark .project-card .text-[10px],
+  .dark .project-card .text-\[10px\],
   .dark .project-card .bg-blue-100,
-  .dark .project-detail-view .text-[10px] {
+  .dark .project-detail-view .text-\[10px\] {
     color: #e5e7eb !important;
     background-color: #1e3a5f !important;
   }
@@ -409,7 +418,7 @@ html {
     line-height: 1.3 !important;
   }
 
-  .project-card .text-[10px] {
+  .project-card .text-\[10px\] {
     font-size: 8px !important;
     padding: 1px 4px !important;
   }
