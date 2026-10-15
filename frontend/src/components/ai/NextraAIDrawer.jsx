@@ -129,7 +129,7 @@ export default function NextraAIDrawer() {
   "
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-beige-200 dark:border-dark-700 bg-white/70 dark:bg-dark-900/70 backdrop-blur-md">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-beige-200 dark:border-dark-700 bg-white/80 dark:bg-[#0B0F17]/90 backdrop-blur-md">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-leetcode-yellow/20 to-yellow-500/10 border border-leetcode-yellow/30 flex items-center justify-center shrink-0">
                     <NextraLogo size={20} glow />
