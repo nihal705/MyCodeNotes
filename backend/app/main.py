@@ -43,14 +43,14 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
+    allow_origins=[o for o in [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "https://mycodenotes.vercel.app",
         "https://mycodenotes-git-main.vercel.app",
         os.getenv("FRONTEND_URL", ""),
-    ],
+    ] if o],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

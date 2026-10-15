@@ -1,7 +1,6 @@
 """User authentication: signup, verify OTP, login, forgot, reset, profile."""
 import os
 import uuid
-import shutil
 import logging
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
@@ -30,6 +29,12 @@ COOKIE_NAME = "mc_user_token"
 
 AVATAR_DIR = Path("uploads/avatars")
 AVATAR_DIR.mkdir(parents=True, exist_ok=True)
+
+
+# ---------- Environment detection ----------
+def _is_production() -> bool:
+    """Detect production by checking if FRONTEND_URL is https."""
+    return os.getenv("FRONTEND_URL", "").startswith("https://")
 
 
 # ---------- Token helpers ----------
@@ -132,12 +137,14 @@ def _user_response(user: models.User) -> dict:
 
 
 def _set_cookie(response: Response, token: str):
+    """Set auth cookie. Uses SameSite=None + Secure in production for cross-origin."""
+    is_prod = _is_production()
     response.set_cookie(
         key=COOKIE_NAME,
         value=token,
         httponly=True,
-        samesite="lax",
-        secure=False,
+        samesite="none" if is_prod else "lax",
+        secure=is_prod,
         max_age=60 * 60 * 24 * ACCESS_TTL_DAYS,
         path="/",
     )
@@ -219,7 +226,13 @@ def login(payload: LoginRequest, response: Response, db: Session = Depends(get_d
 
 @router.post("/logout")
 def logout(response: Response):
-    response.delete_cookie(COOKIE_NAME, path="/")
+    is_prod = _is_production()
+    response.delete_cookie(
+        COOKIE_NAME,
+        path="/",
+        samesite="none" if is_prod else "lax",
+        secure=is_prod,
+    )
     return {"message": "Logged out"}
 
 
@@ -264,7 +277,6 @@ def update_profile(
     if payload.name is not None:
         user.name = payload.name.strip()
     if payload.phone is not None:
-        # Allow clearing phone by sending empty string
         new_phone = payload.phone.strip() or None
         if new_phone and new_phone != user.phone:
             existing = (
