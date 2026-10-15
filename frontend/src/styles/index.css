@@ -156,25 +156,26 @@ html {
     color: #d1d5db !important;
   }
 
-  /* Fix tags and badges — but skip difficulty badges */
-  .text-xs:not(.badge-difficulty),
-  .text-\[10px\]:not(.badge-difficulty) {
-    color: #1f2937 !important;
-  }
+  /* Fix tags and badges — but skip difficulty badges (identified by their bg-*-100 classes) */
+.text-xs:not(.bg-red-100):not(.bg-green-100):not(.bg-yellow-100):not(.bg-blue-100):not(.badge-difficulty),
+.text-\[10px\]:not(.bg-red-100):not(.bg-green-100):not(.bg-yellow-100):not(.bg-blue-100):not(.badge-difficulty) {
+  color: #1f2937 !important;
+}
 
-  .dark .text-xs:not(.badge-difficulty),
-  .dark .text-\[10px\]:not(.badge-difficulty) {
-    color: #e5e7eb !important;
-  }
+.dark .text-xs:not(.bg-red-100):not(.bg-green-100):not(.bg-yellow-100):not(.bg-blue-100):not(.badge-difficulty),
+.dark .text-\[10px\]:not(.bg-red-100):not(.bg-green-100):not(.bg-yellow-100):not(.bg-blue-100):not(.badge-difficulty) {
+  color: #e5e7eb !important;
+}
 
-  /* Difficulty badges — only fix them on mobile, leave desktop alone */
-  .badge-difficulty.bg-green-100  { color: #15803d !important; }
-  .badge-difficulty.bg-yellow-100 { color: #a16207 !important; }
-  .badge-difficulty.bg-red-100    { color: #b91c1c !important; }
+/* Difficulty badges — light mode on mobile */
+.text-xs.bg-green-100  { color: #15803d !important; background-color: #d1fae5 !important; }
+.text-xs.bg-yellow-100 { color: #a16207 !important; background-color: #fef3c7 !important; }
+.text-xs.bg-red-100    { color: #b91c1c !important; background-color: #fee2e2 !important; }
 
-  .dark .badge-difficulty.dark\:bg-green-900\/30  { color: #86efac !important; }
-  .dark .badge-difficulty.dark\:bg-yellow-900\/30 { color: #fde047 !important; }
-  .dark .badge-difficulty.dark\:bg-red-900\/30    { color: #fca5a5 !important; }
+/* Difficulty badges — dark mode on mobile */
+.dark .text-xs.bg-green-100  { color: #86efac !important; background-color: #064e3b !important; }
+.dark .text-xs.bg-yellow-100 { color: #fde047 !important; background-color: #78350f !important; }
+.dark .text-xs.bg-red-100    { color: #fca5a5 !important; background-color: #7f1d1d !important; }
 
   /* Fix links */
   a {
