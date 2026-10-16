@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/badge/NextraAI-Groq%20%2B%20Gemini-FFA116?style=for-the-badge" alt="NextraAI" />
 </p>
 <p align="center">
-  <a href="https://mycodenotes.vercel.app">
+  <a href="https://mycodenotes.dev">
     <img src="https://img.shields.io/badge/_Live_Demo-View_Now-00C7B7?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
   </a>
   <a href="https://github.com/nihal705/MyCodeNotes">
