@@ -48,6 +48,8 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "https://mycodenotes.vercel.app",
+        "https://mycodenotes.dev",
+        "https://www.mycodenotes.dev",
         "https://mycodenotes-git-main.vercel.app",
         os.getenv("FRONTEND_URL", ""),
     ] if o],
