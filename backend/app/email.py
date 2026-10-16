@@ -28,7 +28,6 @@ def send_otp_email(to_email: str, otp: str) -> bool:
           <table width="480" cellpadding="0" cellspacing="0" style="background:#131923;border-radius:16px;padding:40px;border:1px solid #1F2937;">
             <tr><td align="center" style="padding-bottom:24px;">
               <h1 style="margin:0;color:#00E5A0;font-size:22px;font-weight:700;">MyCodeNotes</h1>
-              <p style="margin:6px 0 0;color:#8D97A5;font-size:13px;">DSA AI Mentor</p>
             </td></tr>
             <tr><td align="center" style="padding-bottom:16px;">
               <p style="margin:0;color:#E6EDF3;font-size:15px;">Your login code is</p>
