@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/concepts", tags=["concepts"])
 
 # GET all concepts - NO AUTH REQUIRED
+@router.get("", response_model=List[schemas.ConceptResponse])
 @router.get("/", response_model=List[schemas.ConceptResponse])
 def get_concepts(
     skip: int = 0,

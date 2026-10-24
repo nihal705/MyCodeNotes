@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/notes", tags=["notes"])
 
 # GET all notes - NO AUTH REQUIRED
+@router.get("", response_model=List[schemas.NoteResponse])
 @router.get("/", response_model=List[schemas.NoteResponse])
 def get_notes(
     skip: int = 0,
@@ -34,6 +35,7 @@ def get_note_by_slug(
     return note
 
 # POST - Create new note - ADMIN ONLY
+@router.post("", response_model=schemas.NoteResponse, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=schemas.NoteResponse, status_code=status.HTTP_201_CREATED)
 def create_note(
     note: schemas.NoteCreate,

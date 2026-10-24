@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/problems", tags=["problems"])
 
 # GET all problems - NO AUTH REQUIRED
+@router.get("", response_model=List[schemas.ProblemResponse])
 @router.get("/", response_model=List[schemas.ProblemResponse])
 def get_problems(
     skip: int = 0,

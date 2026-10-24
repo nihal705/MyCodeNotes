@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/practice", tags=["practice"])
 
 # GET all practice problems - NO AUTH REQUIRED
+@router.get("", response_model=List[schemas.PracticeProblemResponse])
 @router.get("/", response_model=List[schemas.PracticeProblemResponse])
 def get_practice_problems(
     skip: int = 0,

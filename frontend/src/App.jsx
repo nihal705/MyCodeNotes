@@ -16,7 +16,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { AIProvider, useAIChat } from "./contexts/AIContext";
 import { ProgressProvider } from "./contexts/ProgressContext";
 
-import { notesApi } from "./api/notes";
+import apiClient from "./api/apiClient";
 
 import HomePage from "./pages/HomePage";
 import ProblemsPage from "./pages/ProblemsPage";
@@ -102,10 +102,12 @@ function App() {
       abortControllerRef.current = new AbortController();
       const timeoutPromise = new Promise((_, reject) => {
         timeoutRef.current = setTimeout(() => {
-          reject(new Error("Request timeout - backend might be sleeping"));
-        }, 15000);
+          reject(new Error("Request timeout - connecting to server"));
+        }, 4000);
       });
-      const fetchPromise = notesApi.getAll({ signal: abortControllerRef.current.signal });
+      const fetchPromise = apiClient.get("/health", {
+        signal: abortControllerRef.current.signal,
+      });
       await Promise.race([fetchPromise, timeoutPromise]);
       clearTimeout(timeoutRef.current);
       sessionStorage.setItem("backendInitialized", "true");
@@ -151,7 +153,7 @@ function App() {
         setLoading(false);
         clearInterval(autoRetryInterval);
       }
-    }, 5000);
+    }, 3000);
     return () => clearInterval(autoRetryInterval);
   }, [loading, isBackendInitialized]);
 

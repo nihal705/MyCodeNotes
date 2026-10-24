@@ -15,8 +15,8 @@ const LoadingWithRetry = ({ onRetry, retryCount, isRetrying }) => {
   }, [])
 
   const messages = [
-    " Waking up the server...",
-    "☕ Coffee break? Server is stretching...",
+    "⚡ Connecting to server...",
+    "🚀 Preparing your workspace...",
     "🚀 Almost there!",
     "🔄 One moment please...",
     "⚠️ This is taking longer than expected..."
@@ -74,7 +74,7 @@ const LoadingWithRetry = ({ onRetry, retryCount, isRetrying }) => {
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/30 rounded-lg px-4 py-3 max-w-sm mx-auto">
               <p className="text-xs text-yellow-700 dark:text-yellow-400 flex items-center gap-2">
                 <FiCoffee size={14} />
-                Server is waking up. This may take 20-30 seconds.
+                Connecting to server. Please wait a moment...
               </p>
             </div>
             
