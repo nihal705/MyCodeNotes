@@ -1,13 +1,30 @@
 import apiClient from './apiClient'
 
+let notesCache = null
+
 export const notesApi = {
+  // Clear in-memory cache
+  clearCache: () => {
+    notesCache = null
+    try {
+      sessionStorage.removeItem('navbar_notes')
+    } catch {}
+  },
+
   // Get all notes - No auth required
   getAll: async (params = {}, config = {}) => {
+    const isDefault = (!params || Object.keys(params).length === 0) && (!config || Object.keys(config).length === 0)
+    if (isDefault && notesCache) {
+      return notesCache
+    }
     try {
       const response = await apiClient.get('/api/notes', { 
         params,
         ...config // Allow passing abort signal and other config
       })
+      if (isDefault) {
+        notesCache = response.data
+      }
       return response.data
     } catch (error) {
       // Handle timeout errors specifically
@@ -21,6 +38,10 @@ export const notesApi = {
 
   // Get single note by slug - No auth required
   getBySlug: async (slug) => {
+    if (notesCache) {
+      const found = notesCache.find((n) => n.slug === slug)
+      if (found && found.content) return found
+    }
     try {
       const response = await apiClient.get(`/api/notes/${slug}`)
       return response.data
@@ -34,6 +55,10 @@ export const notesApi = {
 
   // Create new note - Admin only
   create: async (data) => {
+    notesCache = null
+    try {
+      sessionStorage.removeItem('navbar_notes')
+    } catch {}
     const token = localStorage.getItem('adminToken')
     try {
       const response = await apiClient.post('/api/notes', data, {
@@ -52,6 +77,10 @@ export const notesApi = {
 
   // Update note - Admin only
   update: async (slug, data) => {
+    notesCache = null
+    try {
+      sessionStorage.removeItem('navbar_notes')
+    } catch {}
     const token = localStorage.getItem('adminToken')
     try {
       const response = await apiClient.put(`/api/notes/${slug}`, data, {
@@ -70,6 +99,10 @@ export const notesApi = {
 
   // Delete note - Admin only
   delete: async (slug) => {
+    notesCache = null
+    try {
+      sessionStorage.removeItem('navbar_notes')
+    } catch {}
     const token = localStorage.getItem('adminToken')
     try {
       const response = await apiClient.delete(`/api/notes/${slug}`, {
