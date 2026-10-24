@@ -15,11 +15,11 @@ const LoadingWithRetry = ({ onRetry, retryCount, isRetrying }) => {
   }, [])
 
   const messages = [
-    "⚡ Connecting to server...",
-    "🚀 Preparing your workspace...",
-    "🚀 Almost there!",
-    "🔄 One moment please...",
-    "⚠️ This is taking longer than expected..."
+    "Connecting to server...",
+    "Preparing your workspace...",
+    "Almost there!",
+    "One moment please...",
+    "This is taking longer than expected..."
   ]
 
   const currentMessage = retryCount < messages.length ? messages[retryCount] : messages[messages.length - 1]
