@@ -145,10 +145,10 @@ export default function StudyPlanGenerator({ open, onClose, onCreated }) {
                       >
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-[10px] px-1.5 py-0.5 rounded bg-leetcode-yellow text-gray-900 font-medium">Day {item.day}</span>
-                          <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-                            item.difficulty === "Easy" ? "bg-green-100 text-green-700" :
-                            item.difficulty === "Medium" ? "bg-yellow-100 text-yellow-700" :
-                            "bg-red-100 text-red-700"
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                            item.difficulty?.toUpperCase() === "EASY" ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200/50 dark:border-green-800/40" :
+                            item.difficulty?.toUpperCase() === "MEDIUM" ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200/50 dark:border-yellow-800/40" :
+                            "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200/50 dark:border-red-800/40"
                           }`}>{item.difficulty}</span>
                           <span className="text-[10px] font-mono text-gray-400">#{item.leetcode_id}</span>
                         </div>
