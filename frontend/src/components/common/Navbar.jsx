@@ -92,7 +92,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="flex items-center justify-between px-4 sm:px-6 py-3 md:py-4 shadow-lg max-w-5xl rounded-full mx-auto w-full bg-white/90 dark:bg-dark-800/95 backdrop-blur-md mt-4 border border-beige-200 dark:border-dark-700 relative z-[90]">
+      <header className="flex items-center justify-between px-4 sm:px-6 py-3 md:py-4 shadow-lg max-w-5xl rounded-full mx-auto w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] bg-white/90 dark:bg-dark-800/95 backdrop-blur-md mt-3 sm:mt-4 border border-beige-200 dark:border-dark-700 sticky top-3 sm:top-4 z-[90]">
         <Link
           to="/"
           className="flex items-center flex-shrink-0"
