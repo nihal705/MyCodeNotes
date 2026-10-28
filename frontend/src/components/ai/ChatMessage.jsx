@@ -9,14 +9,16 @@ import StreamingText from "./StreamingText";
 import NextraLogo from "./NextraLogo";
 import { aiApi } from "../../api/ai";
 
-function CodeBlock({ inline, className, children }) {
+function CodeBlock({ className, children }) {
   const [copied, setCopied] = useState(false);
   const match = /language-(\w+)/.exec(className || "");
-  const code = String(children).replace(/\n$/, "");
+  const code = String(children || "").replace(/\n$/, "");
+  // Block code if language tag exists or if content spans multiple lines
+  const isBlock = Boolean(match || String(children || "").includes("\n"));
 
-  if (inline) {
+  if (!isBlock) {
     return (
-      <code className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-dark-700 text-[0.85em] font-mono">
+      <code className="px-1.5 py-0.5 mx-0.5 rounded bg-amber-500/10 dark:bg-amber-400/10 text-amber-800 dark:text-amber-300 font-mono text-[0.85em] font-medium border border-amber-500/20 dark:border-amber-400/20 inline-block align-baseline">
         {children}
       </code>
     );
@@ -30,9 +32,9 @@ function CodeBlock({ inline, className, children }) {
   };
 
   return (
-    <div className="my-3 rounded-xl overflow-hidden border border-gray-200 dark:border-dark-700 shadow-sm">
-      <div className="flex justify-between items-center px-3 py-1.5 bg-gray-800 dark:bg-black/40 text-xs">
-        <span className="text-gray-400 font-mono">{match?.[1] || "code"}</span>
+    <div className="my-3 rounded-xl overflow-hidden border border-gray-200 dark:border-dark-700 shadow-sm not-prose">
+      <div className="flex justify-between items-center px-3 py-1.5 bg-gray-800 dark:bg-black/50 text-xs">
+        <span className="text-gray-400 font-mono font-medium">{match?.[1] || "code"}</span>
         <button
           onClick={copy}
           className="text-gray-400 hover:text-white flex items-center gap-1 transition-colors"
@@ -41,7 +43,7 @@ function CodeBlock({ inline, className, children }) {
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
-      <pre className="bg-gray-900 text-gray-100 p-3 overflow-x-auto text-xs leading-relaxed">
+      <pre className="bg-gray-900 text-gray-100 p-3 overflow-x-auto text-xs leading-relaxed font-mono">
         <code>{code}</code>
       </pre>
     </div>
@@ -105,32 +107,73 @@ export default function ChatMessage({
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
+                pre: ({ children }) => <>{children}</>,
                 code: CodeBlock,
                 p: ({ children }) => (
-                  <p className="mb-2 last:mb-0 whitespace-pre-wrap">{children}</p>
+                  <p className="mb-2.5 last:mb-0 leading-relaxed text-gray-800 dark:text-gray-200">{children}</p>
                 ),
                 ul: ({ children }) => (
-                  <ul className="list-disc list-inside mb-2 space-y-0.5">{children}</ul>
+                  <ul className="list-disc pl-5 mb-2.5 space-y-1">{children}</ul>
                 ),
                 ol: ({ children }) => (
-                  <ol className="list-decimal list-inside mb-2 space-y-0.5">{children}</ol>
+                  <ol className="list-decimal pl-5 mb-2.5 space-y-1">{children}</ol>
                 ),
-                li: ({ children }) => <li className="ml-1">{children}</li>,
+                li: ({ children }) => <li className="leading-relaxed">{children}</li>,
                 h1: ({ children }) => (
-                  <h1 className="text-base font-bold mb-2 mt-3">{children}</h1>
+                  <h1 className="text-base font-bold mb-2 mt-3 text-gray-900 dark:text-white">{children}</h1>
                 ),
                 h2: ({ children }) => (
-                  <h2 className="text-sm font-bold mb-1.5 mt-3">{children}</h2>
+                  <h2 className="text-sm font-bold mb-1.5 mt-3 text-gray-900 dark:text-white">{children}</h2>
                 ),
                 h3: ({ children }) => (
-                  <h3 className="text-sm font-semibold mb-1 mt-2">{children}</h3>
+                  <h3 className="text-sm font-semibold mb-1 mt-2 text-gray-900 dark:text-white">{children}</h3>
+                ),
+                blockquote: ({ children }) => (
+                  <blockquote className="border-l-4 border-leetcode-yellow/70 pl-3 my-2.5 italic text-gray-600 dark:text-gray-400">
+                    {children}
+                  </blockquote>
+                ),
+                table: ({ children }) => (
+                  <div className="my-3 overflow-x-auto rounded-lg border border-gray-200 dark:border-dark-700 shadow-sm">
+                    <table className="min-w-full text-xs text-left divide-y divide-gray-200 dark:divide-dark-700">
+                      {children}
+                    </table>
+                  </div>
+                ),
+                thead: ({ children }) => (
+                  <thead className="bg-gray-50 dark:bg-dark-900/60 font-semibold text-gray-700 dark:text-gray-200">
+                    {children}
+                  </thead>
+                ),
+                tbody: ({ children }) => (
+                  <tbody className="divide-y divide-gray-200 dark:divide-dark-700 bg-white dark:bg-dark-800">
+                    {children}
+                  </tbody>
+                ),
+                tr: ({ children }) => (
+                  <tr className="hover:bg-gray-50/50 dark:hover:bg-dark-700/40 transition-colors">
+                    {children}
+                  </tr>
+                ),
+                th: ({ children }) => (
+                  <th className="px-3 py-2 text-xs font-semibold text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                    {children}
+                  </th>
+                ),
+                td: ({ children }) => (
+                  <td className="px-3 py-1.5 text-xs text-gray-700 dark:text-gray-300 align-middle">
+                    {children}
+                  </td>
+                ),
+                hr: () => (
+                  <hr className="my-3 border-gray-200 dark:border-dark-700" />
                 ),
                 a: ({ href, children }) => (
                   <a
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-leetcode-yellow underline"
+                    className="text-leetcode-yellow hover:underline font-medium"
                   >
                     {children}
                   </a>
