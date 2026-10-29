@@ -277,7 +277,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                     ch = _get_entity_chunks(db, "note", note.id, note)
                     if ch:
                         chunks.extend(ch)
-                        titles.append(f"Note: {note.title}")
+                        titles.append(f"Note '{val}': {note.title}")
 
             elif stype == "leetcode":
                 if val.isdigit():
@@ -291,7 +291,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                         ch = _get_entity_chunks(db, "leetcode", prob.id, prob)
                         if ch:
                             chunks.extend(ch)
-                            titles.append(f"Problem #{prob.leetcode_id}: {prob.title}")
+                            titles.append(f"Problem at '/problems/{val}' (Site ID {prob.id}, LeetCode #{prob.leetcode_id}: {prob.title})")
 
             elif stype == "concept":
                 if val.isdigit():
@@ -301,7 +301,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                         ch = _get_entity_chunks(db, "concept", conc.id, conc)
                         if ch:
                             chunks.extend(ch)
-                            titles.append(f"Concept: {conc.name}")
+                            titles.append(f"Concept at '/concepts/{val}' (ID {conc.id}: {conc.name})")
 
             elif stype == "practice":
                 if val.isdigit():
@@ -311,7 +311,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                         ch = _get_entity_chunks(db, "practice", prac.id, prac)
                         if ch:
                             chunks.extend(ch)
-                            titles.append(f"Practice Problem: {prac.title}")
+                            titles.append(f"Practice Problem at '/practice/{val}' (ID {prac.id}: {prac.title})")
 
     # 2. Keyword & Title search (if user mentions a section or requests by name)
     q_lower = user_message.lower()
@@ -330,7 +330,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                 seen_entities.add(ent_key)
                 ch = _get_entity_chunks(db, "note", n.id, n)
                 chunks.extend(ch)
-                titles.append(f"Note: {n.title}")
+                titles.append(f"Note '{n.slug}': {n.title}")
                 break
             elif ("note" in q_lower or "guide" in q_lower or "section" in q_lower) and any(
                 w in q_lower for w in slug_words + title_words
@@ -338,7 +338,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                 seen_entities.add(ent_key)
                 ch = _get_entity_chunks(db, "note", n.id, n)
                 chunks.extend(ch)
-                titles.append(f"Note: {n.title}")
+                titles.append(f"Note '{n.slug}': {n.title}")
                 break
     except Exception as e:
         logger.error(f"Error resolving note keywords: {e}")
@@ -355,7 +355,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                     seen_entities.add(ent_key)
                     ch = _get_entity_chunks(db, "concept", c.id, c)
                     chunks.extend(ch)
-                    titles.append(f"Concept: {c.name}")
+                    titles.append(f"Concept '{c.name}' (ID {c.id})")
                     break
         except Exception as e:
             logger.error(f"Error resolving concept keywords: {e}")
@@ -372,7 +372,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                     seen_entities.add(ent_key)
                     ch = _get_entity_chunks(db, "leetcode", p.id, p)
                     chunks.extend(ch)
-                    titles.append(f"Problem #{p.leetcode_id}: {p.title}")
+                    titles.append(f"Problem '{p.title}' (Site ID {p.id}, LeetCode #{p.leetcode_id})")
                     break
         except Exception as e:
             logger.error(f"Error resolving problem keywords: {e}")
@@ -389,7 +389,7 @@ def resolve_direct_entities(db: Session, user_message: str) -> Tuple[List[Dict],
                     seen_entities.add(ent_key)
                     ch = _get_entity_chunks(db, "practice", pp.id, pp)
                     chunks.extend(ch)
-                    titles.append(f"Practice Problem: {pp.title}")
+                    titles.append(f"Practice Problem '{pp.title}' (ID {pp.id})")
                     break
         except Exception as e:
             logger.error(f"Error resolving practice keywords: {e}")
@@ -405,8 +405,12 @@ def build_context_block(chunks: list) -> str:
         meta = c.get("metadata", {}) or {}
         src = meta.get("title") or meta.get("name") or "Unknown"
         field = meta.get("field", "")
+        url = meta.get("url", "")
+        stype = meta.get("source_type", "?")
+        lc_id = meta.get("leetcode_id")
+        id_info = f"LeetCode #{lc_id} (Site ID: {meta.get('source_id', '')})" if lc_id else f"Site ID: {meta.get('source_id', '')}"
         lines.append(
-            f"[{i}] ({meta.get('source_type', '?')} - {src} - {field})\n{c['content']}"
+            f"[{i}] (SOURCE: {stype.upper()} | TITLE: {src} | {id_info} | URL: {url} | FIELD: {field})\n{c['content']}"
         )
     return "\n\n".join(lines)
 
@@ -444,6 +448,18 @@ async def run_rag(
 
     # 1. Direct entity & URL resolution (links, slugs, IDs, named entities)
     direct_chunks, direct_titles = resolve_direct_entities(db, user_message)
+
+    # 1b. Conversation continuity: if current user message is a short confirmation
+    # (e.g. "yes that is only i asked", "explain it", "tell me more"), inherit entity from history!
+    if not direct_chunks and history:
+        for prev_msg in reversed(history[-4:]):
+            prev_content = prev_msg.get("content", "")
+            hist_chunks, hist_titles = resolve_direct_entities(db, prev_content)
+            if hist_chunks:
+                direct_chunks = hist_chunks
+                direct_titles = hist_titles
+                logger.info(f"[NextraAI] Inherited entity context from history: {hist_titles}")
+                break
 
     # 2. Explicit context from pinned sources (ContextPicker)
     explicit_chunks = _fetch_explicit_chunks(db, contexts or [])
@@ -499,9 +515,13 @@ async def run_rag(
 
     if direct_titles:
         system_parts.append(
-            f"The user has directly referenced: {', '.join(direct_titles)}. "
-            "You have full access to its content from MyCodeNotes below. "
-            "Thoroughly explain, summarize, or walk through it using this context."
+            f"The user has directly requested: {', '.join(direct_titles)}.\n"
+            "CRITICAL INSTRUCTIONS:\n"
+            "- The context provided below IS THE EXACT ITEM the user requested.\n"
+            "- Website database IDs in URLs (e.g., /problems/110 or /problems/103) map directly to the item provided in the context "
+            "(for example, /problems/110 IS LeetCode 2235: Add Two Integers; /problems/103 IS LeetCode 21: Merge Two Sorted Lists; /practice/244 IS Pair Sum 1).\n"
+            "- NEVER say 'I don't have notes for /problems/X, I only have Problem Y'. They are the SAME problem!\n"
+            "- Immediately explain the problem statement, intuition, algorithm, time/space complexity, and complete code implementations from the provided context."
         )
     elif contexts:
         titles = ", ".join(

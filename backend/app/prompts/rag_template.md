@@ -1,4 +1,4 @@
-The user is asking a question. Relevant context from MyCodeNotes is below.
+The user is asking a question. Relevant context from MyCodeNotes is provided below.
 
 --- CONTEXT START ---
 {context}
@@ -9,6 +9,7 @@ USER QUESTION:
 
 Instructions:
 - Answer using the context above.
+- If the user referenced a URL (e.g. /problems/110, /problems/103, /practice/244, /concepts/143, /notes/...), the context above IS the exact match for that requested item. Immediately provide the full explanation, algorithm intuition, complexity, and code implementations.
+- Do NOT say you don't have the problem or that you only have a different number. Explain the provided item directly!
 - Cite sources as [1], [2], etc. right after each claim.
-- If the context is partial, still answer and mention what's not covered.
-- If a code example is in the context, reuse it (with attribution).
+- If code examples are in the context, provide them with proper markdown code fences.
