@@ -2,30 +2,21 @@
 import logging
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.routes.auth import get_current_user
+from app.auth import get_current_admin
 from app.jobs.cleanup import run_cleanup
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/admin/ai", tags=["admin-ai"])
 
-ADMIN_EMAIL = "nihalmohammad705@gmail.com"
-
-
-def _require_admin(user):
-    if user is None or (user.tier != "admin" and user.email != ADMIN_EMAIL):
-        raise HTTPException(403, "Admin only")
-
 
 @router.get("/stats")
-def get_stats(user=Depends(get_current_user), db: Session = Depends(get_db)):
-    _require_admin(user)
-
+def get_stats(admin: dict = Depends(get_current_admin), db: Session = Depends(get_db)):
     since_24h = datetime.now(timezone.utc) - timedelta(hours=24)
     since_7d = datetime.now(timezone.utc) - timedelta(days=7)
 
@@ -101,6 +92,5 @@ def get_stats(user=Depends(get_current_user), db: Session = Depends(get_db)):
 
 
 @router.post("/cleanup")
-def trigger_cleanup(user=Depends(get_current_user), db: Session = Depends(get_db)):
-    _require_admin(user)
+def trigger_cleanup(admin: dict = Depends(get_current_admin), db: Session = Depends(get_db)):
     return run_cleanup()

@@ -9,13 +9,12 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app import models
-from app.routes.auth import get_current_user, require_user
+from app.auth import get_current_admin
+from app.routes.auth import require_user
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/invite", tags=["invite"])
-
-ADMIN_EMAIL = "nihalmohammad705@gmail.com"
 
 
 # ---------- Schemas ----------
@@ -31,10 +30,6 @@ class CreateRequest(BaseModel):
 
 
 # ---------- Helpers ----------
-def _is_admin(user) -> bool:
-    return user is not None and (user.tier == "admin" or user.email == ADMIN_EMAIL)
-
-
 def _gen_code() -> str:
     # 3 groups of 4 uppercase alphanumerics, e.g. NXTA-4K2P-9WQZ
     alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
@@ -76,9 +71,12 @@ def redeem(payload: RedeemRequest, user=Depends(require_user), db: Session = Dep
 
 # ---------- Admin: create / list ----------
 @router.post("/create")
-def create_codes(payload: CreateRequest, user=Depends(get_current_user), db: Session = Depends(get_db)):
-    if not _is_admin(user):
-        raise HTTPException(403, "Admin only")
+def create_codes(payload: CreateRequest, admin: dict = Depends(get_current_admin), db: Session = Depends(get_db)):
+    user_id = None
+    try:
+        user_id = int(admin.get("sub"))
+    except (ValueError, TypeError):
+        user_id = None
 
     created = []
     for _ in range(max(1, min(payload.count, 50))):
@@ -93,7 +91,7 @@ def create_codes(payload: CreateRequest, user=Depends(get_current_user), db: Ses
             code=code,
             tier=payload.tier,
             duration_days=payload.duration_days,
-            created_by=user.id,
+            created_by=user_id,
             expires_at=datetime.now(timezone.utc) + timedelta(days=90),
             notes=payload.notes,
         )
@@ -104,10 +102,7 @@ def create_codes(payload: CreateRequest, user=Depends(get_current_user), db: Ses
 
 
 @router.get("/list")
-def list_codes(user=Depends(get_current_user), db: Session = Depends(get_db)):
-    if not _is_admin(user):
-        raise HTTPException(403, "Admin only")
-
+def list_codes(admin: dict = Depends(get_current_admin), db: Session = Depends(get_db)):
     rows = (
         db.query(models.InviteCode)
         .order_by(models.InviteCode.id.desc())

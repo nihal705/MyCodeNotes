@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Cookie
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
 from dotenv import load_dotenv
@@ -15,6 +15,7 @@ load_dotenv()
 SECRET_KEY = os.getenv("API_SECRET_KEY", "your-secret-key-here-please-change-in-production")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440  # 24 hours
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "nihalmohammad705@gmail.com")
 
 security = HTTPBearer(auto_error=False)
 
@@ -33,26 +34,36 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 def verify_token(token: str):
-    try:
-        logger.info(f"Verifying token: {token[:20]}...")
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        logger.info(f"Token verified successfully for: {payload.get('sub')}")
-        return payload
-    except JWTError as e:
-        logger.error(f"Token verification failed: {str(e)}")
-        return None
+    secrets = [s for s in (SECRET_KEY, os.getenv("JWT_SECRET")) if s]
+    for secret in secrets:
+        try:
+            payload = jwt.decode(token, secret, algorithms=[ALGORITHM])
+            logger.info(f"Token verified successfully for: {payload.get('sub')}")
+            return payload
+        except JWTError:
+            continue
+    logger.warning("Token verification failed against all configured secrets")
+    return None
 
-async def get_current_admin(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    if credentials is None:
-        logger.warning("No credentials provided")
+async def get_current_admin(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    cookie_token: str = Cookie(default=None, alias="mc_user_token"),
+):
+    token = None
+    if credentials and credentials.credentials:
+        token = credentials.credentials
+        logger.info("Using Bearer token for admin auth")
+    elif cookie_token:
+        token = cookie_token
+        logger.info("Using cookie token for admin auth")
+
+    if not token:
+        logger.warning("No credentials or cookie token provided for admin endpoint")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
-    token = credentials.credentials
-    logger.info(f"Received token: {token[:20]}...")
     
     payload = verify_token(token)
     if payload is None:
@@ -75,5 +86,17 @@ async def get_current_admin(credentials: HTTPAuthorizationCredentials = Depends(
                 headers={"WWW-Authenticate": "Bearer"},
             )
     
-    logger.info(f"Token verified for: {payload.get('sub')}")
+    sub = str(payload.get("sub", ""))
+    email = payload.get("email", "")
+    tier = payload.get("tier", "")
+    is_admin = sub == "admin" or tier == "admin" or email == ADMIN_EMAIL
+
+    if not is_admin:
+        logger.warning(f"Forbidden: {sub} / {email} is not admin")
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required",
+        )
+
+    logger.info(f"Admin verified: sub={sub}, email={email}")
     return payload

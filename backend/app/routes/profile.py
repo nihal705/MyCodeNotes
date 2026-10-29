@@ -56,6 +56,7 @@ def update_bulk_profile_settings(
     return {"updated": updated}
 
 # ✅ 2. Then the GET all route
+@router.get("")
 @router.get("/")
 def get_all_profile_settings(db: Session = Depends(get_db)):
     """Get all profile settings"""

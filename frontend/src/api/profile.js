@@ -21,7 +21,7 @@ export const profileApi = {
 
   // Update multiple profile settings (Admin only)
   updateBulk: async (settings) => {
-    const response = await apiClient.put('/api/profile/bulk', settings)
+    const response = await apiClient.put('/api/profile/bulk', { settings })
     return response.data
   },
 }

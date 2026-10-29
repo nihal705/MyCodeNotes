@@ -128,27 +128,10 @@ const handleNotesSearch = (query) => {
 
   const updateProfileSettings = async () => {
     try {
-      const token = localStorage.getItem('adminToken')
-      const response = await fetch('http://localhost:8000/api/profile/bulk', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          settings: profileSettings
-        })
-      })
-      
-      const data = await response.json()
-      
-      if (response.ok) {
-        toast.success('Profile settings updated!')
-        setEditingProfile(false)
-        await fetchProfileSettings()
-      } else {
-        toast.error('Failed to update profile settings')
-      }
+      await profileApi.updateBulk(profileSettings)
+      toast.success('Profile settings updated!')
+      setEditingProfile(false)
+      await fetchProfileSettings()
     } catch (error) {
       toast.error('Failed to update profile settings')
     }

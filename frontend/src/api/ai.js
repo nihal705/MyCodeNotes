@@ -1,11 +1,17 @@
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
 async function request(path, options = {}) {
+  const token = typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
+  const headers = {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(options.headers || {}),
+  };
   const res = await fetch(`${API_BASE}${path}`, {
     method: "GET",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
     ...options,
+    headers,
   });
   const text = await res.text();
   let data = null;
