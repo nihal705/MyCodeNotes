@@ -135,10 +135,10 @@ export default function NextraAIDrawer() {
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
               className="
     fixed z-[80] flex flex-col shadow-2xl bg-gradient-to-b from-cream-50 to-white dark:from-dark-900 dark:to-dark-950
-    top-[74px] right-0 h-[calc(100dvh-74px)] w-full rounded-t-2xl
-    md:top-[92px] md:right-3 md:h-[calc(100vh-108px)] md:w-[440px]
+    top-[74px] inset-x-0 h-[calc(100dvh-74px)] w-full max-w-full overflow-hidden rounded-t-2xl
+    md:top-[92px] md:left-auto md:right-3 md:inset-x-auto md:h-[calc(100vh-108px)] md:w-[440px]
     md:rounded-2xl md:border md:border-beige-200 md:dark:border-dark-700
-    border-t md:border-t-0 border-l border-beige-200 dark:border-dark-700
+    border-t md:border-t-0 border-beige-200 dark:border-dark-700
   "
             >
               {/* Header */}
@@ -305,7 +305,7 @@ export default function NextraAIDrawer() {
 
                   <div
                     ref={scrollRef}
-                    className="flex-1 overflow-y-auto px-4 py-4"
+                    className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 py-3 sm:py-4"
                   >
                     {messages.length === 0 && !isStreaming && (
                       <div className="text-center pt-10 px-4">
@@ -353,8 +353,10 @@ export default function NextraAIDrawer() {
                     </div>
                   )}
 
-                  <div className="px-3 pt-2 pb-1 flex items-center justify-between gap-2 border-t border-beige-200 dark:border-dark-700 bg-white/70 dark:bg-dark-900/70 backdrop-blur-sm">
-                    <ModeSelector mode={mode} onChange={setMode} />
+                  <div className="px-3 pt-2 pb-1.5 flex items-center justify-between gap-2 border-t border-beige-200 dark:border-dark-700 bg-white/70 dark:bg-dark-900/70 backdrop-blur-sm shrink-0 overflow-x-auto">
+                    <div className="flex-1 min-w-0 overflow-x-auto">
+                      <ModeSelector mode={mode} onChange={setMode} />
+                    </div>
                     <button
                       onClick={() => setShowPicker(true)}
                       className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-gray-100 dark:bg-dark-700 text-gray-600 dark:text-gray-300 hover:bg-leetcode-yellow/20 hover:text-leetcode-yellow transition-colors"
@@ -368,8 +370,8 @@ export default function NextraAIDrawer() {
                     </button>
                   </div>
 
-                  <div className="p-3 pt-1 bg-white dark:bg-dark-900">
-                    <div className="flex items-end gap-2">
+                  <div className="p-2.5 sm:p-3 pt-1 bg-white dark:bg-dark-900 shrink-0 border-t border-beige-200/50 dark:border-dark-800">
+                    <div className="flex items-end gap-1.5 sm:gap-2">
                       <VoiceInput
                         onTranscript={(t) =>
                           setDraftMessage((p) => (p ? `${p} ${t}` : t))
@@ -386,37 +388,37 @@ export default function NextraAIDrawer() {
                         }}
                         rows={1}
                         placeholder="Ask NextraAI…"
-                        className="flex-1 resize-none px-3 py-2.5 text-sm rounded-xl bg-gray-100 dark:bg-dark-800 border border-transparent focus:border-leetcode-yellow focus:outline-none text-gray-900 dark:text-gray-100 max-h-32"
-                        style={{ minHeight: "42px" }}
+                        className="flex-1 min-w-0 resize-none px-3 py-2 text-[13px] sm:text-sm rounded-xl bg-gray-100 dark:bg-dark-800 border border-transparent focus:border-leetcode-yellow focus:outline-none text-gray-900 dark:text-gray-100 max-h-28"
+                        style={{ minHeight: "38px" }}
                       />
                       {isStreaming ? (
                         <button
                           onClick={abortStream}
-                          className="p-2.5 rounded-xl bg-red-500 text-white hover:bg-red-600"
+                          className="p-2 sm:p-2.5 rounded-xl bg-red-500 text-white hover:bg-red-600 shrink-0"
                           title="Stop"
                         >
-                          <FiX size={18} />
+                          <FiX size={16} />
                         </button>
                       ) : (
                         <button
                           onClick={send}
                           disabled={!draftMessage.trim()}
-                          className="p-2.5 rounded-xl bg-leetcode-yellow text-gray-900 hover:bg-yellow-500 disabled:opacity-50"
+                          className="p-2 sm:p-2.5 rounded-xl bg-leetcode-yellow text-gray-900 hover:bg-yellow-500 disabled:opacity-50 shrink-0"
                           title="Send"
                         >
-                          <FiSend size={18} />
+                          <FiSend size={16} />
                         </button>
                       )}
                     </div>
-                    <div className="flex items-center justify-between mt-1.5">
+                    <div className="flex items-center justify-between mt-1 px-0.5">
                       <button
                         onClick={() => setShowInvite(true)}
-                        className="text-[10px] text-gray-400 hover:text-leetcode-yellow"
+                        className="text-[10px] text-gray-400 hover:text-leetcode-yellow truncate"
                       >
                         Have an invite code?
                       </button>
-                      <p className="text-[10px] text-gray-400">
-                        NextraAI can make mistakes. Verify.
+                      <p className="text-[10px] text-gray-400 truncate ml-2 text-right">
+                        Verify important info.
                       </p>
                     </div>
                   </div>

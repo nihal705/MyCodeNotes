@@ -94,7 +94,7 @@ export default function NextraAIFullScreen() {
         {isFullScreen && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed top-[74px] md:top-0 left-0 right-0 bottom-0 z-[80] md:z-[100] h-[calc(100dvh-74px)] md:h-full bg-white dark:bg-[#0B0F17] flex overflow-hidden border-t md:border-t-0 border-beige-200 dark:border-dark-700"
+            className="fixed top-[74px] md:top-0 inset-x-0 md:inset-0 z-[80] md:z-[100] h-[calc(100dvh-74px)] md:h-full w-full max-w-full bg-white dark:bg-[#0B0F17] flex overflow-hidden border-t md:border-t-0 border-beige-200 dark:border-dark-700"
           >
             {/* Mobile backdrop for sidebar */}
             {sidebarOpen && (
@@ -275,8 +275,10 @@ export default function NextraAIFullScreen() {
                       ))}
                     </div>
                   )}
-                  <div className="flex items-center justify-between mb-2 gap-2">
-                    <ModeSelector mode={mode} onChange={setMode} />
+                  <div className="flex items-center justify-between mb-2 gap-2 overflow-x-auto shrink-0">
+                    <div className="flex-1 min-w-0 overflow-x-auto">
+                      <ModeSelector mode={mode} onChange={setMode} />
+                    </div>
                     <button
                       onClick={() => setShowPicker(true)}
                       className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-gray-100 dark:bg-[#1A1D21] text-gray-600 dark:text-gray-300 hover:bg-leetcode-yellow/20 hover:text-leetcode-yellow"
@@ -313,9 +315,9 @@ export default function NextraAIFullScreen() {
                       )}
                     </div>
                   </div>
-                  <div className="mt-1.5 flex items-center justify-between text-[10px] text-gray-400">
-                    <button onClick={() => setShowInvite(true)} className="hover:text-leetcode-yellow">Have an invite code?</button>
-                    <span>NextraAI can make mistakes. Verify important info.</span>
+                  <div className="mt-1 flex items-center justify-between text-[10px] text-gray-400 px-1">
+                    <button onClick={() => setShowInvite(true)} className="hover:text-leetcode-yellow truncate">Have an invite code?</button>
+                    <span className="truncate ml-2 text-right">Verify important info.</span>
                   </div>
                 </div>
               </div>

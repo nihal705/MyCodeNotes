@@ -188,10 +188,9 @@ html {
 
   /* ===== CODE BLOCK FIX ===== */
   pre,
-  code,
+  pre code,
   .code-block,
   pre *,
-  code *,
   .code-block *,
   .bg-gray-900 *,
   .bg-gray-800 * {
@@ -199,10 +198,9 @@ html {
   }
 
   .dark pre,
-  .dark code,
+  .dark pre code,
   .dark .code-block,
   .dark pre *,
-  .dark code *,
   .dark .code-block *,
   .dark .bg-gray-900 *,
   .dark .bg-gray-800 * {
