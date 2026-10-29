@@ -135,14 +135,15 @@ export default function NextraAIDrawer() {
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
               className="
     fixed z-[80] flex flex-col shadow-2xl bg-gradient-to-b from-cream-50 to-white dark:from-dark-900 dark:to-dark-950
-    top-[74px] inset-x-0 h-[calc(100dvh-74px)] w-full max-w-full overflow-hidden rounded-t-2xl
-    md:top-[92px] md:left-auto md:right-3 md:inset-x-auto md:h-[calc(100vh-108px)] md:w-[440px]
+    top-[74px] left-0 right-0 h-[calc(100dvh-74px)] w-full max-w-[100vw] min-w-0 overflow-hidden rounded-t-2xl
+    md:top-[92px] md:left-auto md:right-3 md:inset-x-auto md:h-[calc(100vh-108px)] md:w-[440px] md:max-w-[440px]
     md:rounded-2xl md:border md:border-beige-200 md:dark:border-dark-700
     border-t md:border-t-0 border-beige-200 dark:border-dark-700
   "
+              style={{ maxWidth: "100vw" }}
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-beige-200 dark:border-dark-700 bg-white/80 dark:bg-[#0B0F17]/90 backdrop-blur-md">
+              <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 border-b border-beige-200 dark:border-dark-700 bg-white/80 dark:bg-[#0B0F17]/90 backdrop-blur-md w-full min-w-0 shrink-0">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-leetcode-yellow/20 to-yellow-500/10 border border-leetcode-yellow/30 flex items-center justify-center shrink-0">
                     <NextraLogo size={20} glow />
@@ -305,7 +306,7 @@ export default function NextraAIDrawer() {
 
                   <div
                     ref={scrollRef}
-                    className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-4 py-3 sm:py-4"
+                    className="flex-1 min-w-0 w-full max-w-full overflow-y-auto overflow-x-hidden px-2.5 sm:px-4 py-2.5 sm:py-3.5"
                   >
                     {messages.length === 0 && !isStreaming && (
                       <div className="text-center pt-10 px-4">
@@ -353,7 +354,7 @@ export default function NextraAIDrawer() {
                     </div>
                   )}
 
-                  <div className="px-3 pt-2 pb-1.5 flex items-center justify-between gap-2 border-t border-beige-200 dark:border-dark-700 bg-white/70 dark:bg-dark-900/70 backdrop-blur-sm shrink-0 overflow-x-auto">
+                  <div className="px-2.5 sm:px-3 pt-1.5 pb-1 flex items-center justify-between gap-1.5 border-t border-beige-200 dark:border-dark-700 bg-white/70 dark:bg-dark-900/70 backdrop-blur-sm shrink-0 overflow-x-auto w-full min-w-0">
                     <div className="flex-1 min-w-0 overflow-x-auto">
                       <ModeSelector mode={mode} onChange={setMode} />
                     </div>
@@ -370,7 +371,7 @@ export default function NextraAIDrawer() {
                     </button>
                   </div>
 
-                  <div className="p-2.5 sm:p-3 pt-1 bg-white dark:bg-dark-900 shrink-0 border-t border-beige-200/50 dark:border-dark-800">
+                  <div className="p-2 sm:p-3 pt-1 bg-white dark:bg-dark-900 shrink-0 border-t border-beige-200/50 dark:border-dark-800 w-full min-w-0">
                     <div className="flex items-end gap-1.5 sm:gap-2">
                       <VoiceInput
                         onTranscript={(t) =>
@@ -388,8 +389,8 @@ export default function NextraAIDrawer() {
                         }}
                         rows={1}
                         placeholder="Ask NextraAI…"
-                        className="flex-1 min-w-0 resize-none px-3 py-2 text-[13px] sm:text-sm rounded-xl bg-gray-100 dark:bg-dark-800 border border-transparent focus:border-leetcode-yellow focus:outline-none text-gray-900 dark:text-gray-100 max-h-28"
-                        style={{ minHeight: "38px" }}
+                        className="flex-1 min-w-0 resize-none px-2.5 sm:px-3 py-1.5 sm:py-2 text-[12px] sm:text-sm rounded-xl bg-gray-100 dark:bg-dark-800 border border-transparent focus:border-leetcode-yellow focus:outline-none text-gray-900 dark:text-gray-100 max-h-24 sm:max-h-28"
+                        style={{ minHeight: "36px" }}
                       />
                       {isStreaming ? (
                         <button
