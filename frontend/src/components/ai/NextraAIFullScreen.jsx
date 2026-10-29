@@ -107,10 +107,8 @@ export default function NextraAIFullScreen() {
             <aside
               className={`
                 fixed md:static inset-y-0 left-0 z-40 md:z-auto
-                ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-                ${sidebarOpen ? "md:w-[260px]" : "md:w-0"}
-                w-[280px] md:w-[260px]
-                shrink-0 bg-[#F7F7F8] dark:bg-[#14161A] border-r border-gray-200 dark:border-[#1F2328]
+                ${sidebarOpen ? "translate-x-0 w-[280px] md:w-[260px] border-r" : "-translate-x-full w-[280px] md:w-0 md:translate-x-0 border-r-0"}
+                shrink-0 bg-[#F7F7F8] dark:bg-[#14161A] border-gray-200 dark:border-[#1F2328]
                 transition-all duration-300 flex flex-col shadow-2xl md:shadow-none overflow-hidden
               `}
             >
@@ -217,10 +215,14 @@ export default function NextraAIFullScreen() {
                 <div className="flex items-center gap-2 min-w-0">
                   <button
                     onClick={toggleSidebar}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1A1D21] border border-gray-200 dark:border-dark-700 shrink-0"
-                    title="Chats & History"
+                    className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-colors shrink-0 ${
+                      sidebarOpen
+                        ? "bg-leetcode-yellow/10 border-leetcode-yellow/40 text-leetcode-yellow"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1A1D21] border-gray-200 dark:border-dark-700"
+                    }`}
+                    title={sidebarOpen ? "Hide history" : "Open history"}
                   >
-                    <FiClock size={15} className="text-leetcode-yellow" />
+                    <FiClock size={15} className={sidebarOpen ? "text-leetcode-yellow" : "text-gray-500"} />
                     <span className="text-xs font-semibold">Chats</span>
                   </button>
                   <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">NextraAI</span>
