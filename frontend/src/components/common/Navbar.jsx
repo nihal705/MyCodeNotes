@@ -26,7 +26,7 @@ const Navbar = () => {
   const [userDropdown, setUserDropdown] = useState(false);
 
   const { user, isAuthenticated, logout } = useUser();
-  const { openDrawer } = useAIChat();
+  const { openDrawer, closeDrawer } = useAIChat();
 
   const [theme, setTheme] = useState(() => {
     if (typeof window !== "undefined") {
@@ -85,6 +85,13 @@ const Navbar = () => {
     setActiveMenu(null);
   };
 
+  const handleNavClick = () => {
+    closeMenu();
+    if (typeof closeDrawer === 'function') {
+      closeDrawer();
+    }
+  };
+
   const handleLogout = async () => {
     await logout();
     setUserDropdown(false);
@@ -96,7 +103,7 @@ const Navbar = () => {
         <Link
           to="/"
           className="flex items-center flex-shrink-0"
-          onClick={closeMenu}
+          onClick={handleNavClick}
         >
           <Logo />
         </Link>
@@ -107,6 +114,7 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
+                onClick={() => { if (typeof closeDrawer === 'function' && window.innerWidth < 768) closeDrawer(); }}
                 className={`hover:text-leetcode-yellow transition-colors duration-200 whitespace-nowrap ${
                   isActive(link.path)
                     ? "text-leetcode-yellow font-semibold"
@@ -209,7 +217,7 @@ const Navbar = () => {
 
                     <Link
                       to="/profile"
-                      onClick={() => setUserDropdown(false)}
+                      onClick={() => { setUserDropdown(false); if (typeof closeDrawer === 'function') closeDrawer(); }}
                       className="w-full text-left px-3 py-2 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors flex items-center gap-2"
                     >
                       <FiUserIcon size={12} /> My Profile
@@ -278,7 +286,7 @@ const Navbar = () => {
                   <Link
                     key={link.path}
                     to={link.path}
-                    onClick={closeMenu}
+                    onClick={handleNavClick}
                     className={`hover:text-leetcode-yellow transition-colors duration-200 ${
                       isActive(link.path)
                         ? "text-leetcode-yellow font-bold"
@@ -305,7 +313,7 @@ const Navbar = () => {
                   <>
                     <Link
                       to="/profile"
-                      onClick={closeMenu}
+                      onClick={handleNavClick}
                       className={`hover:text-leetcode-yellow transition-colors duration-200 ${
                         isActive("/profile")
                           ? "text-leetcode-yellow font-bold"
@@ -353,7 +361,7 @@ const Navbar = () => {
                 </button>
                 <Link
                   to="/notes"
-                  onClick={closeMenu}
+                  onClick={handleNavClick}
                   className={`hover:text-leetcode-yellow transition-colors duration-200 ${
                     location.pathname === "/notes"
                       ? "text-leetcode-yellow font-bold"
@@ -367,7 +375,7 @@ const Navbar = () => {
                   <Link
                     key={note.id}
                     to={`/notes/${note.slug}`}
-                    onClick={closeMenu}
+                    onClick={handleNavClick}
                     className={`hover:text-leetcode-yellow transition-colors duration-200 ${
                       location.pathname === `/notes/${note.slug}`
                         ? "text-leetcode-yellow font-bold"

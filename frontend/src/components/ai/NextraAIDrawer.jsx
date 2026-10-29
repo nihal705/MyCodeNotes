@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiX,
@@ -60,6 +61,17 @@ export default function NextraAIDrawer() {
   usePageContext();
 
   const [showHistory, setShowHistory] = useState(false);
+  const location = useLocation();
+  const prevPathRef = useRef(location.pathname);
+
+  useEffect(() => {
+    if (prevPathRef.current !== location.pathname) {
+      prevPathRef.current = location.pathname;
+      if (typeof window !== "undefined" && window.innerWidth < 768) {
+        closeDrawer();
+      }
+    }
+  }, [location.pathname, closeDrawer]);
   const [confirm, setConfirm] = useState({ open: false, id: null });
   const scrollRef = useRef(null);
 
@@ -123,10 +135,10 @@ export default function NextraAIDrawer() {
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
               className="
     fixed z-[80] flex flex-col shadow-2xl bg-gradient-to-b from-cream-50 to-white dark:from-dark-900 dark:to-dark-950
-    top-0 right-0 h-full w-full
+    top-[74px] right-0 h-[calc(100dvh-74px)] w-full rounded-t-2xl
     md:top-[92px] md:right-3 md:h-[calc(100vh-108px)] md:w-[440px]
     md:rounded-2xl md:border md:border-beige-200 md:dark:border-dark-700
-    border-l border-beige-200 dark:border-dark-700
+    border-t md:border-t-0 border-l border-beige-200 dark:border-dark-700
   "
             >
               {/* Header */}
@@ -150,7 +162,7 @@ export default function NextraAIDrawer() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-0.5">
+                <div className="flex items-center gap-0.5 shrink-0">
                   {isAuthenticated && (
                     <>
                       <button
@@ -158,21 +170,25 @@ export default function NextraAIDrawer() {
                           startNewChat();
                           setShowHistory(false);
                         }}
-                        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
+                        className="p-1.5 sm:p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
                         title="New chat"
                       >
                         <FiPlus size={16} />
                       </button>
                       <button
                         onClick={openHistory}
-                        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
+                        className={`p-1.5 sm:p-2 rounded-lg transition-colors ${
+                          showHistory
+                            ? "text-leetcode-yellow bg-yellow-500/10"
+                            : "text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
+                        }`}
                         title="History"
                       >
                         <FiClock size={16} />
                       </button>
                       <button
                         onClick={handleExport}
-                        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
+                        className="p-1.5 sm:p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
                         title="Export PDF"
                       >
                         <FiDownload size={16} />
@@ -181,14 +197,14 @@ export default function NextraAIDrawer() {
                   )}
                   <button
                     onClick={toggleFullScreen}
-                    className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
+                    className="p-1.5 sm:p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
                     title="Full screen"
                   >
                     <FiMaximize2 size={16} />
                   </button>
                   <button
                     onClick={closeDrawer}
-                    className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
+                    className="p-1.5 sm:p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-dark-800"
                     title="Close"
                   >
                     <FiX size={18} />
@@ -201,16 +217,27 @@ export default function NextraAIDrawer() {
                 <AuthModal />
               ) : showHistory ? (
                 <div className="flex-1 overflow-y-auto p-3">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-xs font-semibold text-gray-600 dark:text-gray-400">
-                      Recent chats
+                  <div className="flex items-center justify-between mb-3 px-1">
+                    <h4 className="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                      <FiClock size={14} className="text-leetcode-yellow" /> Recent chats
                     </h4>
-                    <button
-                      onClick={() => setShowHistory(false)}
-                      className="text-xs text-leetcode-yellow hover:underline"
-                    >
-                      Back
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          startNewChat();
+                          setShowHistory(false);
+                        }}
+                        className="text-xs px-2.5 py-1 rounded-md bg-leetcode-yellow/10 text-leetcode-yellow font-medium hover:bg-leetcode-yellow/20"
+                      >
+                        + New chat
+                      </button>
+                      <button
+                        onClick={() => setShowHistory(false)}
+                        className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 px-2 py-1"
+                      >
+                        Back
+                      </button>
+                    </div>
                   </div>
                   {loadingHistory ? (
                     <LoadingSpinner />

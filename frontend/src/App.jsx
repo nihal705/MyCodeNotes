@@ -38,7 +38,7 @@ function AppShell() {
 
   return (
     <div className="min-h-screen flex flex-col bg-cream-50 dark:bg-black">
-      {!isFullScreen && <Navbar />}
+      <Navbar />
       {!isFullScreen && <OfflineBanner />}
       <main className={`flex-grow w-full ${isFullScreen ? "hidden" : "py-8"}`}>
         <Routes>

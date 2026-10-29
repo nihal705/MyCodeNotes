@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiX, FiPlus, FiSend, FiTrash2, FiDownload, FiTag, FiMenu, FiMessageSquare, FiLogOut, FiMinimize2 } from "react-icons/fi";
+import { FiX, FiPlus, FiSend, FiTrash2, FiDownload, FiTag, FiMenu, FiMessageSquare, FiLogOut, FiMinimize2, FiClock } from "react-icons/fi";
 import toast from "react-hot-toast";
 
 import { useAIChat } from "../../contexts/AIContext";
@@ -28,6 +29,23 @@ export default function NextraAIFullScreen() {
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
   const [confirm, setConfirm] = useState({ open: false, id: null });
+  const location = useLocation();
+  const prevPathRef = useRef(location.pathname);
+
+  useEffect(() => {
+    if (prevPathRef.current !== location.pathname) {
+      prevPathRef.current = location.pathname;
+      if (typeof window !== "undefined" && window.innerWidth < 768) {
+        closeDrawer();
+      }
+    }
+  }, [location.pathname, closeDrawer]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 768 && isFullScreen) {
+      if (sidebarOpen) toggleSidebar();
+    }
+  }, [isFullScreen]);
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -76,21 +94,51 @@ export default function NextraAIFullScreen() {
         {isFullScreen && (
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-white dark:bg-[#0B0F17] flex overflow-hidden"
+            className="fixed top-[74px] md:top-0 left-0 right-0 bottom-0 z-[80] md:z-[100] h-[calc(100dvh-74px)] md:h-full bg-white dark:bg-[#0B0F17] flex overflow-hidden border-t md:border-t-0 border-beige-200 dark:border-dark-700"
           >
-            <aside className={`${sidebarOpen ? "w-[260px]" : "w-0"} shrink-0 bg-[#F7F7F8] dark:bg-[#14161A] border-r border-gray-200 dark:border-[#1F2328] transition-all duration-300 overflow-hidden flex flex-col`}>
-              <div className="flex flex-col h-full w-[260px]">
-                <div className="px-4 py-4 flex items-center gap-2.5 border-b border-gray-200 dark:border-[#1F2328]">
-                  <NextraLogo size={24} glow />
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight">NextraAI</p>
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">by MyCodeNotes</p>
+            {/* Mobile backdrop for sidebar */}
+            {sidebarOpen && (
+              <div
+                onClick={toggleSidebar}
+                className="md:hidden fixed inset-0 bg-black/50 z-30 transition-opacity"
+              />
+            )}
+            <aside
+              className={`
+                fixed md:static inset-y-0 left-0 z-40 md:z-auto
+                ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+                ${sidebarOpen ? "md:w-[260px]" : "md:w-0"}
+                w-[280px] md:w-[260px]
+                shrink-0 bg-[#F7F7F8] dark:bg-[#14161A] border-r border-gray-200 dark:border-[#1F2328]
+                transition-all duration-300 flex flex-col shadow-2xl md:shadow-none overflow-hidden
+              `}
+            >
+              <div className="flex flex-col h-full w-[280px] md:w-[260px]">
+                <div className="px-4 py-4 flex items-center justify-between border-b border-gray-200 dark:border-[#1F2328]">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <NextraLogo size={24} glow />
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight">NextraAI</p>
+                      <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">by MyCodeNotes</p>
+                    </div>
                   </div>
+                  <button
+                    onClick={toggleSidebar}
+                    className="md:hidden p-1.5 rounded-lg text-gray-500 hover:bg-gray-200 dark:hover:bg-[#1A1D21]"
+                    title="Close sidebar"
+                  >
+                    <FiX size={18} />
+                  </button>
                 </div>
 
                 <div className="p-3">
                   <button
-                    onClick={startNewChat}
+                    onClick={() => {
+                      startNewChat();
+                      if (typeof window !== "undefined" && window.innerWidth < 768) {
+                        toggleSidebar();
+                      }
+                    }}
                     className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white dark:bg-[#1A1D21] border border-gray-200 dark:border-[#26292E] hover:border-leetcode-yellow transition-all text-sm font-medium text-gray-800 dark:text-gray-200"
                   >
                     <FiPlus size={16} className="text-leetcode-yellow" /> New chat
@@ -113,7 +161,12 @@ export default function NextraAIFullScreen() {
                                 ? "bg-white dark:bg-[#1A1D21] border border-gray-200 dark:border-[#26292E]"
                                 : "hover:bg-white/70 dark:hover:bg-[#1A1D21]/60"
                             }`}
-                            onClick={() => loadConversation(c)}
+                            onClick={() => {
+                              loadConversation(c);
+                              if (typeof window !== "undefined" && window.innerWidth < 768) {
+                                toggleSidebar();
+                              }
+                            }}
                           >
                             <FiMessageSquare size={14} className="text-gray-400 shrink-0" />
                             <span className="flex-1 min-w-0 text-xs font-medium text-gray-700 dark:text-gray-300 truncate">{c.title || "Untitled"}</span>
@@ -159,20 +212,25 @@ export default function NextraAIFullScreen() {
             </aside>
 
             <main className="flex-1 flex flex-col min-w-0 bg-white dark:bg-[#0B0F17]">
-              <header className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 dark:border-[#1F2328] bg-white/80 dark:bg-[#0B0F17]/80 backdrop-blur-md">
-                <div className="flex items-center gap-2">
-                  <button onClick={toggleSidebar} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title={sidebarOpen ? "Collapse" : "Open"}>
-                    <FiMenu size={16} />
+              <header className="flex items-center justify-between px-3 sm:px-4 py-2.5 border-b border-gray-200 dark:border-[#1F2328] bg-white/80 dark:bg-[#0B0F17]/80 backdrop-blur-md">
+                <div className="flex items-center gap-2 min-w-0">
+                  <button
+                    onClick={toggleSidebar}
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#1A1D21] border border-gray-200 dark:border-dark-700 shrink-0"
+                    title="Chats & History"
+                  >
+                    <FiClock size={15} className="text-leetcode-yellow" />
+                    <span className="text-xs font-semibold">Chats</span>
                   </button>
-                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">NextraAI</span>
+                  <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">NextraAI</span>
                   {mode !== "normal" && (
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 capitalize">{mode.replace("_", " ")}</span>
+                    <span className="hidden sm:inline text-[10px] px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 capitalize">{mode.replace("_", " ")}</span>
                   )}
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 shrink-0">
                   <button onClick={handleExport} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title="Export PDF"><FiDownload size={16} /></button>
-                  <button onClick={toggleFullScreen} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title="Restore to sidebar"><FiMinimize2 size={16} /></button>
-                  <button onClick={closeDrawer} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title="Exit (Esc)"><FiX size={18} /></button>
+                  <button onClick={toggleFullScreen} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title="Restore to small window"><FiMinimize2 size={16} /></button>
+                  <button onClick={closeDrawer} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title="Minimize / Close"><FiX size={18} /></button>
                 </div>
               </header>
 
