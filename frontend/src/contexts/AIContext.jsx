@@ -20,6 +20,7 @@ export function AIProvider({ children }) {
 
   // Chat data
   const [messages, setMessages] = useState([]);
+  const [draftMessage, setDraftMessage] = useState("");
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [conversations, setConversations] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
@@ -86,6 +87,7 @@ export function AIProvider({ children }) {
   const startNewChat = useCallback(() => {
     setCurrentConversationId(null);
     setMessages([]);
+    setDraftMessage("");
     setPinnedContexts([]);
     setMode("normal");
     setStreamingText("");
@@ -285,6 +287,8 @@ export function AIProvider({ children }) {
     setShowInvite,
     // Chat data
     messages,
+    draftMessage,
+    setDraftMessage,
     currentConversationId,
     conversations,
     loadingHistory,

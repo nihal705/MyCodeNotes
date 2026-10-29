@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiX, FiPlus, FiSend, FiTrash2, FiDownload, FiTag, FiMenu, FiMessageSquare, FiLogOut } from "react-icons/fi";
+import { FiX, FiPlus, FiSend, FiTrash2, FiDownload, FiTag, FiMenu, FiMessageSquare, FiLogOut, FiMinimize2 } from "react-icons/fi";
 import toast from "react-hot-toast";
 
 import { useAIChat } from "../../contexts/AIContext";
@@ -15,8 +15,8 @@ import { downloadChatAsPDF } from "../../utils/chatPdf";
 
 export default function NextraAIFullScreen() {
   const {
-    isFullScreen, sidebarOpen, toggleSidebar, closeDrawer,
-    messages, currentConversationId, conversations, loadingHistory,
+    isFullScreen, toggleFullScreen, sidebarOpen, toggleSidebar, closeDrawer,
+    messages, draftMessage, setDraftMessage, currentConversationId, conversations, loadingHistory,
     pinnedContexts, unpinContext, mode, setMode, usage,
     isStreaming, streamingText, streamingCitations, streamingTier,
     startNewChat, handleSend, abortStream,
@@ -63,8 +63,9 @@ export default function NextraAIFullScreen() {
   const onKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      const val = e.target.value;
-      e.target.value = "";
+      const val = draftMessage.trim();
+      if (!val) return;
+      setDraftMessage("");
       handleSend(val);
     }
   };
@@ -170,6 +171,7 @@ export default function NextraAIFullScreen() {
                 </div>
                 <div className="flex items-center gap-1">
                   <button onClick={handleExport} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title="Export PDF"><FiDownload size={16} /></button>
+                  <button onClick={toggleFullScreen} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title="Restore to sidebar"><FiMinimize2 size={16} /></button>
                   <button onClick={closeDrawer} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-[#1A1D21]" title="Exit (Esc)"><FiX size={18} /></button>
                 </div>
               </header>
@@ -230,6 +232,8 @@ export default function NextraAIFullScreen() {
                   <div className="relative rounded-2xl border border-gray-300 dark:border-[#26292E] bg-white dark:bg-[#14161A] shadow-sm focus-within:border-leetcode-yellow focus-within:shadow-md transition-all">
                     <textarea
                       ref={inputRef}
+                      value={draftMessage}
+                      onChange={(e) => setDraftMessage(e.target.value)}
                       onKeyDown={onKeyDown}
                       rows={1}
                       placeholder={mode === "interview" ? "Say 'start' to begin a mock interview…" : mode === "code_review" ? "Paste your code and I'll review it…" : "Message NextraAI…"}
@@ -237,13 +241,14 @@ export default function NextraAIFullScreen() {
                       style={{ minHeight: "52px" }}
                     />
                     <div className="absolute right-2 bottom-2 flex items-center gap-1">
-                      <VoiceInput onTranscript={(t) => { const el = inputRef.current; if (el) el.value = (el.value ? `${el.value} ` : "") + t; }} />
+                      <VoiceInput onTranscript={(t) => setDraftMessage((prev) => (prev ? `${prev} ` : "") + t)} />
                       {isStreaming ? (
                         <button onClick={abortStream} className="p-2 rounded-lg bg-red-500 text-white hover:bg-red-600"><FiX size={16} /></button>
                       ) : (
                         <button
-                          onClick={() => { const el = inputRef.current; if (!el) return; const v = el.value; el.value = ""; handleSend(v); }}
-                          className="p-2 rounded-lg bg-leetcode-yellow text-gray-900 hover:bg-yellow-500"
+                          onClick={() => { const v = draftMessage.trim(); if (!v) return; setDraftMessage(""); handleSend(v); }}
+                          disabled={!draftMessage.trim()}
+                          className="p-2 rounded-lg bg-leetcode-yellow text-gray-900 hover:bg-yellow-500 disabled:opacity-50"
                         >
                           <FiSend size={16} />
                         </button>

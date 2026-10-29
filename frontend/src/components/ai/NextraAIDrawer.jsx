@@ -33,6 +33,8 @@ export default function NextraAIDrawer() {
     closeDrawer,
     toggleFullScreen,
     messages,
+    draftMessage,
+    setDraftMessage,
     conversations,
     loadingHistory,
     pinnedContexts,
@@ -57,7 +59,6 @@ export default function NextraAIDrawer() {
   const { isAuthenticated } = useUser();
   usePageContext();
 
-  const [input, setInput] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [confirm, setConfirm] = useState({ open: false, id: null });
   const scrollRef = useRef(null);
@@ -80,9 +81,9 @@ export default function NextraAIDrawer() {
 
   // ---------- HANDLERS ----------
   const send = () => {
-    const val = input.trim();
+    const val = draftMessage.trim();
     if (!val) return;
-    setInput("");
+    setDraftMessage("");
     handleSend(val);
   };
 
@@ -344,12 +345,12 @@ export default function NextraAIDrawer() {
                     <div className="flex items-end gap-2">
                       <VoiceInput
                         onTranscript={(t) =>
-                          setInput((p) => (p ? `${p} ${t}` : t))
+                          setDraftMessage((p) => (p ? `${p} ${t}` : t))
                         }
                       />
                       <textarea
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
+                        value={draftMessage}
+                        onChange={(e) => setDraftMessage(e.target.value)}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" && !e.shiftKey) {
                             e.preventDefault();
@@ -372,7 +373,7 @@ export default function NextraAIDrawer() {
                       ) : (
                         <button
                           onClick={send}
-                          disabled={!input.trim()}
+                          disabled={!draftMessage.trim()}
                           className="p-2.5 rounded-xl bg-leetcode-yellow text-gray-900 hover:bg-yellow-500 disabled:opacity-50"
                           title="Send"
                         >
