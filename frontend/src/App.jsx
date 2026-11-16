@@ -15,6 +15,7 @@ import InviteRedeemModal from "./components/ai/InviteRedeemModal";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AIProvider, useAIChat } from "./contexts/AIContext";
 import { ProgressProvider } from "./contexts/ProgressContext";
+import { Analytics } from "@vercel/analytics/react";
 
 import apiClient from "./api/apiClient";
 
@@ -64,6 +65,8 @@ function AppShell() {
       <NextraAIFAB />
       <NextraAIDrawer />
       <NextraAIFullScreen />
+
+      <Analytics />
 
       {/* Global modals — one instance, shared by drawer and full-screen */}
       <ContextPicker open={showPicker} onClose={() => setShowPicker(false)} />
